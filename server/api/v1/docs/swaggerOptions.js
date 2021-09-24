@@ -16,6 +16,8 @@ var swaggerOption = {
     apis: ["./docs.swagger"]
 }
 var swaggerDocSpecs = SwaggerJSDoc(swaggerOption);
-SwaggerUI.setup(swaggerDocSpecs);
 
-module.exports = SwaggerUI;
+module.exports = {
+    SwaggerUI,
+    swaggerDocSpecs
+};
