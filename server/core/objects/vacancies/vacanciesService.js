@@ -13,7 +13,7 @@ class VacanciesService {
         return vacancies;
     }
 
-    async update(data, next){
+    async patch(data, next){
         var vacancy = await VacanciesRepository.get({
             where: {
                 id: data.id
@@ -37,6 +37,10 @@ class VacanciesService {
                 id: id
             }
         });
+
+        if(!vacancy){
+            return next(ErrorHandler.notFound('Вакансия с указанным ID не найдена'));
+        }
 
         await VacanciesRepository.delete(vacancy);
     }

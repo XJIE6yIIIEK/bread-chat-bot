@@ -12,10 +12,10 @@ class VacanciesController {
         return res.status(200).json(vacancies);
     }
 
-    async update(req, res, next){
+    async patch(req, res, next){
         var vacancy = req.body;
         vacancy.id = req.params.id;
-        await VacanciesService.update(vacancy, next);
+        await VacanciesService.patch(vacancy, next);
         return res.status(204);
     }
 

@@ -5,7 +5,7 @@ const VacanciesController = require('../../../core/objects/vacancies/vacanciesCo
 router.post('/', VacanciesController.create);
 router.get('/', VacanciesController.getAll);
 
-router.patch('/:id', VacanciesController.update);
+router.patch('/:id', VacanciesController.patch);
 router.delete('/:id', VacanciesController.delete);
 router.get('/:id', VacanciesController.get);
 

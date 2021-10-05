@@ -5,7 +5,7 @@ const GraphController = require('../../../core/objects/commands/commandsGraph/gr
 router.post('/', GraphController.create);
 router.get('/', GraphController.getAll);
 
-router.delete('/:id', GraphController.delete);
-router.get('/:id', GraphController.get);
+router.delete('/:s_fc/:s_sc', GraphController.delete);
+router.get('/:s_command', GraphController.get);
 
 module.exports = router;
