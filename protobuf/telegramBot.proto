@@ -2,12 +2,14 @@ syntax = "proto3";
 package telegramBot;
 
 service BotService {
-    rpc getAllVacancies () returns (VacanciesResponse);
+    rpc getAllVacancies (Empty) returns (VacanciesResponse);
     rpc getVacancyRequirements (VacancyRequirementsRequest) returns (VacancyRequirementsResponse);
-    rpc getCompanyInfo () returns (CompanyInfoResponse);
+    rpc getCompanyInfo (Empty) returns (CompanyInfoResponse);
 
-    rpc newInfoAdded (CompanyInfoRequest) returns ();
+    rpc newInfoAdded (CompanyInfoRequest) returns (Empty);
 }
+
+message Empty {}
 
 message VacanciesResponse {
     repeated Vacancy vacancies = 1;
