@@ -1,0 +1,47 @@
+syntax = "proto3";
+package telegramBot;
+
+service BotService {
+    rpc getAllVacancies (Empty) returns (VacanciesResponse);
+    rpc getVacancyRequirements (VacancyRequirementsRequest) returns (VacancyRequirementsResponse);
+    rpc getCompanyInfo (Empty) returns (CompanyInfoResponse);
+
+    rpc newInfoAdded (CompanyInfoRequest) returns (Empty);
+}
+
+message Empty {}
+
+message VacanciesResponse {
+    repeated Vacancy vacancies = 1;
+}
+
+message Vacancy {
+    string name = 1;
+}
+
+message VacancyRequirementsRequest {
+    int32 vacancyId = 1;
+}
+
+message VacancyRequirementsResponse {
+    repeated VacancyRequirement requirements = 1;
+}
+
+message VacancyRequirement {
+    string requirementName = 1;
+    string requirementValue = 2;
+}
+
+message CompanyInfoResponse {
+    repeated CompanyInfo companyInfos = 1;
+}
+
+message CompanyInfoRequest {
+    CompanyInfo info = 1;
+}
+
+message CompanyInfo {
+    string name = 1;
+    string message = 2;
+}
+
