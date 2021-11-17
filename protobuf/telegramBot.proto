@@ -5,8 +5,11 @@ service BotService {
     rpc getAllVacancies (Empty) returns (VacanciesResponse);
     rpc getVacancyRequirements (VacancyRequirementsRequest) returns (VacancyRequirementsResponse);
     rpc getCompanyInfo (Empty) returns (CompanyInfoResponse);
+    rpc sendCandidateInfo (CandidateRequest) returns (Empty);
 
     rpc newInfoAdded (CompanyInfoRequest) returns (Empty);
+    rpc newRequirementAdded (AddedRequirement) returns (Empty);
+    rpc newVacancyAdded(AddedVacancy) returns (Empty);
 }
 
 message Empty {}
@@ -15,8 +18,13 @@ message VacanciesResponse {
     repeated Vacancy vacancies = 1;
 }
 
+message AddedVacancy {
+    Vacancy vacancy = 1;
+}
+
 message Vacancy {
-    string name = 1;
+    int32 id = 1;
+    string name = 2;
 }
 
 message VacancyRequirementsRequest {
@@ -27,9 +35,14 @@ message VacancyRequirementsResponse {
     repeated VacancyRequirement requirements = 1;
 }
 
+message AddedRequirement {
+    VacancyRequirement vacancyRequirement = 1;
+}
+
 message VacancyRequirement {
-    string requirementName = 1;
-    string requirementValue = 2;
+    int32 vacancyId = 1;
+    string requirementName = 2;
+    string requirementValue = 3;
 }
 
 message CompanyInfoResponse {
@@ -45,3 +58,23 @@ message CompanyInfo {
     string message = 2;
 }
 
+message CandidateRequest {
+    Candidate candidateMainInfo = 1;
+    repeated CandidateRequirement candidateResumes = 2;
+}
+
+message CandidateReuirement {
+    int32 candidateId = 1;
+    int32 vacancyId = 2;
+    string requirementName = 3;
+    string value = 4;
+}
+
+message Candidate {
+    string name = 1;
+    string birthDate = 2;
+    string phoneNumber = 3;
+    string address = 4;
+    string email = 5;
+    string tgId = 6;
+}
