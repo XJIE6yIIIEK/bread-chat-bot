@@ -1,5 +1,5 @@
 const VacanciesRepository = require('./vacanciesRepository');
-const RequirementsRepository = require('../requirements/requirementsRepository');
+const ReqToVacsRepository = require('../requirementsToVacancies/reqToVacRepository');
 const BotTransmitterService = require('../../botHandler/botTransmitter/botTransmitterService');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
@@ -64,7 +64,10 @@ class VacanciesService {
             return next(ErrorHandler.notFound('Вакансия с указанным ID не найдена'));
         }
 
-        var requirements = await RequirementsRepository.getAll({
+        var requirements = await ReqToVacsRepository.getAll({
+            attributes: [
+                'n_requirement'
+            ],
             where: {
                 n_vacancy: vacancyId
             }
