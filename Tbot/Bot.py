@@ -60,7 +60,7 @@ def getAllVacancies():
     return stub.getAllVacancies(pb2.Empty()).vacancies
 
 def getVacancyRequirements(id:int):
-    return stub.getVacancyRequirements(pb2.VacancyRequirementsRequest(vacancyId = 1)).requirements
+    return stub.getVacancyRequirements(pb2.VacancyRequirementsRequest(vacancyId = id)).requirements
 
 #_______________________________________________________
 #====================BOT=STUFF==========================
@@ -144,7 +144,12 @@ async def send_random_value(call: types.CallbackQuery):
         await answer(call, "Отличный выбор!")
         #state = dp.current_state(user=call.from_user.id)
         #await state.update_data("")
-        #print(getVacancyRequirements(vacs_list[case].id))
+        #vacstest = getVacancyRequirements(vacs_list[case].id)
+        #print(vacstest)
+        #for ob in vacstest:
+            #print(ob)
+            #print(ob.requirementName)
+            #print(ob.requirementValue)
 
 #_______________________________________________________
 #=================MESSAGE=HANDLERS======================
@@ -182,17 +187,17 @@ async def shutdown(dispatcher: Dispatcher):
     await dispatcher.storage.wait_closed()
 
 if __name__ == '__main__':
-    try:
-        logging.basicConfig()
-        SetupClient()
-        SetupServer()
+    #try:
+    logging.basicConfig()
+    SetupClient()
+    SetupServer()
 
-        FillAllVacs()
-        FillInfoAboutUs()
+    FillAllVacs()
+    FillInfoAboutUs()
 
-        executor.start_polling(dp, on_shutdown=shutdown)
-    except grpc.RpcError as rpc_error:
-        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
-            print("Connection failed. *-*")
-        else:
-            print("Something gone wrong. X_X")
+    executor.start_polling(dp, on_shutdown=shutdown)
+    #except grpc.RpcError as rpc_error:
+    #    if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+    #        print("Connection failed. *-*")
+    #    else:
+    #        print("Something gone wrong. X_X")
