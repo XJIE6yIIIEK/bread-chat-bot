@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 5000;
 const router = require('./api/v1/routes/routes');
 const sequelize = require('./core/db/db');
 const models = require('./core/db/models');
+const BotReciever = require('./core/botHandler/botReciever/botReciever');
+const BotTransmitter = require('./core/botHandler/botTransmitter/botTransmitter');
 //===================
 
 var app = express();
@@ -22,6 +24,8 @@ app.use('/api/v1/docs', SwaggerUI.serve, SwaggerUI.setup(swaggerDocSpecs));
 var start = () => {
     try {
         app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+        BotReciever.initialize();
+        BotTransmitter.initialize();
     } catch(e) {
         throw e;
     }

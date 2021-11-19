@@ -9,20 +9,20 @@ class CommandsController {
 
     async patch(req, res, next){
         var data = req.body;
-        data.s_command = req.params.id;
+        data.s_name = req.params.s_name;
         await CommandsService.patch(data, next);
         return res.status(203);
     }
 
     async delete(req, res, next){
-        var commandId = req.params.id;
-        await CommandsService.delete(commandId, next);
+        var s_name = req.params.s_name;
+        await CommandsService.delete(s_name, next);
         return res.status(203);
     }
 
     async get(req, res, next){
-        var commandId = req.params.id;
-        var command = await CommandsService.get(commandId, next);
+        var s_name = req.params.s_name;
+        var command = await CommandsService.get(s_name, next);
         return res.status(200).json(command);
     }
 

@@ -1,7 +1,7 @@
 var Sequelize = require('../../db/db');
 var {DataTypes} = require('sequelize');
 
-var Strategies = Sequelize.define('t_interview_strategies', {
+var ReqToVacs = Sequelize.define('t_req_to_vac', {
     n_vacancy: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,20 +12,16 @@ var Strategies = Sequelize.define('t_interview_strategies', {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
     },
-    n_serial: {
+    n_requirement: {
         type: DataTypes.INTEGER,
-        primaryKey: true
-    },
-    s_command: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        primaryKey: true,
         references: {
-            model: 't_bot_messages',
-            key: 's_command'
+            model: 't_requirements',
+            key: 'id'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
     }
 });
 
-module.exports = Strategies;
+module.exports = ReqToVacs;

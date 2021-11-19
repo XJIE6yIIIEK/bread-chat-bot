@@ -2,21 +2,12 @@ var Sequelize = require('../../db/db');
 var {DataTypes} = require('sequelize');
 
 var Requirements = Sequelize.define('t_requirements', {
-    n_vacancy: {
-        type: DataTypes.INTEGER,
+    id: {
+        type: DataTypes.STRING,
         primaryKey: true,
-        references: {
-            model: 't_vacancies',
-            key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        autoIncrement: true
     },
     s_name: {
-        type: DataTypes.STRING,
-        primaryKey: true
-    },
-    s_text: {
         type: DataTypes.STRING,
         allowNull: false
     }

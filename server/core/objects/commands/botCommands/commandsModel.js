@@ -1,14 +1,10 @@
 var Sequelize = require('../../db/db');
 var {DataTypes} = require('sequelize');
 
-var Commands = Sequelize.define('t_bot_messages', {
-    s_command: {
-        type: DataTypes.STRING,
-        primaryKey: true
-    },
+var Commands = Sequelize.define('t_company_info', {
     s_name: {
         type: DataTypes.STRING,
-        allowNull: false
+        primaryKey: true
     },
     s_message: {
         type: DataTypes.STRING,

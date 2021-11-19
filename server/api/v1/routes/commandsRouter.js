@@ -5,8 +5,8 @@ const CommandsController = require('../../../core/objects/commands/botCommands/c
 router.post('/', CommandsController.create);
 router.get('/', CommandsController.getAll);
 
-router.update('/:id', CommandsController.patch);
-router.delete('/:id', CommandsController.delete);
-router.get('/:id', CommandsController.get);
+router.update('/:s_name', CommandsController.patch);
+router.delete('/:s_name', CommandsController.delete);
+router.get('/:s_name', CommandsController.get);
 
 module.exports = router;

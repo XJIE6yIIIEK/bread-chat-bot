@@ -2,6 +2,15 @@ var Candidates = require('./candidatesModel');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class CandidatesRepository {
+    async create(data){
+        var candidate = await Candidates.create(data);
+        return candidate;
+    }
+
+    async patch(candidate){
+        candidate.save();
+    }
+
     async getAll(conditions = {}){
         var candidates = await Candidates.findAll(conditions);
         return candidates;

@@ -1,10 +1,14 @@
 const VacanciesRepository = require('./vacanciesRepository');
 const RequirementsRepository = require('../requirements/requirementsRepository');
+const BotTransmitterService = require('../../botHandler/botTransmitter/botTransmitterService');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class VacanciesService {
     async create(data, next){
-        const vacancy = await VacanciesRepository.create(data, next);        
+        const vacancy = await VacanciesRepository.create(data, next);
+        
+        BotTransmitterService.vacancyUpdated(vacancy);
+
         return vacancy;
     }
 
@@ -28,6 +32,8 @@ class VacanciesService {
             vacancy.s_name = data.s_name;
         }
 
+        BotTransmitterService.vacancyUpdated(vacancy);
+
         await VacanciesRepository.patch(vacancy);
     }
 
@@ -41,6 +47,8 @@ class VacanciesService {
         if(!vacancy){
             return next(ErrorHandler.notFound('Вакансия с указанным ID не найдена'));
         }
+
+        await BotTransmitterService.vacancyUpdated(vacancy);
 
         await VacanciesRepository.delete(vacancy);
     }

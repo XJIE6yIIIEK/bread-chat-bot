@@ -5,10 +5,6 @@ var ErrorHandler = require('../../errorHandlers/errorHandler');
 class ResumesService {
     async getAll(userId, next){
         const resumes = await ResumesRepository.getAll({
-            attributes: [
-                'n_candidate',
-                [Sequelize.fn('DISTINCT', Sequelize.col('n_vacancy'), 'n_vacancy')]
-            ],
             where: {
                 n_candidate: userId
             }
@@ -17,12 +13,13 @@ class ResumesService {
     }
 
     async get(data, next){
-        var resume = await ResumesRepository.getAll({
-            where: {
-                n_candidate: data.userId,
-                n_vacancy: data.vacancyId
-            }
-        });
+
+        var resume = await Sequelize.query(
+            'SELECT t_resumes.* FROM t_resumes ' +
+            'JOIN t_req_to_vac ' +
+            'ON t_resumes.n_requirement = t_req_to_vac.n_requirement ' +
+            'WHERE t_req_to_vac.n_vacancy = ' + data.vacancyId + ' AND t_resumes.n_candidate = ' + data.userId
+        );
 
         if(!resume){
             return next(ErrorHandler.notFound('Резюме не найдено'));

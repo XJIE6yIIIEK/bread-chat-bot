@@ -11,8 +11,8 @@ class CommandsRepository {
         }
     }
 
-    async getAll(){
-        var commands = await Commands.findAll();
+    async getAll(conditions = {}){
+        var commands = await Commands.findAll(conditions);
         return commands;
     }
 

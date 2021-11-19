@@ -1,7 +1,8 @@
 const CandidatesRepository = require('./candidatesRepository');
+const ResumesRepository = require('../resumes/resumesRepository');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
-class CommandsService {
+class CandidatesService {
     async getAll(next){
         const candidates = await CandidatesRepository.getAll();
         return candidates;
@@ -15,7 +16,7 @@ class CommandsService {
         });
 
         if(!candidate){
-            return next(ErrorHandler.notFound('Команда бота не найдена'));
+            return next(ErrorHandler.notFound('Кандидат не найден'));
         }
 
         await CandidatesRepository.delete(candidate);
@@ -29,11 +30,20 @@ class CommandsService {
         });
 
         if(!candidate){
-            return next(ErrorHandler.notFound('Команда бота не найдена'));
+            return next(ErrorHandler.notFound('Кандидат не найден'));
         }
 
-        return candidate;
+        const resume = await ResumesRepository.getAll({
+            where: {
+                n_candidate: candidate.id
+            }
+        });
+
+        return {
+            candidate: candidate,
+            resume: resume
+        };
     }
 }
 
-module.exports = new CommandsService();
+module.exports = new CandidatesService();

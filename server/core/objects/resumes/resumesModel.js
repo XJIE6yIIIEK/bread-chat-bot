@@ -12,29 +12,19 @@ var Resumes = Sequelize.define('t_resumes', {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
     },
-    n_vacancy: {
+    n_requirement: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
             model: 't_requirements',
-            key: 'n_vacancy'
-        },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
-    },
-    s_requirement_name: {
-        type: DataTypes.STRING,
-        primaryKey: true,
-        references: {
-            model: 't_requirements',
-            key: 's_name'
+            key: 'id'
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
     },
     s_value: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     }
 });
 

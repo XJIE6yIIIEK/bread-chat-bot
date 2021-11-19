@@ -11,8 +11,8 @@ class VacanciesRepository {
         }
     }
 
-    async getAll(){
-        var vacancies = await Vacancies.findAll();
+    async getAll(conditions = {}){
+        var vacancies = await Vacancies.findAll(conditions);
         return vacancies;
     }
 

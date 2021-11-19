@@ -1,10 +1,13 @@
 const CommandsRepository = require('./commandsRepository');
-const GraphService = require('../commandsGraph/graphService');
+const BotTransmitterService = require('../../../botHandler/botTransmitter/botTransmitterService');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class CommandsService {
     async create(data, next){
-        const command = await CommandsRepository.create(data, next);        
+        const command = await CommandsRepository.create(data, next);
+
+        BotTransmitterService.infoUpdated(command);
+
         return command;
     }
 
@@ -16,12 +19,12 @@ class CommandsService {
     async patch(data, next){
         var command = await CommandsRepository.get({
             where: {
-                s_command: data.s_command
+                s_name: data.s_name
             }
         });
 
         if(!command){
-            return next(ErrorHandler.notFound('Команда бота не найдена'));
+            return next(ErrorHandler.notFound('Информация не найдена'));
         }
 
         if(data.s_name){
@@ -32,36 +35,39 @@ class CommandsService {
             command.s_message = data.s_message;
         }
 
+        BotTransmitterService.infoUpdated(command);
+
         await CommandsRepository.patch(command);
     }
 
-    async delete(commandId, next){
+    async delete(s_name, next){
         var command = await CommandsRepository.get({
             where: {
-                s_command: commandId
+                s_name: s_name
             }
         });
 
         if(!command){
-            return next(ErrorHandler.notFound('Команда бота не найдена'));
+            return next(ErrorHandler.notFound('Информация не найдена'));
         }
+
+        await BotTransmitterService.infoUpdated({
+            s_name: command.s_name
+        });
 
         await CommandsRepository.delete(command);
     }
 
-    async get(commandId, next){
+    async get(s_name, next){
         var command = await CommandsRepository.get({
             where: {
-                id: commandId
+                s_name: s_name
             }
         });
 
         if(!command){
-            return next(ErrorHandler.notFound('Команда бота не найдена'));
+            return next(ErrorHandler.notFound('Информация не найдена'));
         }
-
-        var graph = await GraphService.get(commandId);
-        command.graph = graph;
 
         return command;
     }

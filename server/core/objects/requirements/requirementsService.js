@@ -1,9 +1,13 @@
 var ErrorHandler = require('../../errorHandlers/errorHandler');
+const BotTransmitterService = require('../../botHandler/botTransmitter/botTransmitterService');
 var RequirementsRepository = require('./requirementsRepository');
 
 class RequirementsService {
     async create(data, next){
         var requirement = await RequirementsRepository.create(data);
+
+        BotTransmitterService.requirementUpdated(requirement);
+
         return requirement;
     }
 
@@ -23,6 +27,8 @@ class RequirementsService {
             vacancy.s_text = data.s_text;
         }
 
+        BotTransmitterService.requirementUpdated(requirement);
+
         await RequirementsRepository.patch(requirement);
     }
 
@@ -37,6 +43,8 @@ class RequirementsService {
         if(!requirement){
             return next(ErrorHandler.notFound('Требование не найдено'));
         }
+
+        await BotTransmitterService.requirementUpdated(requirement);
 
         await RequirementsRepository.delete(requirement);
     }

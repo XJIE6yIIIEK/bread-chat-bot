@@ -17,7 +17,7 @@ var Candidates = Sequelize.define('t_candidates', {
     },
     s_phone_number: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     s_address: {
         type: DataTypes.STRING,
@@ -25,11 +25,11 @@ var Candidates = Sequelize.define('t_candidates', {
     },
     e_mail: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     s_tg_id: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     b_memo_sended: {
         type: DataTypes.BOOLEAN,
