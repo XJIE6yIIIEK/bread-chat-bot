@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11telegramBot.proto\x12\x0btelegramBot\"\x07\n\x05\x45mpty\"<\n\x11VacanciesResponse\x12\'\n\tvacancies\x18\x01 \x03(\x0b\x32\x14.telegramBot.Vacancy\"5\n\x0c\x41\x64\x64\x65\x64Vacancy\x12%\n\x07vacancy\x18\x01 \x01(\x0b\x32\x14.telegramBot.Vacancy\"#\n\x07Vacancy\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0c\n\x04name\x18\x02 \x01(\t\"/\n\x1aVacancyRequirementsRequest\x12\x11\n\tvacancyId\x18\x01 \x01(\x05\"T\n\x1bVacancyRequirementsResponse\x12\x35\n\x0crequirements\x18\x01 \x03(\x0b\x32\x1f.telegramBot.VacancyRequirement\"O\n\x10\x41\x64\x64\x65\x64Requirement\x12;\n\x12vacancyRequirement\x18\x01 \x01(\x0b\x32\x1f.telegramBot.VacancyRequirement\"Z\n\x12VacancyRequirement\x12\x11\n\tvacancyId\x18\x01 \x01(\x05\x12\x17\n\x0frequirementName\x18\x02 \x01(\t\x12\x18\n\x10requirementValue\x18\x03 \x01(\t\"E\n\x13\x43ompanyInfoResponse\x12.\n\x0c\x63ompanyInfos\x18\x01 \x03(\x0b\x32\x18.telegramBot.CompanyInfo\"<\n\x12\x43ompanyInfoRequest\x12&\n\x04info\x18\x01 \x01(\x0b\x32\x18.telegramBot.CompanyInfo\",\n\x0b\x43ompanyInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x82\x01\n\x10\x43\x61ndidateRequest\x12\x31\n\x11\x63\x61ndidateMainInfo\x18\x01 \x01(\x0b\x32\x16.telegramBot.Candidate\x12;\n\x10\x63\x61ndidateResumes\x18\x02 \x03(\x0b\x32!.telegramBot.CandidateRequirement\"f\n\x14\x43\x61ndidateRequirement\x12\x13\n\x0b\x63\x61ndidateId\x18\x01 \x01(\x05\x12\x11\n\tvacancyId\x18\x02 \x01(\x05\x12\x17\n\x0frequirementName\x18\x03 \x01(\t\x12\r\n\x05value\x18\x04 \x01(\t\"o\n\tCandidate\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tbirthDate\x18\x02 \x01(\t\x12\x13\n\x0bphoneNumber\x18\x03 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x04 \x01(\t\x12\r\n\x05\x65mail\x18\x05 \x01(\t\x12\x0c\n\x04tgId\x18\x06 \x01(\t2\xa1\x04\n\nBotService\x12\x45\n\x0fgetAllVacancies\x12\x12.telegramBot.Empty\x1a\x1e.telegramBot.VacanciesResponse\x12k\n\x16getVacancyRequirements\x12\'.telegramBot.VacancyRequirementsRequest\x1a(.telegramBot.VacancyRequirementsResponse\x12\x46\n\x0egetCompanyInfo\x12\x12.telegramBot.Empty\x1a .telegramBot.CompanyInfoResponse\x12\x46\n\x11sendCandidateInfo\x12\x1d.telegramBot.CandidateRequest\x1a\x12.telegramBot.Empty\x12\x43\n\x0cnewInfoAdded\x12\x1f.telegramBot.CompanyInfoRequest\x1a\x12.telegramBot.Empty\x12H\n\x13newRequirementAdded\x12\x1d.telegramBot.AddedRequirement\x1a\x12.telegramBot.Empty\x12@\n\x0fnewVacancyAdded\x12\x19.telegramBot.AddedVacancy\x1a\x12.telegramBot.Emptyb\x06proto3'
+  serialized_pb=b'\n\x11telegramBot.proto\x12\x0btelegramBot\"\x07\n\x05\x45mpty\"\xc4\x01\n\x05\x43\x61\x63he\x12\'\n\tvacancies\x18\x01 \x03(\x0b\x32\x14.telegramBot.Vacancy\x12.\n\x0crequirements\x18\x02 \x03(\x0b\x32\x18.telegramBot.Requirement\x12\x32\n\treqToVacs\x18\x03 \x03(\x0b\x32\x1f.telegramBot.VacancyRequirement\x12.\n\x0c\x63ompanyInfos\x18\x04 \x03(\x0b\x32\x18.telegramBot.CompanyInfo\")\n\x0bRequirement\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06s_name\x18\x02 \x01(\t\"%\n\x07Vacancy\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06s_name\x18\x02 \x01(\t\">\n\x12VacancyRequirement\x12\x11\n\tn_vacancy\x18\x01 \x01(\x05\x12\x15\n\rn_requirement\x18\x02 \x01(\x05\"0\n\x0b\x43ompanyInfo\x12\x0e\n\x06s_name\x18\x01 \x01(\t\x12\x11\n\ts_message\x18\x02 \x01(\t\"}\n\x10\x43\x61ndidateRequest\x12\x31\n\x11\x63\x61ndidateMainInfo\x18\x01 \x01(\x0b\x32\x16.telegramBot.Candidate\x12\x36\n\x10\x63\x61ndidateResumes\x18\x02 \x03(\x0b\x32\x1c.telegramBot.CandidateResume\"9\n\x0f\x43\x61ndidateResume\x12\x15\n\rn_requirement\x18\x01 \x01(\x05\x12\x0f\n\x07s_value\x18\x02 \x01(\t\"}\n\tCandidate\x12\x0e\n\x06s_name\x18\x01 \x01(\t\x12\x14\n\x0c\x64_birth_date\x18\x02 \x01(\t\x12\x16\n\x0es_phone_number\x18\x03 \x01(\t\x12\x11\n\ts_address\x18\x04 \x01(\t\x12\x0e\n\x06\x65_mail\x18\x05 \x01(\t\x12\x0f\n\x07s_tg_id\x18\x06 \x01(\t\"\x17\n\x04TgId\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\"7\n\x0eUpdatedVacancy\x12%\n\x07vacancy\x18\x01 \x01(\x0b\x32\x14.telegramBot.Vacancy\"C\n\x12UpdatedRequirement\x12-\n\x0brequirement\x18\x01 \x01(\x0b\x32\x18.telegramBot.Requirement\"^\n\x0fUpdatedReqToVac\x12;\n\x12vacancyRequirement\x18\x01 \x01(\x0b\x32\x1f.telegramBot.VacancyRequirement\x12\x0e\n\x06\x64\x65lete\x18\x02 \x01(\x08\"<\n\x12UpdatedCompanyInfo\x12&\n\x04info\x18\x01 \x01(\x0b\x32\x18.telegramBot.CompanyInfo2\xe5\x03\n\nBotService\x12\x32\n\x08getCache\x12\x12.telegramBot.Empty\x1a\x12.telegramBot.Cache\x12\x46\n\x11sendCandidateInfo\x12\x1d.telegramBot.CandidateRequest\x1a\x12.telegramBot.Empty\x12\x44\n\x10getCandidateInfo\x12\x11.telegramBot.TgId\x1a\x1d.telegramBot.CandidateRequest\x12\x42\n\x0binfoUpdated\x12\x1f.telegramBot.UpdatedCompanyInfo\x1a\x12.telegramBot.Empty\x12I\n\x12requirementUpdated\x12\x1f.telegramBot.UpdatedRequirement\x1a\x12.telegramBot.Empty\x12\x41\n\x0evacancyUpdated\x12\x1b.telegramBot.UpdatedVacancy\x1a\x12.telegramBot.Empty\x12\x43\n\x0freqToVacUpdated\x12\x1c.telegramBot.UpdatedReqToVac\x1a\x12.telegramBot.Emptyb\x06proto3'
 )
 
 
@@ -50,17 +50,38 @@ _EMPTY = _descriptor.Descriptor(
 )
 
 
-_VACANCIESRESPONSE = _descriptor.Descriptor(
-  name='VacanciesResponse',
-  full_name='telegramBot.VacanciesResponse',
+_CACHE = _descriptor.Descriptor(
+  name='Cache',
+  full_name='telegramBot.Cache',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='vacancies', full_name='telegramBot.VacanciesResponse.vacancies', index=0,
+      name='vacancies', full_name='telegramBot.Cache.vacancies', index=0,
       number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='requirements', full_name='telegramBot.Cache.requirements', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='reqToVacs', full_name='telegramBot.Cache.reqToVacs', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='companyInfos', full_name='telegramBot.Cache.companyInfos', index=3,
+      number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -77,23 +98,30 @@ _VACANCIESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=43,
-  serialized_end=103,
+  serialized_start=44,
+  serialized_end=240,
 )
 
 
-_ADDEDVACANCY = _descriptor.Descriptor(
-  name='AddedVacancy',
-  full_name='telegramBot.AddedVacancy',
+_REQUIREMENT = _descriptor.Descriptor(
+  name='Requirement',
+  full_name='telegramBot.Requirement',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='vacancy', full_name='telegramBot.AddedVacancy.vacancy', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='id', full_name='telegramBot.Requirement.id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='s_name', full_name='telegramBot.Requirement.s_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -109,8 +137,8 @@ _ADDEDVACANCY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=105,
-  serialized_end=158,
+  serialized_start=242,
+  serialized_end=283,
 )
 
 
@@ -130,7 +158,7 @@ _VACANCY = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='name', full_name='telegramBot.Vacancy.name', index=1,
+      name='s_name', full_name='telegramBot.Vacancy.s_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -148,104 +176,8 @@ _VACANCY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=160,
-  serialized_end=195,
-)
-
-
-_VACANCYREQUIREMENTSREQUEST = _descriptor.Descriptor(
-  name='VacancyRequirementsRequest',
-  full_name='telegramBot.VacancyRequirementsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='vacancyId', full_name='telegramBot.VacancyRequirementsRequest.vacancyId', index=0,
-      number=1, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=197,
-  serialized_end=244,
-)
-
-
-_VACANCYREQUIREMENTSRESPONSE = _descriptor.Descriptor(
-  name='VacancyRequirementsResponse',
-  full_name='telegramBot.VacancyRequirementsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='requirements', full_name='telegramBot.VacancyRequirementsResponse.requirements', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=246,
-  serialized_end=330,
-)
-
-
-_ADDEDREQUIREMENT = _descriptor.Descriptor(
-  name='AddedRequirement',
-  full_name='telegramBot.AddedRequirement',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='vacancyRequirement', full_name='telegramBot.AddedRequirement.vacancyRequirement', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=332,
-  serialized_end=411,
+  serialized_start=285,
+  serialized_end=322,
 )
 
 
@@ -258,23 +190,16 @@ _VACANCYREQUIREMENT = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='vacancyId', full_name='telegramBot.VacancyRequirement.vacancyId', index=0,
+      name='n_vacancy', full_name='telegramBot.VacancyRequirement.n_vacancy', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='requirementName', full_name='telegramBot.VacancyRequirement.requirementName', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='requirementValue', full_name='telegramBot.VacancyRequirement.requirementValue', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='n_requirement', full_name='telegramBot.VacancyRequirement.n_requirement', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -290,72 +215,8 @@ _VACANCYREQUIREMENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=413,
-  serialized_end=503,
-)
-
-
-_COMPANYINFORESPONSE = _descriptor.Descriptor(
-  name='CompanyInfoResponse',
-  full_name='telegramBot.CompanyInfoResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='companyInfos', full_name='telegramBot.CompanyInfoResponse.companyInfos', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=505,
-  serialized_end=574,
-)
-
-
-_COMPANYINFOREQUEST = _descriptor.Descriptor(
-  name='CompanyInfoRequest',
-  full_name='telegramBot.CompanyInfoRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='info', full_name='telegramBot.CompanyInfoRequest.info', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=576,
-  serialized_end=636,
+  serialized_start=324,
+  serialized_end=386,
 )
 
 
@@ -368,14 +229,14 @@ _COMPANYINFO = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='telegramBot.CompanyInfo.name', index=0,
+      name='s_name', full_name='telegramBot.CompanyInfo.s_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='message', full_name='telegramBot.CompanyInfo.message', index=1,
+      name='s_message', full_name='telegramBot.CompanyInfo.s_message', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -393,8 +254,8 @@ _COMPANYINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=638,
-  serialized_end=682,
+  serialized_start=388,
+  serialized_end=436,
 )
 
 
@@ -432,43 +293,29 @@ _CANDIDATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=685,
-  serialized_end=815,
+  serialized_start=438,
+  serialized_end=563,
 )
 
 
-_CANDIDATEREQUIREMENT = _descriptor.Descriptor(
-  name='CandidateRequirement',
-  full_name='telegramBot.CandidateRequirement',
+_CANDIDATERESUME = _descriptor.Descriptor(
+  name='CandidateResume',
+  full_name='telegramBot.CandidateResume',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='candidateId', full_name='telegramBot.CandidateRequirement.candidateId', index=0,
+      name='n_requirement', full_name='telegramBot.CandidateResume.n_requirement', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='vacancyId', full_name='telegramBot.CandidateRequirement.vacancyId', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='requirementName', full_name='telegramBot.CandidateRequirement.requirementName', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='telegramBot.CandidateRequirement.value', index=3,
-      number=4, type=9, cpp_type=9, label=1,
+      name='s_value', full_name='telegramBot.CandidateResume.s_value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -485,8 +332,8 @@ _CANDIDATEREQUIREMENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=817,
-  serialized_end=919,
+  serialized_start=565,
+  serialized_end=622,
 )
 
 
@@ -499,42 +346,42 @@ _CANDIDATE = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='telegramBot.Candidate.name', index=0,
+      name='s_name', full_name='telegramBot.Candidate.s_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='birthDate', full_name='telegramBot.Candidate.birthDate', index=1,
+      name='d_birth_date', full_name='telegramBot.Candidate.d_birth_date', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='phoneNumber', full_name='telegramBot.Candidate.phoneNumber', index=2,
+      name='s_phone_number', full_name='telegramBot.Candidate.s_phone_number', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='address', full_name='telegramBot.Candidate.address', index=3,
+      name='s_address', full_name='telegramBot.Candidate.s_address', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='email', full_name='telegramBot.Candidate.email', index=4,
+      name='e_mail', full_name='telegramBot.Candidate.e_mail', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='tgId', full_name='telegramBot.Candidate.tgId', index=5,
+      name='s_tg_id', full_name='telegramBot.Candidate.s_tg_id', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -552,32 +399,201 @@ _CANDIDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=921,
-  serialized_end=1032,
+  serialized_start=624,
+  serialized_end=749,
 )
 
-_VACANCIESRESPONSE.fields_by_name['vacancies'].message_type = _VACANCY
-_ADDEDVACANCY.fields_by_name['vacancy'].message_type = _VACANCY
-_VACANCYREQUIREMENTSRESPONSE.fields_by_name['requirements'].message_type = _VACANCYREQUIREMENT
-_ADDEDREQUIREMENT.fields_by_name['vacancyRequirement'].message_type = _VACANCYREQUIREMENT
-_COMPANYINFORESPONSE.fields_by_name['companyInfos'].message_type = _COMPANYINFO
-_COMPANYINFOREQUEST.fields_by_name['info'].message_type = _COMPANYINFO
+
+_TGID = _descriptor.Descriptor(
+  name='TgId',
+  full_name='telegramBot.TgId',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='s_tg_id', full_name='telegramBot.TgId.s_tg_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=751,
+  serialized_end=774,
+)
+
+
+_UPDATEDVACANCY = _descriptor.Descriptor(
+  name='UpdatedVacancy',
+  full_name='telegramBot.UpdatedVacancy',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='vacancy', full_name='telegramBot.UpdatedVacancy.vacancy', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=776,
+  serialized_end=831,
+)
+
+
+_UPDATEDREQUIREMENT = _descriptor.Descriptor(
+  name='UpdatedRequirement',
+  full_name='telegramBot.UpdatedRequirement',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='requirement', full_name='telegramBot.UpdatedRequirement.requirement', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=833,
+  serialized_end=900,
+)
+
+
+_UPDATEDREQTOVAC = _descriptor.Descriptor(
+  name='UpdatedReqToVac',
+  full_name='telegramBot.UpdatedReqToVac',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='vacancyRequirement', full_name='telegramBot.UpdatedReqToVac.vacancyRequirement', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='delete', full_name='telegramBot.UpdatedReqToVac.delete', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=902,
+  serialized_end=996,
+)
+
+
+_UPDATEDCOMPANYINFO = _descriptor.Descriptor(
+  name='UpdatedCompanyInfo',
+  full_name='telegramBot.UpdatedCompanyInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='info', full_name='telegramBot.UpdatedCompanyInfo.info', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=998,
+  serialized_end=1058,
+)
+
+_CACHE.fields_by_name['vacancies'].message_type = _VACANCY
+_CACHE.fields_by_name['requirements'].message_type = _REQUIREMENT
+_CACHE.fields_by_name['reqToVacs'].message_type = _VACANCYREQUIREMENT
+_CACHE.fields_by_name['companyInfos'].message_type = _COMPANYINFO
 _CANDIDATEREQUEST.fields_by_name['candidateMainInfo'].message_type = _CANDIDATE
-_CANDIDATEREQUEST.fields_by_name['candidateResumes'].message_type = _CANDIDATEREQUIREMENT
+_CANDIDATEREQUEST.fields_by_name['candidateResumes'].message_type = _CANDIDATERESUME
+_UPDATEDVACANCY.fields_by_name['vacancy'].message_type = _VACANCY
+_UPDATEDREQUIREMENT.fields_by_name['requirement'].message_type = _REQUIREMENT
+_UPDATEDREQTOVAC.fields_by_name['vacancyRequirement'].message_type = _VACANCYREQUIREMENT
+_UPDATEDCOMPANYINFO.fields_by_name['info'].message_type = _COMPANYINFO
 DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
-DESCRIPTOR.message_types_by_name['VacanciesResponse'] = _VACANCIESRESPONSE
-DESCRIPTOR.message_types_by_name['AddedVacancy'] = _ADDEDVACANCY
+DESCRIPTOR.message_types_by_name['Cache'] = _CACHE
+DESCRIPTOR.message_types_by_name['Requirement'] = _REQUIREMENT
 DESCRIPTOR.message_types_by_name['Vacancy'] = _VACANCY
-DESCRIPTOR.message_types_by_name['VacancyRequirementsRequest'] = _VACANCYREQUIREMENTSREQUEST
-DESCRIPTOR.message_types_by_name['VacancyRequirementsResponse'] = _VACANCYREQUIREMENTSRESPONSE
-DESCRIPTOR.message_types_by_name['AddedRequirement'] = _ADDEDREQUIREMENT
 DESCRIPTOR.message_types_by_name['VacancyRequirement'] = _VACANCYREQUIREMENT
-DESCRIPTOR.message_types_by_name['CompanyInfoResponse'] = _COMPANYINFORESPONSE
-DESCRIPTOR.message_types_by_name['CompanyInfoRequest'] = _COMPANYINFOREQUEST
 DESCRIPTOR.message_types_by_name['CompanyInfo'] = _COMPANYINFO
 DESCRIPTOR.message_types_by_name['CandidateRequest'] = _CANDIDATEREQUEST
-DESCRIPTOR.message_types_by_name['CandidateRequirement'] = _CANDIDATEREQUIREMENT
+DESCRIPTOR.message_types_by_name['CandidateResume'] = _CANDIDATERESUME
 DESCRIPTOR.message_types_by_name['Candidate'] = _CANDIDATE
+DESCRIPTOR.message_types_by_name['TgId'] = _TGID
+DESCRIPTOR.message_types_by_name['UpdatedVacancy'] = _UPDATEDVACANCY
+DESCRIPTOR.message_types_by_name['UpdatedRequirement'] = _UPDATEDREQUIREMENT
+DESCRIPTOR.message_types_by_name['UpdatedReqToVac'] = _UPDATEDREQTOVAC
+DESCRIPTOR.message_types_by_name['UpdatedCompanyInfo'] = _UPDATEDCOMPANYINFO
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
@@ -587,19 +603,19 @@ Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
   })
 _sym_db.RegisterMessage(Empty)
 
-VacanciesResponse = _reflection.GeneratedProtocolMessageType('VacanciesResponse', (_message.Message,), {
-  'DESCRIPTOR' : _VACANCIESRESPONSE,
+Cache = _reflection.GeneratedProtocolMessageType('Cache', (_message.Message,), {
+  'DESCRIPTOR' : _CACHE,
   '__module__' : 'telegramBot_pb2'
-  # @@protoc_insertion_point(class_scope:telegramBot.VacanciesResponse)
+  # @@protoc_insertion_point(class_scope:telegramBot.Cache)
   })
-_sym_db.RegisterMessage(VacanciesResponse)
+_sym_db.RegisterMessage(Cache)
 
-AddedVacancy = _reflection.GeneratedProtocolMessageType('AddedVacancy', (_message.Message,), {
-  'DESCRIPTOR' : _ADDEDVACANCY,
+Requirement = _reflection.GeneratedProtocolMessageType('Requirement', (_message.Message,), {
+  'DESCRIPTOR' : _REQUIREMENT,
   '__module__' : 'telegramBot_pb2'
-  # @@protoc_insertion_point(class_scope:telegramBot.AddedVacancy)
+  # @@protoc_insertion_point(class_scope:telegramBot.Requirement)
   })
-_sym_db.RegisterMessage(AddedVacancy)
+_sym_db.RegisterMessage(Requirement)
 
 Vacancy = _reflection.GeneratedProtocolMessageType('Vacancy', (_message.Message,), {
   'DESCRIPTOR' : _VACANCY,
@@ -608,47 +624,12 @@ Vacancy = _reflection.GeneratedProtocolMessageType('Vacancy', (_message.Message,
   })
 _sym_db.RegisterMessage(Vacancy)
 
-VacancyRequirementsRequest = _reflection.GeneratedProtocolMessageType('VacancyRequirementsRequest', (_message.Message,), {
-  'DESCRIPTOR' : _VACANCYREQUIREMENTSREQUEST,
-  '__module__' : 'telegramBot_pb2'
-  # @@protoc_insertion_point(class_scope:telegramBot.VacancyRequirementsRequest)
-  })
-_sym_db.RegisterMessage(VacancyRequirementsRequest)
-
-VacancyRequirementsResponse = _reflection.GeneratedProtocolMessageType('VacancyRequirementsResponse', (_message.Message,), {
-  'DESCRIPTOR' : _VACANCYREQUIREMENTSRESPONSE,
-  '__module__' : 'telegramBot_pb2'
-  # @@protoc_insertion_point(class_scope:telegramBot.VacancyRequirementsResponse)
-  })
-_sym_db.RegisterMessage(VacancyRequirementsResponse)
-
-AddedRequirement = _reflection.GeneratedProtocolMessageType('AddedRequirement', (_message.Message,), {
-  'DESCRIPTOR' : _ADDEDREQUIREMENT,
-  '__module__' : 'telegramBot_pb2'
-  # @@protoc_insertion_point(class_scope:telegramBot.AddedRequirement)
-  })
-_sym_db.RegisterMessage(AddedRequirement)
-
 VacancyRequirement = _reflection.GeneratedProtocolMessageType('VacancyRequirement', (_message.Message,), {
   'DESCRIPTOR' : _VACANCYREQUIREMENT,
   '__module__' : 'telegramBot_pb2'
   # @@protoc_insertion_point(class_scope:telegramBot.VacancyRequirement)
   })
 _sym_db.RegisterMessage(VacancyRequirement)
-
-CompanyInfoResponse = _reflection.GeneratedProtocolMessageType('CompanyInfoResponse', (_message.Message,), {
-  'DESCRIPTOR' : _COMPANYINFORESPONSE,
-  '__module__' : 'telegramBot_pb2'
-  # @@protoc_insertion_point(class_scope:telegramBot.CompanyInfoResponse)
-  })
-_sym_db.RegisterMessage(CompanyInfoResponse)
-
-CompanyInfoRequest = _reflection.GeneratedProtocolMessageType('CompanyInfoRequest', (_message.Message,), {
-  'DESCRIPTOR' : _COMPANYINFOREQUEST,
-  '__module__' : 'telegramBot_pb2'
-  # @@protoc_insertion_point(class_scope:telegramBot.CompanyInfoRequest)
-  })
-_sym_db.RegisterMessage(CompanyInfoRequest)
 
 CompanyInfo = _reflection.GeneratedProtocolMessageType('CompanyInfo', (_message.Message,), {
   'DESCRIPTOR' : _COMPANYINFO,
@@ -664,12 +645,12 @@ CandidateRequest = _reflection.GeneratedProtocolMessageType('CandidateRequest', 
   })
 _sym_db.RegisterMessage(CandidateRequest)
 
-CandidateRequirement = _reflection.GeneratedProtocolMessageType('CandidateRequirement', (_message.Message,), {
-  'DESCRIPTOR' : _CANDIDATEREQUIREMENT,
+CandidateResume = _reflection.GeneratedProtocolMessageType('CandidateResume', (_message.Message,), {
+  'DESCRIPTOR' : _CANDIDATERESUME,
   '__module__' : 'telegramBot_pb2'
-  # @@protoc_insertion_point(class_scope:telegramBot.CandidateRequirement)
+  # @@protoc_insertion_point(class_scope:telegramBot.CandidateResume)
   })
-_sym_db.RegisterMessage(CandidateRequirement)
+_sym_db.RegisterMessage(CandidateResume)
 
 Candidate = _reflection.GeneratedProtocolMessageType('Candidate', (_message.Message,), {
   'DESCRIPTOR' : _CANDIDATE,
@@ -677,6 +658,41 @@ Candidate = _reflection.GeneratedProtocolMessageType('Candidate', (_message.Mess
   # @@protoc_insertion_point(class_scope:telegramBot.Candidate)
   })
 _sym_db.RegisterMessage(Candidate)
+
+TgId = _reflection.GeneratedProtocolMessageType('TgId', (_message.Message,), {
+  'DESCRIPTOR' : _TGID,
+  '__module__' : 'telegramBot_pb2'
+  # @@protoc_insertion_point(class_scope:telegramBot.TgId)
+  })
+_sym_db.RegisterMessage(TgId)
+
+UpdatedVacancy = _reflection.GeneratedProtocolMessageType('UpdatedVacancy', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATEDVACANCY,
+  '__module__' : 'telegramBot_pb2'
+  # @@protoc_insertion_point(class_scope:telegramBot.UpdatedVacancy)
+  })
+_sym_db.RegisterMessage(UpdatedVacancy)
+
+UpdatedRequirement = _reflection.GeneratedProtocolMessageType('UpdatedRequirement', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATEDREQUIREMENT,
+  '__module__' : 'telegramBot_pb2'
+  # @@protoc_insertion_point(class_scope:telegramBot.UpdatedRequirement)
+  })
+_sym_db.RegisterMessage(UpdatedRequirement)
+
+UpdatedReqToVac = _reflection.GeneratedProtocolMessageType('UpdatedReqToVac', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATEDREQTOVAC,
+  '__module__' : 'telegramBot_pb2'
+  # @@protoc_insertion_point(class_scope:telegramBot.UpdatedReqToVac)
+  })
+_sym_db.RegisterMessage(UpdatedReqToVac)
+
+UpdatedCompanyInfo = _reflection.GeneratedProtocolMessageType('UpdatedCompanyInfo', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATEDCOMPANYINFO,
+  '__module__' : 'telegramBot_pb2'
+  # @@protoc_insertion_point(class_scope:telegramBot.UpdatedCompanyInfo)
+  })
+_sym_db.RegisterMessage(UpdatedCompanyInfo)
 
 
 
@@ -687,43 +703,23 @@ _BOTSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1035,
-  serialized_end=1580,
+  serialized_start=1061,
+  serialized_end=1546,
   methods=[
   _descriptor.MethodDescriptor(
-    name='getAllVacancies',
-    full_name='telegramBot.BotService.getAllVacancies',
+    name='getCache',
+    full_name='telegramBot.BotService.getCache',
     index=0,
     containing_service=None,
     input_type=_EMPTY,
-    output_type=_VACANCIESRESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='getVacancyRequirements',
-    full_name='telegramBot.BotService.getVacancyRequirements',
-    index=1,
-    containing_service=None,
-    input_type=_VACANCYREQUIREMENTSREQUEST,
-    output_type=_VACANCYREQUIREMENTSRESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='getCompanyInfo',
-    full_name='telegramBot.BotService.getCompanyInfo',
-    index=2,
-    containing_service=None,
-    input_type=_EMPTY,
-    output_type=_COMPANYINFORESPONSE,
+    output_type=_CACHE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
     name='sendCandidateInfo',
     full_name='telegramBot.BotService.sendCandidateInfo',
-    index=3,
+    index=1,
     containing_service=None,
     input_type=_CANDIDATEREQUEST,
     output_type=_EMPTY,
@@ -731,31 +727,51 @@ _BOTSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='newInfoAdded',
-    full_name='telegramBot.BotService.newInfoAdded',
+    name='getCandidateInfo',
+    full_name='telegramBot.BotService.getCandidateInfo',
+    index=2,
+    containing_service=None,
+    input_type=_TGID,
+    output_type=_CANDIDATEREQUEST,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='infoUpdated',
+    full_name='telegramBot.BotService.infoUpdated',
+    index=3,
+    containing_service=None,
+    input_type=_UPDATEDCOMPANYINFO,
+    output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='requirementUpdated',
+    full_name='telegramBot.BotService.requirementUpdated',
     index=4,
     containing_service=None,
-    input_type=_COMPANYINFOREQUEST,
+    input_type=_UPDATEDREQUIREMENT,
     output_type=_EMPTY,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='newRequirementAdded',
-    full_name='telegramBot.BotService.newRequirementAdded',
+    name='vacancyUpdated',
+    full_name='telegramBot.BotService.vacancyUpdated',
     index=5,
     containing_service=None,
-    input_type=_ADDEDREQUIREMENT,
+    input_type=_UPDATEDVACANCY,
     output_type=_EMPTY,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='newVacancyAdded',
-    full_name='telegramBot.BotService.newVacancyAdded',
+    name='reqToVacUpdated',
+    full_name='telegramBot.BotService.reqToVacUpdated',
     index=6,
     containing_service=None,
-    input_type=_ADDEDVACANCY,
+    input_type=_UPDATEDREQTOVAC,
     output_type=_EMPTY,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
