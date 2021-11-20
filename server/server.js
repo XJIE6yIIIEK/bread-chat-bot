@@ -2,8 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const ErrorHandlerMiddleware = require('./core/middlewares/errorMiddleware');
-const {SwaggerUI, swaggerDocSpecs} = require('./api/v1/docs/swaggerOptions');
 const PORT = process.env.PORT || 5000;
+const {SwaggerUI, swaggerDocSpecs} = require('./api/v1/docs/swaggerOptions');
 
 //Global modules init
 const router = require('./api/v1/routes/routes');
@@ -21,11 +21,15 @@ app.use(ErrorHandlerMiddleware);
 app.use('/api/v1', router);
 app.use('/api/v1/docs', SwaggerUI.serve, SwaggerUI.setup(swaggerDocSpecs));
 
-var start = () => {
+var start = async () => {
     try {
-        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+        await sequelize.authenticate();
+        await sequelize.sync();
+
         BotReciever.initialize();
         BotTransmitter.initialize();
+
+        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
     } catch(e) {
         throw e;
     }

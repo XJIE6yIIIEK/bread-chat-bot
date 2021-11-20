@@ -1,5 +1,5 @@
 var Commands = require('./commandsModel');
-var ErrorHandler = require('../../errorHandlers/errorHandler');
+var ErrorHandler = require('../../../errorHandlers/errorHandler');
 
 class CommandsRepository {
     async create(data, next){

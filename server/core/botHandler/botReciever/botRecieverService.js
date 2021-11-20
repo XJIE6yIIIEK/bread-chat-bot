@@ -90,7 +90,7 @@ class BotRecieverService {
     }
 
     async addCandidateResume(candidate, resumesInfo){
-        resumesInfo.forEach(resumeElement => {
+        resumesInfo.forEach(async (resumeElement) => {
             var resume = await ResumesRepository.get({
                 where: {
                     n_candidate: candidate.id,
