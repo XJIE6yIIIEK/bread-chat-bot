@@ -14,39 +14,39 @@ class BotServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.getAllVacancies = channel.unary_unary(
-                '/telegramBot.BotService/getAllVacancies',
+        self.getCache = channel.unary_unary(
+                '/telegramBot.BotService/getCache',
                 request_serializer=telegramBot__pb2.Empty.SerializeToString,
-                response_deserializer=telegramBot__pb2.VacanciesResponse.FromString,
-                )
-        self.getVacancyRequirements = channel.unary_unary(
-                '/telegramBot.BotService/getVacancyRequirements',
-                request_serializer=telegramBot__pb2.VacancyRequirementsRequest.SerializeToString,
-                response_deserializer=telegramBot__pb2.VacancyRequirementsResponse.FromString,
-                )
-        self.getCompanyInfo = channel.unary_unary(
-                '/telegramBot.BotService/getCompanyInfo',
-                request_serializer=telegramBot__pb2.Empty.SerializeToString,
-                response_deserializer=telegramBot__pb2.CompanyInfoResponse.FromString,
+                response_deserializer=telegramBot__pb2.Cache.FromString,
                 )
         self.sendCandidateInfo = channel.unary_unary(
                 '/telegramBot.BotService/sendCandidateInfo',
                 request_serializer=telegramBot__pb2.CandidateRequest.SerializeToString,
                 response_deserializer=telegramBot__pb2.Empty.FromString,
                 )
-        self.newInfoAdded = channel.unary_unary(
-                '/telegramBot.BotService/newInfoAdded',
-                request_serializer=telegramBot__pb2.CompanyInfoRequest.SerializeToString,
+        self.getCandidateInfo = channel.unary_unary(
+                '/telegramBot.BotService/getCandidateInfo',
+                request_serializer=telegramBot__pb2.TgId.SerializeToString,
+                response_deserializer=telegramBot__pb2.CandidateRequest.FromString,
+                )
+        self.infoUpdated = channel.unary_unary(
+                '/telegramBot.BotService/infoUpdated',
+                request_serializer=telegramBot__pb2.UpdatedCompanyInfo.SerializeToString,
                 response_deserializer=telegramBot__pb2.Empty.FromString,
                 )
-        self.newRequirementAdded = channel.unary_unary(
-                '/telegramBot.BotService/newRequirementAdded',
-                request_serializer=telegramBot__pb2.AddedRequirement.SerializeToString,
+        self.requirementUpdated = channel.unary_unary(
+                '/telegramBot.BotService/requirementUpdated',
+                request_serializer=telegramBot__pb2.UpdatedRequirement.SerializeToString,
                 response_deserializer=telegramBot__pb2.Empty.FromString,
                 )
-        self.newVacancyAdded = channel.unary_unary(
-                '/telegramBot.BotService/newVacancyAdded',
-                request_serializer=telegramBot__pb2.AddedVacancy.SerializeToString,
+        self.vacancyUpdated = channel.unary_unary(
+                '/telegramBot.BotService/vacancyUpdated',
+                request_serializer=telegramBot__pb2.UpdatedVacancy.SerializeToString,
+                response_deserializer=telegramBot__pb2.Empty.FromString,
+                )
+        self.reqToVacUpdated = channel.unary_unary(
+                '/telegramBot.BotService/reqToVacUpdated',
+                request_serializer=telegramBot__pb2.UpdatedReqToVac.SerializeToString,
                 response_deserializer=telegramBot__pb2.Empty.FromString,
                 )
 
@@ -54,19 +54,7 @@ class BotServiceStub(object):
 class BotServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def getAllVacancies(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def getVacancyRequirements(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def getCompanyInfo(self, request, context):
+    def getCache(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -78,19 +66,31 @@ class BotServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def newInfoAdded(self, request, context):
+    def getCandidateInfo(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def newRequirementAdded(self, request, context):
+    def infoUpdated(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def newVacancyAdded(self, request, context):
+    def requirementUpdated(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def vacancyUpdated(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def reqToVacUpdated(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -99,39 +99,39 @@ class BotServiceServicer(object):
 
 def add_BotServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'getAllVacancies': grpc.unary_unary_rpc_method_handler(
-                    servicer.getAllVacancies,
+            'getCache': grpc.unary_unary_rpc_method_handler(
+                    servicer.getCache,
                     request_deserializer=telegramBot__pb2.Empty.FromString,
-                    response_serializer=telegramBot__pb2.VacanciesResponse.SerializeToString,
-            ),
-            'getVacancyRequirements': grpc.unary_unary_rpc_method_handler(
-                    servicer.getVacancyRequirements,
-                    request_deserializer=telegramBot__pb2.VacancyRequirementsRequest.FromString,
-                    response_serializer=telegramBot__pb2.VacancyRequirementsResponse.SerializeToString,
-            ),
-            'getCompanyInfo': grpc.unary_unary_rpc_method_handler(
-                    servicer.getCompanyInfo,
-                    request_deserializer=telegramBot__pb2.Empty.FromString,
-                    response_serializer=telegramBot__pb2.CompanyInfoResponse.SerializeToString,
+                    response_serializer=telegramBot__pb2.Cache.SerializeToString,
             ),
             'sendCandidateInfo': grpc.unary_unary_rpc_method_handler(
                     servicer.sendCandidateInfo,
                     request_deserializer=telegramBot__pb2.CandidateRequest.FromString,
                     response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
-            'newInfoAdded': grpc.unary_unary_rpc_method_handler(
-                    servicer.newInfoAdded,
-                    request_deserializer=telegramBot__pb2.CompanyInfoRequest.FromString,
+            'getCandidateInfo': grpc.unary_unary_rpc_method_handler(
+                    servicer.getCandidateInfo,
+                    request_deserializer=telegramBot__pb2.TgId.FromString,
+                    response_serializer=telegramBot__pb2.CandidateRequest.SerializeToString,
+            ),
+            'infoUpdated': grpc.unary_unary_rpc_method_handler(
+                    servicer.infoUpdated,
+                    request_deserializer=telegramBot__pb2.UpdatedCompanyInfo.FromString,
                     response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
-            'newRequirementAdded': grpc.unary_unary_rpc_method_handler(
-                    servicer.newRequirementAdded,
-                    request_deserializer=telegramBot__pb2.AddedRequirement.FromString,
+            'requirementUpdated': grpc.unary_unary_rpc_method_handler(
+                    servicer.requirementUpdated,
+                    request_deserializer=telegramBot__pb2.UpdatedRequirement.FromString,
                     response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
-            'newVacancyAdded': grpc.unary_unary_rpc_method_handler(
-                    servicer.newVacancyAdded,
-                    request_deserializer=telegramBot__pb2.AddedVacancy.FromString,
+            'vacancyUpdated': grpc.unary_unary_rpc_method_handler(
+                    servicer.vacancyUpdated,
+                    request_deserializer=telegramBot__pb2.UpdatedVacancy.FromString,
+                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
+            ),
+            'reqToVacUpdated': grpc.unary_unary_rpc_method_handler(
+                    servicer.reqToVacUpdated,
+                    request_deserializer=telegramBot__pb2.UpdatedReqToVac.FromString,
                     response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
     }
@@ -145,7 +145,7 @@ class BotService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def getAllVacancies(request,
+    def getCache(request,
             target,
             options=(),
             channel_credentials=None,
@@ -155,43 +155,9 @@ class BotService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/getAllVacancies',
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/getCache',
             telegramBot__pb2.Empty.SerializeToString,
-            telegramBot__pb2.VacanciesResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def getVacancyRequirements(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/getVacancyRequirements',
-            telegramBot__pb2.VacancyRequirementsRequest.SerializeToString,
-            telegramBot__pb2.VacancyRequirementsResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def getCompanyInfo(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/getCompanyInfo',
-            telegramBot__pb2.Empty.SerializeToString,
-            telegramBot__pb2.CompanyInfoResponse.FromString,
+            telegramBot__pb2.Cache.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -213,7 +179,7 @@ class BotService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def newInfoAdded(request,
+    def getCandidateInfo(request,
             target,
             options=(),
             channel_credentials=None,
@@ -223,14 +189,31 @@ class BotService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/newInfoAdded',
-            telegramBot__pb2.CompanyInfoRequest.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/getCandidateInfo',
+            telegramBot__pb2.TgId.SerializeToString,
+            telegramBot__pb2.CandidateRequest.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def infoUpdated(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/infoUpdated',
+            telegramBot__pb2.UpdatedCompanyInfo.SerializeToString,
             telegramBot__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def newRequirementAdded(request,
+    def requirementUpdated(request,
             target,
             options=(),
             channel_credentials=None,
@@ -240,14 +223,14 @@ class BotService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/newRequirementAdded',
-            telegramBot__pb2.AddedRequirement.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/requirementUpdated',
+            telegramBot__pb2.UpdatedRequirement.SerializeToString,
             telegramBot__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def newVacancyAdded(request,
+    def vacancyUpdated(request,
             target,
             options=(),
             channel_credentials=None,
@@ -257,8 +240,25 @@ class BotService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/newVacancyAdded',
-            telegramBot__pb2.AddedVacancy.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/vacancyUpdated',
+            telegramBot__pb2.UpdatedVacancy.SerializeToString,
+            telegramBot__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def reqToVacUpdated(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/reqToVacUpdated',
+            telegramBot__pb2.UpdatedReqToVac.SerializeToString,
             telegramBot__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
