@@ -14,15 +14,30 @@ import grpc
 import telegramBot_pb2 as pb2
 import telegramBot_pb2_grpc as pb2_g
 
+import configparser
 import Ttoken
 
 #init data
-TOKEN = Ttoken.token
+TOKEN = None
 channel = None
 stub = None
-ClientTo = 'localhost:50051'
-ServerTo = 'localhost:50058'
+ClientTo = None#'localhost:50051'
+ServerTo = None#'localhost:50058'
 
+def getConfig():
+    config = configparser.ConfigParser()
+    config.read("settings.ini")
+    global TOKEN
+    global ClientTo
+    global ServerTo
+    try:
+        TOKEN = config["S"]["token"]
+        ClientTo = config["S"]["ClientTo"]
+        ServerTo = config["S"]["ServerTo"]
+    except KeyError:
+        print("Config error.")
+        exit()
+getConfig()
 #DB cached
 info_ab_us = {}
 all_vacs = {}
@@ -38,7 +53,7 @@ hub_kb = ReplyKeyboardMarkup(resize_keyboard=True)#one_time_keyboard=True
 #Bot and dispatcher
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
-dp.middleware.setup(LoggingMiddleware())
+#dp.middleware.setup(LoggingMiddleware())
 
 #_______________________________________________________
 #===================CONN=STUFF==========================
