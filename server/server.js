@@ -26,10 +26,10 @@ var start = async () => {
         await sequelize.authenticate();
         await sequelize.sync();
 
+        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
         BotReciever.initialize();
         BotTransmitter.initialize();
-
-        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
     } catch(e) {
         throw e;
     }
