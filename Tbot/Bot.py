@@ -15,14 +15,13 @@ import telegramBot_pb2 as pb2
 import telegramBot_pb2_grpc as pb2_g
 
 import configparser
-import Ttoken
 
 #init data
 TOKEN = None
+ClientTo = None
+ServerTo = None
 channel = None
 stub = None
-ClientTo = None#'localhost:50051'
-ServerTo = None#'localhost:50058'
 
 def getConfig():
     config = configparser.ConfigParser()
@@ -47,17 +46,38 @@ req_to_vac = {}
 #Keyboards
 info_kb = InlineKeyboardMarkup()
 vacs_kb = InlineKeyboardMarkup()
-hub_kb = ReplyKeyboardMarkup(resize_keyboard=True)#one_time_keyboard=True
+yesno_kb = InlineKeyboardMarkup()
+yesno2_kb = ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)
+hub_kb = ReplyKeyboardMarkup(resize_keyboard=True)
 
 
 #Bot and dispatcher
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
-#dp.middleware.setup(LoggingMiddleware())
+dp.middleware.setup(LoggingMiddleware())
 
-#_______________________________________________________
-#===================CONN=STUFF==========================
-#‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+
+class Candidate():
+    name:str
+    birth:str
+    phone:str
+    address:str
+    mail:str
+    tg_id:str
+    reqs = {}
+    def mainInfoEmpty():
+        if name == "":
+            return "name"
+        if birth == "":
+            return "birth"
+        if phone == "":
+            return "phone"
+        if address == "":
+            return "address"
+        if mail == "":
+            return "mail"
+        return None
+
 class ConnectionService():
     class Clienting():
         def setupClient():
@@ -90,19 +110,71 @@ class ConnectionService():
             for ob in cache.companyInfos:
                 info_ab_us[ob.s_name] = ob.s_message
 
+        def sendCandidateInfo(cand: Candidate):
+            mainInfo = pb2.Candidate(s_name=Candidate.name, d_birth_date=Candidate.birth,s_phone_number=Candidate.phone,s_address=Candidate.address,e_mail=Candidate.mail,s_tg_id=Candidate.tg_id)
+            resumes = []
+            for ob in Candidate.reqs:
+                resumes.append(pb2.CandidateResume(n_requirement=ob,s_value=Candidate.reqs[ob]))
+            stub.sendCandidateInfo(CandidateRequest(candidateMainInfo=mainInfo, candidateResumes=resumes))
+            
+
+        def getCandidateInfo(TGid) -> Candidate:
+            cand = stub.getCandidateInfo(pb2.TgId(s_tg_id = str(TGid)))
+            out = Candidate()
+
+            out.name = cand.candidateMainInfo.s_name
+            out.birth = cand.candidateMainInfo.d_birth_date
+            out.phone = cand.candidateMainInfo.s_phone_number
+            out.address = cand.candidateMainInfo.s_address
+            out.mail = cand.candidateMainInfo.e_mail
+            out.tg_id = cand.candidateMainInfo.s_tg_id
+            
+            for ob in cand.candidateResumes:
+                out.reqs[ob.n_requirement] = ob.s_value
+
+            return out
+
+
     class Servering():
         class ServClass(pb2_g.BotServiceServicer):
             def infoUpdated(self, request, context):
-                print(request)
+                if request.info.s_name in info_ab_us and info_ab_us[request.info.s_name] == request.info.s_message:
+                    info_ab_us.pop(request.info.s_name)
+                else:
+                    info_ab_us[request.info.s_name] = request.info.s_message
+                KeyboardsService.fillInfoKb()
                 return pb2.Empty()
+
             def requirementUpdated(self, request, context):
-                print(request)
+                if request.requirement.id in all_reqs and all_reqs[request.requirement.id] == request.requirement.s_name:
+                    all_reqs.pop(request.requirement.id)
+                else:
+                    all_reqs[request.requirement.id] = request.requirement.s_name
                 return pb2.Empty()
+
             def vacancyUpdated(self, request, context):
-                print(request)
+                if request.vacancy.id in all_vacs and all_vacs[request.vacancy.id] == request.vacancy.s_name:
+                    all_vacs.pop(request.vacancy.id)
+                else:
+                    all_vacs[request.vacancy.id] = request.vacancy.s_name
+                KeyboardsService.fillVacsKb()
                 return pb2.Empty()
+
             def reqToVacUpdated(self, request, context):
-                print(request)
+                vac_id = request.vacancyRequirement.n_vacancy
+                req_id = request.vacancyRequirement.n_requirement
+                if request.delete:
+                    if vac_id in req_to_vac and req_id in req_to_vac[vac_id]:
+                        req_to_vac[vac_id].pop(req_to_vac[vac_id].index(req_id))
+                        if len(req_to_vac[vac_id]) == 0:
+                            req_to_vac.pop(vac_id)
+                else:
+                    if vac_id in req_to_vac:
+                        if not req_id in req_to_vac[vac_id]:
+                            req_to_vac[vac_id].append(vac_id)
+                    else:
+                        req_to_vac[vac_id] = [req_id]
+                print(req_to_vac)
                 return pb2.Empty()
 
         def serve():
@@ -119,32 +191,32 @@ class KeyboardsService():
 
     def fillInfoKb():
         global info_kb
+        info_kb = InlineKeyboardMarkup()
         for ob in info_ab_us:
             info_kb.add(InlineKeyboardButton(ob, callback_data="iau:"+str(ob)))
 
     def fillVacsKb():
         global vacs_kb
+        vacs_kb = InlineKeyboardMarkup()
         for ob in all_vacs:
             vacs_kb.add(InlineKeyboardButton(all_vacs[ob], callback_data="vac:"+str(ob)))
 
+    def fillYesnoKb():
+        global yesno_kb
+        yesno_kb = InlineKeyboardMarkup()
+        yesno_kb.add(InlineKeyboardButton("Да", callback_data="yon:YES"))
+        yesno_kb.add(InlineKeyboardButton("Нет", callback_data="yon:NO"))
 
-#_______________________________________________________
-#====================BOT=STUFF==========================
-#‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-hub_kb.add(KeyboardButton('Расскажи мне про вашу компанию'))
-hub_kb.add(KeyboardButton('Хочу работать у вас'))
-
-class states(StatesGroup):
-    HUB = State()
-    INFO = State()
-    VACS = State()
-    INTERVIEW = State()
-    ATTACK = State()
+    def fillReplyKbs():
+        hub_kb.add(KeyboardButton('Расскажи мне про вашу компанию'))
+        hub_kb.add(KeyboardButton('Хочу работать у вас'))
+        yesno2_kb.add(KeyboardButton("Да"))
+        yesno2_kb.add(KeyboardButton("нет"))
 
 #_______________________________________________________
 #=================SHORT=FUNCS===========================
 #‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-async def send_msg(u_msg: types.Message, msg: str, kb: types.reply_keyboard = None):
+async def send_msg(u_msg, msg: str, kb = None):#types.reply_keyboard
     if kb != None:
         if kb != -1:
             await bot.send_message(u_msg.from_user.id, msg, reply_markup=kb)
@@ -153,10 +225,6 @@ async def send_msg(u_msg: types.Message, msg: str, kb: types.reply_keyboard = No
     else:
         await bot.send_message(u_msg.from_user.id, msg)
 
-async def change_state(msg: types.Message, stt):
-    state = dp.current_state(user=msg.from_user.id)
-    await state.set_state(stt)
-
 async def answer(call: types.CallbackQuery, text: str):
     await call.message.answer(text)
     await call.answer()
@@ -164,68 +232,177 @@ async def answer(call: types.CallbackQuery, text: str):
 async def answer_popup(call: types.CallbackQuery, Text: str):
     await call.answer(text=Text, show_alert=True)
 
+async def isInInterview(msg):
+    state = dp.current_state(user=msg.from_user.id)
+    data = await state.get_data()
+    if "interview" in data:
+        return (data["interview"] != 0)
+    else:
+        return False
+
+async def get_vac_to_int(msg):
+    state = dp.current_state(user=msg.from_user.id)
+    data = await state.get_data()
+    if "vac_to_int" in data:
+        return data["vac_to_int"]
+    else:
+        return -1
+
+async def initUser(call):
+    state = dp.current_state(user=call.from_user.id)
+    if not "candidate" in await state.get_data():
+        cand = ConnectionService.Clienting.getCandidateInfo(call.from_user.id)
+        await state.update_data(candidate=cand)
+
+async def mainInfoAsk(call):
+    state = dp.current_state(user=call.from_user.id)
+    cand = await state.get_data()["candidate"]
+    if cand.name == "":
+        await send_msg(call, "Укажите Ваше полное имя:")
+    elif cand.birth == "":
+        await send_msg(call, "Укажите вашу дату рождения:")
+    elif cand.phone == "":
+        await send_msg(call, "Укажите ваш телефонный номер:")
+    elif cand.address == "":
+        await send_msg(call, "Укажите ваш адрес:")
+    elif cand.mail == "":
+        await send_msg(call, "Укажите вашу электронную почту:")
+
+async def mainInfoAnswer(msg):
+    state = dp.current_state(user=msg.from_user.id)
+    cand = await state.get_data()["candidate"]
+    case = cand.mainInfoEmpty()
+    if case == "name":
+        cand.name = msg.text
+    elif case == "birth":
+        cand.birth = msg.text
+    elif case == "phone":
+        cand.phone = msg.text
+    elif case == "address":
+        cand.address = msg.text
+    elif case == "mail":
+        cand.mail = msg.text
+        if get_vac_to_int(msg) == -1:
+            await state.update_data(interview=0)
+        else:
+            await state.update_data(interview=1)
+    await state.update_data(candidate=cand)
+
+async def reqAsk(call):
+    state = dp.current_state(user=call.from_user.id)
+    vti = await state.get_data()["vac_to_int"]
+    cand = await state.get_data()["candidate"]
+    step = await state.get_data()["step"]
+    reqn = req_to_vac[vti][step]
+    await send_msg(call, all_reqs[reqn])
+    if reqn in cand.reqs:
+        await send_msg(call, "Ваш ответ: \""+cand.reqs[reqn]+"\" ?", yesno2_kb)
+    else:
+        await send_msg(call, cand.reqs[reqn])
+
+async def reqAnswer(msg):
+    state = dp.current_state(user=msg.from_user.id)
+    vti = await state.get_data()["vac_to_int"]
+    cand = await state.get_data()["candidate"]
+    step = await state.get_data()["step"]
+    reqn = req_to_vac[vti][step]
+    if reqn in cand.reqs:
+        if msg.text == "Да":
+            step += 1
+        else:
+            cand.reqs.pop(reqn)
+    else:
+        cand.reqs[reqn] = msg.text
+        step += 1
+    await state.update_data(step=step)
+    await state.update_data(candidate=step)
+    if step == len(req_to_vac[vti]):
+        await state.update_data(vac_to_int=-1)
+        await state.update_data(interview=0)
+        ConnectionService.Clienting.sendCandidateInfo(cand)
+        await send_msg(call, "Интервью закончено.", hub_kb)
+
 #_______________________________________________________
 #=================CALLBACK=HANDLERS=====================
 #‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 @dp.callback_query_handler(state ='*')
-async def send_random_value(call: types.CallbackQuery):
+async def button_pressed(call: types.CallbackQuery):
     case = call.data[0:4]
     key = call.data[4:]
+    state = dp.current_state(user=call.from_user.id)
     if case == "iau:":
-        await answer(call, info_ab_us[key])
+        if key in info_ab_us:
+            await answer(call, info_ab_us[key])
+        else:
+            await answer(call, "Эта информация больше недоступна.")
     elif case == "vac:":
-        print(all_vacs[int(key)])
+        await call.answer()
+        await state.update_data(vac_to_int=key)
+        await send_msg(call, "Ваш выбор - " + all_vacs[int[key]], yesno_kb)
+    elif case == "yon:":
+        candInfo = ConnectionService.Clienting.getCandidateInfo(call.from_user.id)
+        candInfo.tg_id = call.from_user.id
+        await state.update_data(candidate=candInfo)
 
-
+        if candInfo.mainInfoEmpty() == None:
+            await state.update_data(interview=1)
+            await state.update_data(step=0)
+            await call.answer()
+            await send_msg(call, "Прекрасно! Информация по вакансии.", -1)
+            await reqAsk(call)
+        else:
+            await state.update_data(interview=-1)
+            await call.answer()
+            await send_msg(call, "Прекрасно! Для начала, основная информация.", -1)
+            await mainInfoAsk(call)
 
 #_______________________________________________________
 #=================MESSAGE=HANDLERS======================
 #‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 @dp.message_handler(state='*',commands=['start'])
 async def proc_start_com(msg: types.Message):
+    await initUser(msg)
     await send_msg(msg, "Приветствую!", hub_kb)
-    await change_state(msg, states.HUB)
 
-@dp.message_handler(state='*')#states.HUB
-async def proc_hub_talk(msg: types.Message):
-    if msg.text == "Расскажи мне про вашу компанию":
-        await send_msg(msg, "Что именно вы хотите узнать?", info_kb)
-    elif msg.text == "Хочу работать у вас":
-        await send_msg(msg, "Предлагаемые вакансии:", vacs_kb)
-        #await change_state(msg, states.INTERVIEW)
+@dp.message_handler(state='*')
+async def proc_talk(msg: types.Message):
+    await initUser(msg)
+    if isInInterview(msg):
+        state = dp.current_state(user=msg.from_user.id)
+        if await state.get_data()["interview"] == -1:
+            await mainInfoAnswer(msg)
+            if await state.get_data()["candidate"].mainInfoEmpty() != none:
+                await mainInfoAsk()
+            else:
+                if state.get_data()["interview"] == 1:
+                    await reqAsk(call)
+        else:
+            await reqAnswer(msg)
 
-##@dp.message_handler(state='*',commands=['set'])
-##async def process_set_command(msg: types.Message):
-##    state = dp.current_state(user=msg.from_user.id)
-##    await state.set_state(tss.all()[int(msg.text[5])])
-##    await state.update_data(star='Sun')
-##
-##@dp.message_handler(state=tss.TS1|tss.TS2,commands=['get'])
-##async def process_get_command(msg: types.Message):
-##    state = dp.current_state(user=msg.from_user.id)
-##    text = await state.get_state()
-##    if text == None:
-##        text = '_'
-##    dick = await state.get_data()
-##    await msg.reply(dick['star'])
+    else:
+        if msg.text == "Расскажи мне про вашу компанию":
+            await send_msg(msg, "Что именно вы хотите узнать?", info_kb)
+        elif msg.text == "Хочу работать у вас":
+            await send_msg(msg, "Предлагаемые вакансии:", vacs_kb)
 
 async def shutdown(dispatcher: Dispatcher):
     await dispatcher.storage.close()
     await dispatcher.storage.wait_closed()
 
 if __name__ == '__main__':
-    #try:
-    ConnectionService.Clienting.setupClient()
-    ConnectionService.Servering.setupServer()
+    try:
+        ConnectionService.Clienting.setupClient()
+        ConnectionService.Servering.setupServer()
 
-    ConnectionService.Clienting.getCache()
+        ConnectionService.Clienting.getCache()
+        KeyboardsService.fillInfoKb()
+        KeyboardsService.fillVacsKb()
+        KeyboardsService.fillYesnoKb()
+        KeyboardsService.fillReplyKbs()
 
-    KeyboardsService.fillInfoKb()
-    KeyboardsService.fillVacsKb()
-
-    executor.start_polling(dp, on_shutdown=shutdown)
-    #except grpc.RpcError as rpc_error:
-    #    if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
-    #        print("Connection failed. *-*")
-    #    else:
-    #        print("Something gone wrong. X_X")
+        executor.start_polling(dp, on_shutdown=shutdown)
+    except grpc.RpcError as rpc_error:
+        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+            print("Connection failed. *-*")
+        else:
+            print("Something gone wrong. X_X")

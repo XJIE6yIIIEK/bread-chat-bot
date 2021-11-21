@@ -1,0 +1,4 @@
+bread-chat-bot/Tbot/.gitignore
+__pycache__/
+plans.md
+settings.ini
