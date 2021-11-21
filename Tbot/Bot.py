@@ -58,13 +58,14 @@ dp.middleware.setup(LoggingMiddleware())
 
 
 class Candidate():
-    name:str = ""
-    birth:str = ""
-    phone:str = ""
-    address:str = ""
-    mail:str = ""
-    tg_id:str = ""
-    reqs:dict = {}
+    def __init__(self):
+        self.name:str = ""
+        self.birth:str = ""
+        self.phone:str = ""
+        self.address:str = ""
+        self.mail:str = ""
+        self.tg_id:str = ""
+        self.reqs:dict = {}
     def mainInfoEmpty(self):
         if self.name == "":
             return "name"
