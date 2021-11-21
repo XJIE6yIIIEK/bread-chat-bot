@@ -42,7 +42,7 @@ class CandidatesService {
         });
 
         const appropriateVacancies = await Sequelize.query(
-            'SELECT id FROM t_vacancies ' +
+            'SELECT id, s_name FROM t_vacancies ' +
             'WHERE ( ' +
             '        SELECT COUNT(*) FROM t_req_to_vacs ' +
             '        WHERE t_vacancies.id = t_req_to_vacs.n_vacancy ' +

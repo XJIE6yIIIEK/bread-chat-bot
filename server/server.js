@@ -16,6 +16,10 @@ const BotTransmitter = require('./core/botHandler/botTransmitter/botTransmitter'
 var app = express();
 
 app.use(express.json());
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
 app.use(cookieParser());
 app.use(ErrorHandlerMiddleware);
 app.use('/api/v1', router);
