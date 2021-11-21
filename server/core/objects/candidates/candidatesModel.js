@@ -16,7 +16,7 @@ var Candidates = Sequelize.define('t_candidates', {
         allowNull: true
     },
     s_phone_number: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
     },
     s_address: {

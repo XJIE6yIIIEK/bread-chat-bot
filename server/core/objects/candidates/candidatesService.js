@@ -1,5 +1,7 @@
 const CandidatesRepository = require('./candidatesRepository');
 const ResumesRepository = require('../resumes/resumesRepository');
+const Sequelize = require('../../db/db');
+const { QueryTypes } = require('sequelize');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class CandidatesService {
@@ -39,9 +41,25 @@ class CandidatesService {
             }
         });
 
+        const appropriateVacancies = await Sequelize.query(
+            'SELECT id FROM t_vacancies ' +
+            'WHERE ( ' +
+            '        SELECT COUNT(*) FROM t_req_to_vacs ' +
+            '        WHERE t_vacancies.id = t_req_to_vacs.n_vacancy ' +
+            '    ) = (	' +
+            '        SELECT COUNT(*) FROM t_req_to_vacs ' +
+            '        JOIN t_resumes ' +
+            '        ON t_resumes.n_requirement = t_req_to_vacs.n_requirement ' +
+            '        WHERE t_req_to_vacs.n_vacancy = t_vacancies.id ' +
+            '        AND t_resumes.n_candidate = ' + candidate.id +
+            '    )',
+            { type: QueryTypes.SELECT }
+        );
+
         return {
             candidate: candidate,
-            resume: resume
+            resume: resume,
+            appropriateVacancies: appropriateVacancies
         };
     }
 }
