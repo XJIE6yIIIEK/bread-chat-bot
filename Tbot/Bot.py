@@ -58,23 +58,23 @@ dp.middleware.setup(LoggingMiddleware())
 
 
 class Candidate():
-    name:str
-    birth:str
-    phone:str
-    address:str
-    mail:str
-    tg_id:str
-    reqs = {}
-    def mainInfoEmpty():
-        if name == "":
+    name:str = ""
+    birth:str = ""
+    phone:str = ""
+    address:str = ""
+    mail:str = ""
+    tg_id:str = ""
+    reqs:dict = {}
+    def mainInfoEmpty(self):
+        if self.name == "":
             return "name"
-        if birth == "":
+        if self.birth == "":
             return "birth"
-        if phone == "":
+        if self.phone == "":
             return "phone"
-        if address == "":
+        if self.address == "":
             return "address"
-        if mail == "":
+        if self.mail == "":
             return "mail"
         return None
 
@@ -111,13 +111,12 @@ class ConnectionService():
                 info_ab_us[ob.s_name] = ob.s_message
 
         def sendCandidateInfo(cand: Candidate):
-            mainInfo = pb2.Candidate(s_name=Candidate.name, d_birth_date=Candidate.birth,s_phone_number=Candidate.phone,s_address=Candidate.address,e_mail=Candidate.mail,s_tg_id=Candidate.tg_id)
+            mainInfo = pb2.Candidate(s_name=cand.name, d_birth_date=cand.birth,s_phone_number=cand.phone,s_address=cand.address,e_mail=cand.mail,s_tg_id=str(cand.tg_id))
             resumes = []
-            for ob in Candidate.reqs:
-                resumes.append(pb2.CandidateResume(n_requirement=ob,s_value=Candidate.reqs[ob]))
-            stub.sendCandidateInfo(CandidateRequest(candidateMainInfo=mainInfo, candidateResumes=resumes))
-            
-
+            for ob in cand.reqs:
+                resumes.append(pb2.CandidateResume(n_requirement=ob,s_value=cand.reqs[ob]))
+            stub.sendCandidateInfo(pb2.CandidateRequest(candidateMainInfo=mainInfo, candidateResumes=resumes))
+        
         def getCandidateInfo(TGid) -> Candidate:
             cand = stub.getCandidateInfo(pb2.TgId(s_tg_id = str(TGid)))
             out = Candidate()
@@ -250,17 +249,17 @@ async def get_vac_to_int(msg):
 
 async def initUser(call):
     state = dp.current_state(user=call.from_user.id)
-    if not "candidate" in await state.get_data():
+    if not "candidate" in (await state.get_data()):
         cand = ConnectionService.Clienting.getCandidateInfo(call.from_user.id)
         await state.update_data(candidate=cand)
 
 async def mainInfoAsk(call):
     state = dp.current_state(user=call.from_user.id)
-    cand = await state.get_data()["candidate"]
+    cand = (await state.get_data())["candidate"]
     if cand.name == "":
         await send_msg(call, "Укажите Ваше полное имя:")
     elif cand.birth == "":
-        await send_msg(call, "Укажите вашу дату рождения:")
+        await send_msg(call, "Укажите вашу дату рождения в формате ГГГГ-ММ-ДД:")
     elif cand.phone == "":
         await send_msg(call, "Укажите ваш телефонный номер:")
     elif cand.address == "":
@@ -270,7 +269,7 @@ async def mainInfoAsk(call):
 
 async def mainInfoAnswer(msg):
     state = dp.current_state(user=msg.from_user.id)
-    cand = await state.get_data()["candidate"]
+    cand = (await state.get_data())["candidate"]
     case = cand.mainInfoEmpty()
     if case == "name":
         cand.name = msg.text
@@ -282,7 +281,7 @@ async def mainInfoAnswer(msg):
         cand.address = msg.text
     elif case == "mail":
         cand.mail = msg.text
-        if get_vac_to_int(msg) == -1:
+        if (await get_vac_to_int(msg)) == -1:
             await state.update_data(interview=0)
         else:
             await state.update_data(interview=1)
@@ -290,37 +289,39 @@ async def mainInfoAnswer(msg):
 
 async def reqAsk(call):
     state = dp.current_state(user=call.from_user.id)
-    vti = await state.get_data()["vac_to_int"]
-    cand = await state.get_data()["candidate"]
-    step = await state.get_data()["step"]
-    reqn = req_to_vac[vti][step]
-    await send_msg(call, all_reqs[reqn])
-    if reqn in cand.reqs:
-        await send_msg(call, "Ваш ответ: \""+cand.reqs[reqn]+"\" ?", yesno2_kb)
-    else:
-        await send_msg(call, cand.reqs[reqn])
+    vti = int((await state.get_data())["vac_to_int"])
+    cand = (await state.get_data())["candidate"]
+    step = int((await state.get_data())["step"])
+    if len(req_to_vac[vti]) > step:
+        reqn = req_to_vac[vti][step]
+        await send_msg(call, all_reqs[reqn])
+        if reqn in cand.reqs:
+            await send_msg(call, "Ваш ответ: \""+cand.reqs[reqn]+"\" ?", yesno2_kb)
 
 async def reqAnswer(msg):
     state = dp.current_state(user=msg.from_user.id)
-    vti = await state.get_data()["vac_to_int"]
-    cand = await state.get_data()["candidate"]
-    step = await state.get_data()["step"]
-    reqn = req_to_vac[vti][step]
-    if reqn in cand.reqs:
-        if msg.text == "Да":
-            step += 1
+    vti = int((await state.get_data())["vac_to_int"])
+    cand = (await state.get_data())["candidate"]
+    step = int((await state.get_data())["step"])
+    if len(req_to_vac[vti]) > step:
+        reqn = req_to_vac[vti][step]
+        if reqn in cand.reqs:
+            if msg.text == "Да":
+                step += 1
+            else:
+                cand.reqs.pop(reqn)
         else:
-            cand.reqs.pop(reqn)
-    else:
-        cand.reqs[reqn] = msg.text
-        step += 1
-    await state.update_data(step=step)
-    await state.update_data(candidate=step)
-    if step == len(req_to_vac[vti]):
-        await state.update_data(vac_to_int=-1)
-        await state.update_data(interview=0)
-        ConnectionService.Clienting.sendCandidateInfo(cand)
-        await send_msg(call, "Интервью закончено.", hub_kb)
+            cand.reqs[reqn] = msg.text
+            step += 1
+        await state.update_data(step=step)
+        await state.update_data(candidate=cand)
+        if step >= len(req_to_vac[vti]):
+            await state.update_data(vac_to_int=-1)
+            await state.update_data(interview=0)
+            ConnectionService.Clienting.sendCandidateInfo(cand)
+            await send_msg(msg, "Интервью закончено.", hub_kb)
+        else:
+            await reqAsk(msg)
 
 #_______________________________________________________
 #=================CALLBACK=HANDLERS=====================
@@ -338,23 +339,27 @@ async def button_pressed(call: types.CallbackQuery):
     elif case == "vac:":
         await call.answer()
         await state.update_data(vac_to_int=key)
-        await send_msg(call, "Ваш выбор - " + all_vacs[int[key]], yesno_kb)
+        await send_msg(call, "Ваш выбор - " + all_vacs[int(key)], yesno_kb)
     elif case == "yon:":
-        candInfo = ConnectionService.Clienting.getCandidateInfo(call.from_user.id)
-        candInfo.tg_id = call.from_user.id
-        await state.update_data(candidate=candInfo)
+        if key == "YES":
+            candInfo = ConnectionService.Clienting.getCandidateInfo(call.from_user.id)
+            candInfo.tg_id = call.from_user.id
+            await state.update_data(candidate=candInfo)
 
-        if candInfo.mainInfoEmpty() == None:
-            await state.update_data(interview=1)
-            await state.update_data(step=0)
-            await call.answer()
-            await send_msg(call, "Прекрасно! Информация по вакансии.", -1)
-            await reqAsk(call)
+            if candInfo.mainInfoEmpty() == None:
+                await state.update_data(interview=1)
+                await state.update_data(step=0)
+                await call.answer()
+                await send_msg(call, "Прекрасно! Информация по вакансии.", -1)
+                await reqAsk(call)
+            else:
+                await state.update_data(interview=-1)
+                await state.update_data(step=0)
+                await call.answer()
+                await send_msg(call, "Прекрасно! Для начала, основная информация.", -1)
+                await mainInfoAsk(call)
         else:
-            await state.update_data(interview=-1)
-            await call.answer()
-            await send_msg(call, "Прекрасно! Для начала, основная информация.", -1)
-            await mainInfoAsk(call)
+            pass
 
 #_______________________________________________________
 #=================MESSAGE=HANDLERS======================
@@ -367,18 +372,17 @@ async def proc_start_com(msg: types.Message):
 @dp.message_handler(state='*')
 async def proc_talk(msg: types.Message):
     await initUser(msg)
-    if isInInterview(msg):
+    if await isInInterview(msg):
         state = dp.current_state(user=msg.from_user.id)
-        if await state.get_data()["interview"] == -1:
+        if (await state.get_data())["interview"] == -1:
             await mainInfoAnswer(msg)
-            if await state.get_data()["candidate"].mainInfoEmpty() != none:
-                await mainInfoAsk()
+            if (await state.get_data())["candidate"].mainInfoEmpty() != None:
+                await mainInfoAsk(msg)
             else:
-                if state.get_data()["interview"] == 1:
-                    await reqAsk(call)
+                if (await state.get_data())["interview"] == 1:
+                    await reqAsk(msg)
         else:
             await reqAnswer(msg)
-
     else:
         if msg.text == "Расскажи мне про вашу компанию":
             await send_msg(msg, "Что именно вы хотите узнать?", info_kb)
@@ -399,6 +403,11 @@ if __name__ == '__main__':
         KeyboardsService.fillVacsKb()
         KeyboardsService.fillYesnoKb()
         KeyboardsService.fillReplyKbs()
+
+        print(info_ab_us)
+        print(all_vacs)
+        print(all_reqs)
+        print(req_to_vac)
 
         executor.start_polling(dp, on_shutdown=shutdown)
     except grpc.RpcError as rpc_error:
