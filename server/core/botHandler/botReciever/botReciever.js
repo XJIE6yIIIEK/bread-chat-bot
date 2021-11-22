@@ -28,6 +28,10 @@ class BotRecieverController {
             sendCandidateInfo: this.recieveCandidateInfo,
             getCandidateInfo: this.getCandidateInfo
         });
+
+        this.server.bindAsync(process.env.BOT_RECIEVER_ADDRESS + ':' + process.env.BOT_RECIEVER_PORT, grpc.ServerCredentials.createInsecure(), () => {
+            this.server.start();
+        });
     }
 
     async getCache(call, callback){

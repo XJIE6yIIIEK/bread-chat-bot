@@ -3,7 +3,7 @@ var {DataTypes} = require('sequelize');
 
 var Requirements = Sequelize.define('t_requirements', {
     id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },

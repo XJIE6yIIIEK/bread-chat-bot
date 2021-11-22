@@ -1,3 +1,5 @@
+require('dotenv').config();
+const PORT = process.env.PORT || 5000;
 var SwaggerUI = require('swagger-ui-express');
 const SwaggerJSDoc = require('swagger-jsdoc');
 

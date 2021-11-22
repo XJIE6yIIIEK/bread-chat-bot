@@ -1,6 +1,6 @@
 const CommandsRepository = require('./commandsRepository');
 const BotTransmitterService = require('../../../botHandler/botTransmitter/botTransmitterService');
-var ErrorHandler = require('../../errorHandlers/errorHandler');
+var ErrorHandler = require('../../../errorHandlers/errorHandler');
 
 class CommandsService {
     async create(data, next){
