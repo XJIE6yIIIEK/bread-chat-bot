@@ -1,7 +1,6 @@
 import GlobalStuff
-from GlobalStuff import CachedDB
+from GlobalStuff import CachedDB, Candidate
 import grpc
-import Utils
 import KeyboardsService
 import telegramBot_pb2 as pb2
 import telegramBot_pb2_grpc as pb2_g
@@ -36,7 +35,7 @@ class Clienting:
             CachedDB.info_ab_us[ob.s_name] = ob.s_message
 
     @staticmethod
-    def sendCandidateInfo(candidate: Utils.Candidate):
+    def sendCandidateInfo(candidate: Candidate):
         main_info = pb2.Candidate(s_name=candidate.name,
                                   d_birth_date=candidate.birth,
                                   s_phone_number=candidate.phone,
@@ -49,9 +48,9 @@ class Clienting:
         GlobalStuff.Conn.stub.sendCandidateInfo(pb2.CandidateRequest(candidateMainInfo=main_info, candidateResumes=resumes))
 
     @staticmethod
-    def getCandidateInfo(tg_id) -> Utils.Candidate:
+    def getCandidateInfo(tg_id) -> Candidate:
         candidate = GlobalStuff.Conn.stub.getCandidateInfo(pb2.TgId(s_tg_id=str(tg_id)))
-        out = Utils.Candidate()
+        out = Candidate()
 
         out.name = candidate.candidateMainInfo.s_name
         out.birth = candidate.candidateMainInfo.d_birth_date

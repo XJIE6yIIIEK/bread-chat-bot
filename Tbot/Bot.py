@@ -1,6 +1,7 @@
 import GlobalStuff
-from GlobalStuff import CachedDB, Keyboards
+from GlobalStuff import CachedDB, Keyboards, BotStuff
 import Utils
+from Utils import Shortcuts
 import ConnectionService
 import KeyboardsService
 import grpc
@@ -8,154 +9,17 @@ import grpc
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.contrib.middlewares.logging import LoggingMiddleware
-
-
-import telegramBot_pb2 as pb2
-import telegramBot_pb2_grpc as pb2_g
 
 
 Utils.getConfig()
+Utils.setupBot()
 
 
-bot = Bot(token=GlobalStuff.Conn.token)
-dp = Dispatcher(bot, storage=MemoryStorage())
-dp.middleware.setup(LoggingMiddleware())
-
-
-class Shortcuts:
-    @staticmethod
-    async def initUser(call):
-        state = dp.current_state(user=call.from_user.id)
-        if "candidate" not in (await state.get_data()):
-            cand = ConnectionService.Clienting.getCandidateInfo(call.from_user.id)
-            await state.update_data(candidate=cand)
-
-    class Messages:
-        @staticmethod
-        async def send_msg(u_msg, msg: str, kb=None):  # types.reply_keyboard
-            if kb is not None:
-                if kb != -1:
-                    await bot.send_message(u_msg.from_user.id, msg, reply_markup=kb)
-                else:
-                    await bot.send_message(u_msg.from_user.id, msg, reply_markup=types.ReplyKeyboardRemove())
-            else:
-                await bot.send_message(u_msg.from_user.id, msg)
-
-        @staticmethod
-        async def answer(call: types.CallbackQuery, text: str):
-            await call.message.answer(text)
-            await call.answer()
-
-        @staticmethod
-        async def answer_popup(call: types.CallbackQuery, text: str):
-            await call.answer(text=text, show_alert=True)
-
-    class Interview:
-        @staticmethod
-        async def isInInterview(msg):
-            state = dp.current_state(user=msg.from_user.id)
-            data = await state.get_data()
-            if "interview" in data:
-                return data["interview"] != 0
-            else:
-                return False
-
-        @staticmethod
-        async def get_vac_to_int(msg):
-            state = dp.current_state(user=msg.from_user.id)
-            data = await state.get_data()
-            if "vac_to_int" in data:
-                return data["vac_to_int"]
-            else:
-                return -1
-
-        @staticmethod
-        async def mainInfoAsk(call):
-            state = dp.current_state(user=call.from_user.id)
-            cand = (await state.get_data())["candidate"]
-            if cand.name == "":
-                await Shortcuts.Messages.send_msg(call, "Укажите Ваше полное имя:")
-            elif cand.birth == "":
-                await Shortcuts.Messages.send_msg(call, "Укажите вашу дату рождения в формате ГГГГ-ММ-ДД:")
-            elif cand.phone == "":
-                await Shortcuts.Messages.send_msg(call, "Укажите ваш телефонный номер:")
-            elif cand.address == "":
-                await Shortcuts.Messages.send_msg(call, "Укажите ваш адрес:")
-            elif cand.mail == "":
-                await Shortcuts.Messages.send_msg(call, "Укажите вашу электронную почту:")
-
-        @staticmethod
-        async def mainInfoAnswer(msg):
-            state = dp.current_state(user=msg.from_user.id)
-            cand = (await state.get_data())["candidate"]
-            case = cand.mainInfoEmpty()
-            if case == "name":
-                cand.name = msg.text
-            elif case == "birth":
-                cand.birth = msg.text
-            elif case == "phone":
-                cand.phone = msg.text
-            elif case == "address":
-                cand.address = msg.text
-            elif case == "mail":
-                cand.mail = msg.text
-                if (await Shortcuts.Interview.get_vac_to_int(msg)) == -1:
-                    await state.update_data(interview=0)
-                else:
-                    await state.update_data(interview=1)
-            await state.update_data(candidate=cand)
-
-        @staticmethod
-        async def reqAsk(call):
-            state = dp.current_state(user=call.from_user.id)
-            vti = int((await state.get_data())["vac_to_int"])
-            cand = (await state.get_data())["candidate"]
-            step = int((await state.get_data())["step"])
-            if len(CachedDB.req_to_vac[vti]) > step:
-                reqn = CachedDB.req_to_vac[vti][step]
-                await Shortcuts.Messages.send_msg(call, CachedDB.all_reqs[reqn])
-                if reqn in cand.reqs:
-                    await Shortcuts.Messages.send_msg(call, "Ваш ответ: \""+cand.reqs[reqn]+"\" ?", Keyboards.yesno2_kb)
-
-        @staticmethod
-        async def reqAnswer(msg):
-            state = dp.current_state(user=msg.from_user.id)
-            vti = int((await state.get_data())["vac_to_int"])
-            cand = (await state.get_data())["candidate"]
-            step = int((await state.get_data())["step"])
-            if len(CachedDB.req_to_vac[vti]) > step:
-                reqn = CachedDB.req_to_vac[vti][step]
-                if reqn in cand.reqs:
-                    if msg.text == "Да":
-                        step += 1
-                    else:
-                        cand.reqs.pop(reqn)
-                else:
-                    cand.reqs[reqn] = msg.text
-                    step += 1
-                await state.update_data(step=step)
-                await state.update_data(candidate=cand)
-                if step >= len(CachedDB.req_to_vac[vti]):
-                    await state.update_data(vac_to_int=-1)
-                    await state.update_data(interview=0)
-                    ConnectionService.Clienting.sendCandidateInfo(cand)
-                    await Shortcuts.Messages.send_msg(msg, "Интервью закончено.", Keyboards.hub_kb)
-                else:
-                    await Shortcuts.Interview.reqAsk(msg)
-
-
-# _______________________________________________________
-# ==========================HANDLERS=====================
-# ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-
-
-@dp.callback_query_handler(state='*')
+@BotStuff.dp.callback_query_handler(state='*')
 async def button_pressed(call: types.CallbackQuery):
     case = call.data[0:4]
     key = call.data[4:]
-    state = dp.current_state(user=call.from_user.id)
+    state = BotStuff.dp.current_state(user=call.from_user.id)
     if case == "iau:":
         if key in CachedDB.info_ab_us:
             await Shortcuts.Messages.answer(call, CachedDB.info_ab_us[key])
@@ -187,17 +51,17 @@ async def button_pressed(call: types.CallbackQuery):
             pass
 
 
-@dp.message_handler(state='*', commands=['start'])
+@BotStuff.dp.message_handler(state='*', commands=['start'])
 async def proc_start_com(msg: types.Message):
     await Shortcuts.initUser(msg)
     await Shortcuts.Messages.send_msg(msg, "Приветствую!", Keyboards.hub_kb)
 
 
-@dp.message_handler(state='*')
+@BotStuff.dp.message_handler(state='*')
 async def proc_talk(msg: types.Message):
     await Shortcuts.initUser(msg)
     if await Shortcuts.Interview.isInInterview(msg):
-        state = dp.current_state(user=msg.from_user.id)
+        state = BotStuff.dp.current_state(user=msg.from_user.id)
         if (await state.get_data())["interview"] == -1:
             await Shortcuts.Interview.mainInfoAnswer(msg)
             if (await state.get_data())["candidate"].mainInfoEmpty() is not None:
@@ -239,7 +103,7 @@ if __name__ == '__main__':
 
         print_debug_info()
 
-        executor.start_polling(dp, on_shutdown=shutdown)
+        executor.start_polling(BotStuff.dp, on_shutdown=shutdown)
     except grpc.RpcError as rpc_error:
         if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
             print("Connection failed. *-*")
