@@ -20,7 +20,7 @@ class BotTransmitterController {
         );
         var bot_reciever_proto = grpc.loadPackageDefinition(packageDefinition).telegramBot;
         
-        this.client = new bot_reciever_proto.BotService(process.env.BOT_SERVICE_ADDRESS + ':' + process.env.BOT_SERVICE_PORT, grpc.credentials.createInsecure());
+        this.client = new bot_reciever_proto.BotService(process.env.BOT_TRANSMITTER_ADDRESS + ':' + process.env.BOT_TRANSMITTER_PORT, grpc.credentials.createInsecure());
     }
 
     async infoUpdated(info){

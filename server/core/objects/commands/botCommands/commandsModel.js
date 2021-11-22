@@ -1,4 +1,4 @@
-var Sequelize = require('../../db/db');
+var Sequelize = require('../../../db/db');
 var {DataTypes} = require('sequelize');
 
 var Commands = Sequelize.define('t_company_info', {

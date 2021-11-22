@@ -41,8 +41,8 @@ class BotRecieverService {
         
         return {
             companyInfos: companyInfos,
-            reqirements: requirements,
-            reqTovacs: reqToVacs,
+            requirements: requirements,
+            reqToVacs: reqToVacs,
             vacancies: vacancies
         };
     }
@@ -90,7 +90,7 @@ class BotRecieverService {
     }
 
     async addCandidateResume(candidate, resumesInfo){
-        resumesInfo.forEach(resumeElement => {
+        resumesInfo.forEach(async (resumeElement) => {
             var resume = await ResumesRepository.get({
                 where: {
                     n_candidate: candidate.id,
@@ -99,6 +99,7 @@ class BotRecieverService {
             });
 
             if(!resume){
+                resumeElement.n_candidate = candidate.id;
                 await ResumesRepository.create(resumeElement);
             } else {
                 if(resumeElement.s_value){
@@ -128,7 +129,7 @@ class BotRecieverService {
         if(!candidate){
             return {
                 candidateMainInfo: {},
-                candidateResumes: {}
+                candidateResumes: []
             };
         }
 

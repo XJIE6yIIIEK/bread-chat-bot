@@ -6,7 +6,7 @@ var Resumes = Sequelize.define('t_resumes', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
-            model: 't_canditates',
+            model: 't_candidates',
             key: 'id'
         },
         onUpdate: 'CASCADE',
