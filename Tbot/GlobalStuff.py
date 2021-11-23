@@ -19,18 +19,17 @@ class Conn:
 
 
 class CachedDB:
-    info_ab_us = {}
-    all_vacs = {}
-    all_reqs = {}
-    req_to_vac = {}
+    info_ab_us: dict = {}
+    all_vacs: dict = {}
+    all_reqs: dict = {}
+    req_to_vac: dict = {}
 
 
 class Keyboards:
-    info_kb = InlineKeyboardMarkup()
-    vacs_kb = InlineKeyboardMarkup()
-    yesno_kb = InlineKeyboardMarkup()
-    yesno2_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    hub_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
+    info_kb: InlineKeyboardMarkup = InlineKeyboardMarkup()
+    vacs_kb: InlineKeyboardMarkup = InlineKeyboardMarkup()
+    yesno_kb: ReplyKeyboardMarkup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    hub_kb: ReplyKeyboardMarkup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
 
 
 class Candidate:

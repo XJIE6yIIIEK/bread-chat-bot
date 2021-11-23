@@ -14,14 +14,9 @@ def fillVacsKb():
         GlobalStuff.Keyboards.vacs_kb.add(InlineKeyboardButton(GlobalStuff.CachedDB.all_vacs[ob], callback_data="vac:"+str(ob)))
 
 
-def fillYesnoKb():
-    GlobalStuff.Keyboards.yesno_kb = InlineKeyboardMarkup()
-    GlobalStuff.Keyboards.yesno_kb.add(InlineKeyboardButton("Да", callback_data="yon:YES"))
-    GlobalStuff.Keyboards.yesno_kb.add(InlineKeyboardButton("Нет", callback_data="yon:NO"))
-
-
 def fillReplyKbs():
     GlobalStuff.Keyboards.hub_kb.add(KeyboardButton('Расскажи мне про вашу компанию'))
     GlobalStuff.Keyboards.hub_kb.add(KeyboardButton('Хочу работать у вас'))
-    GlobalStuff.Keyboards.yesno2_kb.add(KeyboardButton("Да"))
-    GlobalStuff.Keyboards.yesno2_kb.add(KeyboardButton("нет"))
+    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton('Хочу изменить основную информацию о себе'))
+    GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton("Да"))
+    GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton("Нет"))
