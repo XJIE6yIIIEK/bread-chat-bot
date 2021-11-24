@@ -2,6 +2,7 @@ import GlobalStuff
 from GlobalStuff import CachedDB, BotStuff, Keyboards
 import configparser
 import ConnectionService
+import Validation
 
 from aiogram.dispatcher import Dispatcher
 from aiogram import Bot
@@ -32,6 +33,7 @@ def setupBot() -> None:
 class BotStates(StatesGroup):
     Hub: State = State()
     VacancyChoice: State = State()
+    InterviewMainChange: State = State()
     InterviewMain: State = State()
     InterviewVac: State = State()
 
@@ -40,8 +42,7 @@ async def SetBotCommands() -> None:
     await BotStuff.dp.bot.set_my_commands([
         types.BotCommand("start", "Запустить бота"),
         types.BotCommand("help", "Помощь"),
-        types.BotCommand("change", "Изменить основную информацию о себе"),
-        types.BotCommand("info", "информация о боте")
+        types.BotCommand("change", "Изменить основную информацию о себе")
     ])
 
 
@@ -55,6 +56,7 @@ class Shortcuts:
         async def initUser(msg) -> None:
             state = BotStuff.dp.current_state(user=msg.from_user.id)
             candidate = ConnectionService.Clienting.getCandidateInfo(msg.from_user.id)
+            candidate.tg_id = msg.from_user.id
             await state.update_data(candidate=candidate)
             await state.update_data(vac_to_int=-1)
             await state.update_data(step=0)
@@ -79,11 +81,12 @@ class Shortcuts:
         async def send(msg):
             state = Shortcuts.User.getState(msg)
             candidate = (await state.get_data())["candidate"]
+            print(candidate)
             ConnectionService.Clienting.sendCandidateInfo(candidate)
 
     class Messages:
         @staticmethod
-        async def send_msg(u_msg, msg: str, kb=None):  # types.reply_keyboard
+        async def send_msg(u_msg, msg: str, kb=None):
             if kb is not None:
                 if kb != -1:
                     await BotStuff.bot.send_message(u_msg.from_user.id, msg, reply_markup=kb)
@@ -102,40 +105,52 @@ class Shortcuts:
             await call.answer(text=text, show_alert=True)
 
     class Interview:
-        @staticmethod
-        async def mainInfoAsk(call):
-            state = BotStuff.dp.current_state(user=call.from_user.id)
-            candidate = (await state.get_data())["candidate"]
-            if candidate.name == "":
-                await Shortcuts.Messages.send_msg(call, "Укажите Ваше полное имя:")
-            elif candidate.birth == "":
-                await Shortcuts.Messages.send_msg(call, "Укажите вашу дату рождения в формате ГГГГ-ММ-ДД:")
-            elif candidate.phone == "":
-                await Shortcuts.Messages.send_msg(call, "Укажите ваш телефонный номер:")
-            elif candidate.address == "":
-                await Shortcuts.Messages.send_msg(call, "Укажите ваш адрес:")
-            elif candidate.mail == "":
-                await Shortcuts.Messages.send_msg(call, "Укажите вашу электронную почту:")
+        main_info_phrases = [{"R": " - Ваше полное имя?", "F": "Укажите Ваше полное имя:"},
+                             {"R": " - Ваша дата рождения?", "F": "Укажите вашу дату рождения в формате ГГГГ-ММ-ДД:"},
+                             {"R": " - Ваш номер телефона?", "F": "Укажите ваш номер телефона:"},
+                             {"R": " - Ваш адрес?", "F": "Укажите ваш адрес:"},
+                             {"R": " - Ваша электронная почта?", "F": "Укажите вашу электронную почту:"}]
 
         @staticmethod
-        async def mainInfoAnswer(msg):
+        async def mainInfoAsk(call, first: bool = False):
+            state = BotStuff.dp.current_state(user=call.from_user.id)
+            if first:
+                await state.update_data(step=0)
+            step = int((await state.get_data())["step"])
+            candidate = (await state.get_data())["candidate"]
+
+            if step < 5:
+                if candidate.main_info(step)[1] != "":
+                    await Shortcuts.Messages.send_msg(call,
+                                                      candidate.main_info(step)[1]+
+                                                      Shortcuts.Interview.main_info_phrases[step]["R"],
+                                                      Keyboards.yesno_kb)
+                else:
+                    await Shortcuts.Messages.send_msg(call, Shortcuts.Interview.main_info_phrases[step]["F"])
+
+        @staticmethod
+        async def mainInfoAnswer(msg) -> bool:
             state = BotStuff.dp.current_state(user=msg.from_user.id)
             candidate = (await state.get_data())["candidate"]
-            case = candidate.mainInfoEmpty()
-            if case == "name":
-                candidate.name = msg.text
-            elif case == "birth":
-                candidate.birth = msg.text
-            elif case == "phone":
-                candidate.phone = msg.text
-            elif case == "address":
-                candidate.address = msg.text
-            elif case == "mail":
-                candidate.mail = msg.text
+            step = int((await state.get_data())["step"])
+            if candidate.main_info(step)[1] != "":
+                if msg.text == "Нет":
+                    candidate.main_info_set(step, "")
+                    await state.update_data(candidate=candidate)
+                    return False
+            else:
+                if step == 1:
+                    if not Validation.is_valid_date(msg.text):
+                        await Shortcuts.Messages.send_msg(msg, "Пожалуйста,указывайте действительную информацию.")
+                        return False
+                candidate.main_info_set(step, msg.text)
+            step += 1
+            await state.update_data(step=step)
             await state.update_data(candidate=candidate)
+            return step >= 5
 
         @staticmethod
-        async def reqAsk(call, first:bool = False):
+        async def reqAsk(call, first: bool = False):
             state = Shortcuts.User.getState(call)
             if first:
                 await state.update_data(step=0)
@@ -143,10 +158,10 @@ class Shortcuts:
             candidate = (await state.get_data())["candidate"]
             step = int((await state.get_data())["step"])
             if len(CachedDB.req_to_vac[vti]) > step:
-                reqn = CachedDB.req_to_vac[vti][step]
-                await Shortcuts.Messages.send_msg(call, CachedDB.all_reqs[reqn])
-                if reqn in candidate.reqs:
-                    await Shortcuts.Messages.send_msg(call, "Ваш ответ: \""+candidate.reqs[reqn]+"\" ?", Keyboards.yesno_kb)
+                requirement = CachedDB.req_to_vac[vti][step]
+                await Shortcuts.Messages.send_msg(call, CachedDB.all_reqs[requirement])
+                if requirement in candidate.reqs:
+                    await Shortcuts.Messages.send_msg(call, "Актуален ли ваш последний ответ: \""+candidate.reqs[requirement]+"\" ?", Keyboards.yesno_kb)
 
         @staticmethod
         async def reqAnswer(msg) -> bool:
@@ -155,15 +170,15 @@ class Shortcuts:
             candidate = (await state.get_data())["candidate"]
             step = int((await state.get_data())["step"])
             if len(CachedDB.req_to_vac[vti]) > step:
-                reqn = CachedDB.req_to_vac[vti][step]
-                if reqn in candidate.reqs:
+                requirement = CachedDB.req_to_vac[vti][step]
+                if requirement in candidate.reqs:
                     if msg.text == "Да":
                         step += 1
                     else:
-                        candidate.reqs.pop(reqn)
-                        await Shortcuts.Messages.send_msg(msg, "Укажите актуальную информацию:")
+                        candidate.reqs.pop(requirement)
+                        await Shortcuts.Messages.send_msg(msg, "Укажите актуальную информацию")
                 else:
-                    candidate.reqs[reqn] = msg.text
+                    candidate.reqs[requirement] = msg.text
                     step += 1
                 await state.update_data(step=step)
                 await state.update_data(candidate=candidate)
@@ -178,4 +193,3 @@ class Shortcuts:
 async def shutdown(dispatcher: Dispatcher):
     await dispatcher.storage.close()
     await dispatcher.storage.wait_closed()
-
