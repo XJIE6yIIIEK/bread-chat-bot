@@ -34,13 +34,71 @@ class Keyboards:
 
 class Candidate:
     def __init__(self):
-        self.name: str = ""
-        self.birth: str = ""
-        self.phone: str = ""
-        self.address: str = ""
-        self.mail: str = ""
-        self.tg_id: str = ""
+        self.__main_info: dict = {"name": "", "birth": "", "phone": "", "address": "", "mail": "", "tg_id": ""}
         self.reqs: dict = {}
+
+    def main_info(self, index: int):
+        i = 0
+        for ob in self.__main_info:
+            if i == index:
+                return [ob, self.__main_info[ob]]
+            i += 1
+        return [None, None]
+
+    def main_info_set(self, index: int, val: str):
+        i = 0
+        for ob in self.__main_info:
+            if i == index:
+                self.__main_info[ob] = val
+            i += 1
+
+    @property
+    def name(self):
+        return self.__main_info["name"]
+
+    @name.setter
+    def name(self, v: str):
+        self.__main_info["name"] = v
+
+    @property
+    def birth(self):
+        return self.__main_info["birth"]
+
+    @birth.setter
+    def birth(self, v: str):
+        self.__main_info["birth"] = v
+
+    @property
+    def phone(self):
+        return self.__main_info["phone"]
+
+    @phone.setter
+    def phone(self, v: str):
+        self.__main_info["phone"] = v
+
+    @property
+    def address(self):
+        return self.__main_info["address"]
+
+    @address.setter
+    def address(self, v: str):
+        self.__main_info["address"] = v
+
+    @property
+    def mail(self):
+        return self.__main_info["mail"]
+
+    @mail.setter
+    def mail(self, v: str):
+        self.__main_info["mail"] = v
+
+    @property
+    def tg_id(self):
+        return self.__main_info["tg_id"]
+
+    @tg_id.setter
+    def tg_id(self, v: str):
+        self.__main_info["tg_id"] = v
 
     def mainInfoEmpty(self):
         if self.name == "":

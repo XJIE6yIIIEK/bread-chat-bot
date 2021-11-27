@@ -16,9 +16,25 @@ Utils.setupBot()
 @BotStuff.dp.message_handler(state='*', commands=['start'])
 async def start_com(msg: types.Message):
     await Utils.SetBotCommands()
-    await Shortcuts.Messages.send_msg(msg, "Приветствую!", Keyboards.hub_kb)
+    await Shortcuts.Messages.send_msg(msg,
+                                      "Приветствую!\n"
+                                      "Для получения помощи используйте команду /help\n"
+                                      "Если бот не отвечает на ваши запросы, перезапустите его с помощью команды /start\n"
+                                      "Отсутствие отклика после будет означать, что бот временно выведен из строя.",
+                                      Keyboards.hub_kb)
     await BotStates.Hub.set()
     await Shortcuts.User.initUser(msg)
+
+
+@BotStuff.dp.message_handler(state='*', commands=['help'])
+async def help_com(msg: types.Message):
+    await Shortcuts.Messages.send_msg(msg, "No one is around to help.")
+
+
+@BotStuff.dp.message_handler(state='*', commands=['change'])
+async def change_com(msg: types.Message):
+    await Shortcuts.Interview.mainInfoAsk(msg, True)
+    await BotStates.InterviewMain.set()
 
 
 @BotStuff.dp.message_handler(state=BotStates.Hub)
@@ -31,8 +47,9 @@ async def hub_talk(msg: types.Message):
         else:
             await Shortcuts.Messages.send_msg(msg, "К сожалению, на данный момент нет доступных вакансий.")
     elif msg.text == "Хочу изменить основную информацию о себе":
-        await Shortcuts.Interview.mainInfoAsk()
+        await Shortcuts.Interview.mainInfoAsk(msg, True)
         await BotStates.InterviewMain.set()
+
 
 @BotStuff.dp.callback_query_handler(state=BotStates.Hub)
 async def hub_button(call: types.CallbackQuery):
@@ -59,8 +76,8 @@ async def vacancy_choice(msg: types.Message):
             await BotStates.InterviewVac.set()
         else:
             await Shortcuts.Messages.send_msg(msg, "Для начала заполним основную информацию.")
+            await Shortcuts.Interview.mainInfoAsk(msg, True)
             await BotStates.InterviewMain.set()
-            await Shortcuts.Interview.mainInfoAsk(msg)
     else:
         await BotStates.Hub.set()
         await Shortcuts.User.setVTI(msg)
@@ -69,18 +86,17 @@ async def vacancy_choice(msg: types.Message):
 
 @BotStuff.dp.message_handler(state=BotStates.InterviewMain)
 async def main_info_talk(msg: types.Message):
-    await Shortcuts.Interview.mainInfoAnswer(msg)
-    if not await Shortcuts.User.isUserNotEmpty():
-        await Shortcuts.Interview.mainInfoAsk(msg)
-    else:
-        await Shortcuts.Messages.send_msg(msg, "Основная информация заполнена.")
+    if await Shortcuts.Interview.mainInfoAnswer(msg):
+        await Shortcuts.Messages.send_msg(msg, "Основная информация заполнена.", Keyboards.hub_kb)
         if (await Shortcuts.User.getVTI(msg)) == -1:
             await Shortcuts.User.send(msg)
             await BotStates.Hub.set()
         else:
-            await Shortcuts.Messages.send_msg(msg, "Теперь перейдём информации, относящейся к вакансии.")
+            await Shortcuts.Messages.send_msg(msg, "Теперь перейдём к информации, относящейся к вакансии.")
             await Shortcuts.Interview.reqAsk(msg, True)
             await BotStates.InterviewVac.set()
+    else:
+        await Shortcuts.Interview.mainInfoAsk(msg)
 
 
 @BotStuff.dp.message_handler(state=BotStates.InterviewVac)
@@ -90,6 +106,7 @@ async def req_info_talk(msg: types.Message):
         await Shortcuts.User.send(msg)
         await Shortcuts.Interview.endOfInterview(msg)
         await Shortcuts.Messages.send_msg(msg, "Интервью закончено.", Keyboards.hub_kb)
+        await BotStates.Hub.set()
     else:
         await Shortcuts.Interview.reqAsk(msg)
 

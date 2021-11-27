@@ -36,6 +36,13 @@ class Clienting:
 
     @staticmethod
     def sendCandidateInfo(candidate: Candidate):
+        print("Sending candidate:")
+        print(candidate.name)
+        print(candidate.birth)
+        print(candidate.phone)
+        print(candidate.address)
+        print(candidate.mail)
+        print(candidate.tg_id)
         main_info = pb2.Candidate(s_name=candidate.name,
                                   d_birth_date=candidate.birth,
                                   s_phone_number=candidate.phone,
