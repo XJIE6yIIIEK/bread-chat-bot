@@ -10,13 +10,13 @@ class BotTransmitterService {
         BotTransmitter.infoUpdated(info);
     }
 
-    async requirementUpdated(requirement){
-        requirement = {
-            id: requirement.id,
-            s_name: requirement.s_name
+    async formUpdated(form){
+        form = {
+            id: form.id,
+            s_name: form.s_name
         };
 
-        BotTransmitter.requirementUpdated(requirement);
+        BotTransmitter.formUpdated(form);
     }
 
     async vacancyUpdated(vacancy){
@@ -28,16 +28,16 @@ class BotTransmitterService {
         BotTransmitter.vacancyUpdated(vacancy);
     }
 
-    async reqToVacUpdated(object){
+    async formToVacUpdated(object){
         var data = {
             vacancyRequirement: {
-                n_vacancy: object.recToVac.n_vacancy,
-                n_requirement: object.recToVac.n_requirement
+                n_vacancy: object.formToVac.n_vacancy,
+                n_form: object.formToVac.n_form
             },
             delete: object.delete
         };
 
-        BotTransmitter.reqToVacUpdated(data);
+        BotTransmitter.formToVacUpdated(data);
     }
 }
 

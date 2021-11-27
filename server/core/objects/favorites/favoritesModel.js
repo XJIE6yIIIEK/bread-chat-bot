@@ -1,7 +1,7 @@
 var Sequelize = require('../../db/db');
 var {DataTypes} = require('sequelize');
 
-var Resumes = Sequelize.define('t_resumes', {
+var Favorites = Sequelize.define('t_favorites', {
     n_candidate: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,20 +12,16 @@ var Resumes = Sequelize.define('t_resumes', {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
     },
-    n_form: {
+    n_user: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
-            model: 't_forms',
+            model: 't_users',
             key: 'id'
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
-    },
-    s_value: {
-        type: DataTypes.STRING,
-        allowNull: false
     }
 });
 
-module.exports = Resumes;
+module.exports = Favorites;

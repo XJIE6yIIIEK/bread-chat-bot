@@ -1,7 +1,7 @@
 var Sequelize = require('../../db/db');
 var {DataTypes} = require('sequelize');
 
-var ReqToVacs = Sequelize.define('t_req_to_vac', {
+var FormToVacs = Sequelize.define('t_form_to_vac', {
     n_vacancy: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,11 +12,11 @@ var ReqToVacs = Sequelize.define('t_req_to_vac', {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
     },
-    n_requirement: {
+    n_form: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         references: {
-            model: 't_requirements',
+            model: 't_forms',
             key: 'id'
         },
         onDelete: 'CASCADE',
@@ -24,4 +24,4 @@ var ReqToVacs = Sequelize.define('t_req_to_vac', {
     }
 });
 
-module.exports = ReqToVacs;
+module.exports = FormToVacs;

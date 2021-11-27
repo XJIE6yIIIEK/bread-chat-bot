@@ -50,9 +50,11 @@ class BotRecieverController {
     async recieveCandidateInfo(call, callback){
         var candidateInfo = call.request.candidateMainInfo;
         var candidateResumes = call.request.candidateResumes;
+        var wantedVacancy = call.request.wantedVacancy;
 
         var candidate = await BotRecieverService.addCandidateInfo(candidateInfo);
         await BotRecieverService.addCandidateResume(candidate, candidateResumes);
+        await BotRecieverService.addWantedVacancy(candidate, wantedVacancy);
 
         callback(null, {});
     }

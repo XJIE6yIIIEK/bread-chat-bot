@@ -1,7 +1,7 @@
 var Sequelize = require('../../db/db');
 var {DataTypes} = require('sequelize');
 
-var Requirements = Sequelize.define('t_requirements', {
+var CandidateStatuses = Sequelize.define('t_candidate_statuses', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -13,4 +13,4 @@ var Requirements = Sequelize.define('t_requirements', {
     }
 });
 
-module.exports = Requirements;
+module.exports = CandidateStatuses;

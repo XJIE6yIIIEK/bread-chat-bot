@@ -1,4 +1,5 @@
 var CandidatesService = require('./candidatesService');
+const ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class CandidatesController {
     async delete(req, res, next){
@@ -9,7 +10,10 @@ class CandidatesController {
 
     async get(req, res, next){
         var candidateId = req.params.id;
-        var candidate = await CandidatesService.get(candidateId, next);
+        const candidate = await CandidatesService.get(candidateId, req);
+        if(candidate instanceof ErrorHandler){
+            return next(candidate);
+        }
         return res.status(200).json(candidate);
     }
 

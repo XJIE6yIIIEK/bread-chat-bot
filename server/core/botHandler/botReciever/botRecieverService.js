@@ -1,9 +1,10 @@
 var VacanciesRepository = require('../../objects/vacancies/vacanciesRepository');
-var RequirementsRepository = require('../../objects/requirements/requirementsRepository');
+var FormsRepository = require('../../objects/forms/formsRepository');
 var CommandsRepository = require('../../objects/commands/botCommands/commandsRepository');
 var CandidatesRepository = require('../../objects/candidates/candidatesRepository');
 var ResumesRepository = require('../../objects/resumes/resumesRepository');
-var ReqToVacsRepository = require('../../objects/requirementsToVacancies/reqToVacRepository');
+var FormToVacsRepository = require('../../objects/formsToVacancies/formToVacRepository');
+var WantedVacanciesRepository = require('../../objects/wantedVacancy/wantedVacancyRepository');
 
 class BotRecieverService {
     async getCache(){
@@ -14,21 +15,21 @@ class BotRecieverService {
             ]
         });
 
-        const requirements = await RequirementsRepository.getAll({
+        const forms = await FormsRepository.getAll({
             attributes: [
                 'id',
                 's_name'
             ]
         });
 
-        const reqToVacs = await ReqToVacsRepository.getAll({
+        const formToVacs = await FormToVacsRepository.getAll({
             attributes: [
                 'n_vacancy',
-                'n_requirement'
+                'n_form'
             ],
             order: [
                 ['n_vacancy', 'ASC'],
-                ['n_requirement', 'ASC']
+                ['n_form', 'ASC']
             ]
         });
 
@@ -41,8 +42,8 @@ class BotRecieverService {
         
         return {
             companyInfos: companyInfos,
-            requirements: requirements,
-            reqToVacs: reqToVacs,
+            forms: forms,
+            formToVacs: formToVacs,
             vacancies: vacancies
         };
     }
@@ -63,24 +64,40 @@ class BotRecieverService {
         });
 
         if(!candidate){
+            candidateInfo.n_status = 1;
             candidate = await CandidatesRepository.create(candidateInfo);
 
             return candidate;
         } else {
-            if(candidateInfo.name){
+            var updated = false;
+
+            if(candidateInfo.s_name){
                 candidate.s_name = candidateInfo.s_name;
+                updated = true;
             }
 
-            if(candidateInfo.phoneNumber){
+            if(candidateInfo.s_phone_number){
                 candidate.s_phone_number = candidateInfo.s_phone_number;
+                updated = true;
             }
 
-            if(candidateInfo.address){
+            if(candidateInfo.s_address){
                 candidate.s_address = candidateInfo.s_address;
+                updated = true;
             }
 
-            if(candidateInfo.email){
+            if(candidateInfo.e_mail){
                 candidate.e_mail = candidateInfo.e_mail;
+                updated = true;
+            }
+
+            if(candidateInfo.s_external_resumes){
+                candidate.s_external_resumes = candidateInfo.s_external_resumes;
+                updated = true;
+            }
+
+            if(updated){
+                candidate.n_status = 3;
             }
 
             await CandidatesRepository.patch(candidate);
@@ -90,25 +107,50 @@ class BotRecieverService {
     }
 
     async addCandidateResume(candidate, resumesInfo){
+        var updated = false;
+
         resumesInfo.forEach(async (resumeElement) => {
             var resume = await ResumesRepository.get({
                 where: {
                     n_candidate: candidate.id,
-                    n_requirement: resumeElement.n_requirement
+                    n_form: resumeElement.n_form
                 }
             });
 
             if(!resume){
                 resumeElement.n_candidate = candidate.id;
                 await ResumesRepository.create(resumeElement);
+                updated = true;
             } else {
                 if(resumeElement.s_value){
                     resume.s_value = resumeElement.s_value;
+                    updated = true;
                 }
 
                 await ResumesRepository.patch(resume);
             }
         });
+
+        if(updated){
+            candidate.n_status = 3;
+            await CandidatesRepository.patch(candidate);
+        }
+    }
+
+    async addWantedVacancy(candidate, vacancy){
+        var wantedVacancy = await WantedVacanciesRepository.get({
+            where: {
+                n_candidate: candidate.id,
+                n_vacancy: vacancy
+            }
+        });
+
+        if(!wantedVacancy){
+            await WantedVacanciesRepository.create({
+                n_candidate: candidate.id,
+                n_vacancy: vacancy
+            });
+        }
     }
 
     async getCandidate(tgId){

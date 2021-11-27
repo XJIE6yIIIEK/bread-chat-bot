@@ -3,18 +3,18 @@ var router = new Router();
 
 var CandidatesRouter = require('./candidatesRouter');
 var CommandsRouter = require('./commandsRouter');
-var RequirementsRouter = require('./requirementsRouter');
+var FormsRouter = require('./formsRouter');
 var UsersRouter = require('./usersRouter');
 var ResumesRouter = require('./resumesRouter');
 var VacanciesRouter = require('./vacanciesRouter');
-var ReqToVacsRouter = require('./reqToVacRouter');
+var FormToVacsRouter = require('./formToVacRouter');
 
 router.use('/users', UsersRouter);
 router.use('/candidates', CandidatesRouter);
 router.use('/commands', CommandsRouter);
-router.use('/requirements', RequirementsRouter);
+router.use('/forms', FormsRouter);
 router.use('/resumes', ResumesRouter);
 router.use('/vacancies', VacanciesRouter);
-router.use('/reqToVacs', ReqToVacsRouter);
+router.use('/formToVacs', FormToVacsRouter);
 
 module.exports = router;

@@ -7,21 +7,21 @@ service BotService {
     rpc getCandidateInfo (TgId) returns (CandidateRequest);
 
     rpc infoUpdated (UpdatedCompanyInfo) returns (Empty);
-    rpc requirementUpdated (UpdatedRequirement) returns (Empty);
+    rpc formUpdated (UpdatedForm) returns (Empty);
     rpc vacancyUpdated (UpdatedVacancy) returns (Empty);
-    rpc reqToVacUpdated (UpdatedReqToVac) returns (Empty);
+    rpc formToVacUpdated (UpdatedFormToVac) returns (Empty);
 }
 
 message Empty {}
 
 message Cache {
     repeated Vacancy vacancies = 1;
-    repeated Requirement requirements = 2;
-    repeated VacancyRequirement reqToVacs = 3;
+    repeated Form forms = 2;
+    repeated VacancyForm formToVacs = 3;
     repeated CompanyInfo companyInfos = 4;
 }
 
-message Requirement {
+message Form {
     int32 id = 1;
     string s_name = 2;
 }
@@ -31,9 +31,9 @@ message Vacancy {
     string s_name = 2;
 }
 
-message VacancyRequirement {
+message VacancyForm {
     int32 n_vacancy = 1;
-    int32 n_requirement = 2;
+    int32 n_form = 2;
 }
 
 message CompanyInfo {
@@ -44,6 +44,7 @@ message CompanyInfo {
 message CandidateRequest {
     Candidate candidateMainInfo = 1;
     repeated CandidateResume candidateResumes = 2;
+    int32 wantedVacancy = 3;
 }
 
 message CandidateResume {
@@ -58,6 +59,7 @@ message Candidate {
     string s_address = 4;
     string e_mail = 5;
     string s_tg_id = 6;
+    string s_external_resumes = 7;
 }
 
 message TgId {
@@ -68,12 +70,12 @@ message UpdatedVacancy {
     Vacancy vacancy = 1;
 }
 
-message UpdatedRequirement {
-    Requirement requirement = 1;
+message UpdatedForm {
+    Form form = 1;
 }
 
-message UpdatedReqToVac {
-    VacancyRequirement vacancyRequirement = 1;
+message UpdatedFormToVac {
+    VacancyForm vacancyForm = 1;
     bool delete = 2;
 }
 

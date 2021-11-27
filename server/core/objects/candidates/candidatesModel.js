@@ -7,12 +7,22 @@ var Candidates = Sequelize.define('t_candidates', {
         primaryKey: true,
         autoIncrement: true
     },
+    n_status: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 't_candidate_statuses',
+            key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    },
     s_name: {
         type: DataTypes.STRING,
         allowNull: false
     },
     d_birth_date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true
     },
     s_phone_number: {
@@ -31,8 +41,8 @@ var Candidates = Sequelize.define('t_candidates', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    b_memo_sended: {
-        type: DataTypes.BOOLEAN,
+    s_external_resumes: {
+        type: DataTypes.STRING,
         allowNull: true
     }
 });

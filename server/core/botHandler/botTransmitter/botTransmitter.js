@@ -31,9 +31,9 @@ class BotTransmitterController {
         );
     }
 
-    async requirementUpdated(requirement){
-        this.client.requirementUpdated({
-                requirement: requirement
+    async formUpdated(form){
+        this.client.formUpdated({
+                form: form
             },
             (error, response) => {}
         );
@@ -47,8 +47,8 @@ class BotTransmitterController {
         );
     }
 
-    async reqToVacUpdated(data){
-        this.client.reqToVacUpdated({
+    async formToVacUpdated(data){
+        this.client.formToVacUpdated({
                 data
             },
             (error, response) => {}
