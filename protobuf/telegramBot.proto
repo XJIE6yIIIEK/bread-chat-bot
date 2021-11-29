@@ -48,7 +48,7 @@ message CandidateRequest {
 }
 
 message CandidateResume {
-    int32 n_requirement = 1;
+    int32 n_form = 1;
     string s_value = 2;
 }
 
