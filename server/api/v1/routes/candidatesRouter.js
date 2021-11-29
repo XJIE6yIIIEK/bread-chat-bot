@@ -2,9 +2,11 @@ var Router = require('express');
 var router = new Router();
 const CandidatesController = require('../../../core/objects/candidates/candidatesController');
 
-router.get('/', CandidatesController.getAll);
+var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
 
-router.delete('/:id', CandidatesController.delete);
-router.get('/:id', CandidatesController.get);
+router.get('/', AuthMiddleware, CandidatesController.getAll);
+
+router.delete('/:id', AuthMiddleware, CandidatesController.delete);
+router.get('/:id', AuthMiddleware, CandidatesController.get);
 
 module.exports = router;

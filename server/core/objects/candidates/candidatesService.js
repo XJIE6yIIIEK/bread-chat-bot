@@ -1,6 +1,7 @@
 const CandidatesRepository = require('./candidatesRepository');
 const DBRepository = require('../../db/dbRepository');
 const CandidateStatusesRepository = require('../candidateStatuses/candidateStatusesRepository');
+const Sequelize = require('../../db/db');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class CandidatesService {
@@ -36,6 +37,7 @@ class CandidatesService {
                 attributes: [
                     'id',
                     's_name',
+                    'n_status',
                     [Sequelize.fn('to_char', Sequelize.col('d_birth_date'), 'DD/MM/YYYY'), 'd_birth_date'],
                     's_phone_number',
                     's_address',

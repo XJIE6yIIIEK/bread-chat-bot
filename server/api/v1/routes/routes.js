@@ -8,7 +8,9 @@ var UsersRouter = require('./usersRouter');
 var ResumesRouter = require('./resumesRouter');
 var VacanciesRouter = require('./vacanciesRouter');
 var FormToVacsRouter = require('./formToVacRouter');
+var AuthRouter = require('./authRouter');
 
+router.use('/auth', AuthRouter);
 router.use('/users', UsersRouter);
 router.use('/candidates', CandidatesRouter);
 router.use('/commands', CommandsRouter);
