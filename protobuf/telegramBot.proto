@@ -12,6 +12,13 @@ service BotService {
     rpc formToVacUpdated (UpdatedFormToVac) returns (Empty);
 }
 
+service BotCalendarService {
+    rpc interviewScheduled (InterviewScheduledRequest) returns (Empty);
+    rpc systemHasTime (TimeRequest) returns (Empty);
+
+    rpc candidateChooseTime (TimeResponse) returns (Empty);
+}
+
 message Empty {}
 
 message Cache {
@@ -81,4 +88,32 @@ message UpdatedFormToVac {
 
 message UpdatedCompanyInfo {
     CompanyInfo info = 1;
+}
+
+message InterviewScheduledRequest {
+    string s_candidate_name = 1;
+    string s_user_name = 2;
+    string s_date = 3;
+}
+
+message TimeRequest {
+    string s_tg_id = 1;
+    int32 n_user = 2;
+    repeated Date dates = 3;
+}
+
+message TimeResponse {
+    string s_tg_id = 1;
+    int32 n_user = 2;
+    Date date = 3;
+}
+
+message Date {
+    string date = 1;
+    repeated Time times = 2;
+}
+
+message Time {
+    string begin = 1;
+    string end = 2;
 }
