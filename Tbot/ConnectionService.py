@@ -21,21 +21,23 @@ class Clienting:
         for ob in cache.vacancies:
             CachedDB.all_vacs[ob.id] = ob.s_name
 
-        for ob in cache.requirements:
-            CachedDB.all_reqs[ob.id] = ob.s_name
+        for ob in cache.forms:
+            CachedDB.all_forms[ob.id] = ob.s_name
 
-        for ob in cache.reqToVacs:
-            if ob.n_vacancy in CachedDB.req_to_vac:
-                if ob.n_requirement not in CachedDB.req_to_vac[ob.n_vacancy]:
-                    CachedDB.req_to_vac[ob.n_vacancy].append(ob.n_requirement)
+        for ob in cache.formToVacs:
+            if ob.n_vacancy in CachedDB.form_to_vac:
+                if ob.n_form not in CachedDB.form_to_vac[ob.n_vacancy]:
+                    CachedDB.form_to_vac[ob.n_vacancy].append(ob.n_form)
             else:
-                CachedDB.req_to_vac[ob.n_vacancy] = [ob.n_requirement]
+                CachedDB.form_to_vac[ob.n_vacancy] = [ob.n_form]
 
         for ob in cache.companyInfos:
             CachedDB.info_ab_us[ob.s_name] = ob.s_message
 
     @staticmethod
     def sendCandidateInfo(candidate: Candidate):
+        if candidate.external_resumes == "<!>":
+            candidate.external_resumes = ""
         print("Sending candidate:")
         print(candidate.name)
         print(candidate.birth)
@@ -43,16 +45,19 @@ class Clienting:
         print(candidate.address)
         print(candidate.mail)
         print(candidate.tg_id)
+        print(candidate.external_resumes)
+        print(candidate.wantedVacancy)
         main_info = pb2.Candidate(s_name=candidate.name,
                                   d_birth_date=candidate.birth,
                                   s_phone_number=candidate.phone,
                                   s_address=candidate.address,
                                   e_mail=candidate.mail,
-                                  s_tg_id=str(candidate.tg_id))
+                                  s_tg_id=str(candidate.tg_id),
+                                  s_external_resumes=candidate.external_resumes)
         resumes = []
-        for ob in candidate.reqs:
-            resumes.append(pb2.CandidateResume(n_requirement=ob, s_value=candidate.reqs[ob]))
-        GlobalStuff.Conn.stub.sendCandidateInfo(pb2.CandidateRequest(candidateMainInfo=main_info, candidateResumes=resumes))
+        for ob in candidate.forms:
+            resumes.append(pb2.CandidateResume(n_requirement=ob, s_value=candidate.forms[ob]))
+        GlobalStuff.Conn.stub.sendCandidateInfo(pb2.CandidateRequest(candidateMainInfo=main_info, candidateResumes=resumes, wantedVacancy=candidate.wantedVacancy))
 
     @staticmethod
     def getCandidateInfo(tg_id) -> Candidate:
@@ -65,9 +70,14 @@ class Clienting:
         out.address = candidate.candidateMainInfo.s_address
         out.mail = candidate.candidateMainInfo.e_mail
         out.tg_id = candidate.candidateMainInfo.s_tg_id
+        external_resumes = candidate.candidateMainInfo.s_external_resumes
+        if external_resumes == "":
+            external_resumes = "<!>"
+        out.external_resumes = external_resumes
+        out.wantedVacancy = candidate.wantedVacancy
 
         for ob in candidate.candidateResumes:
-            out.reqs[ob.n_requirement] = ob.s_value
+            out.forms[ob.n_requirement] = ob.s_value
 
         return out
 
@@ -82,12 +92,12 @@ class Servering:
             KeyboardsService.fillInfoKb()
             return pb2.Empty()
 
-        def requirementUpdated(self, request, context):
-            if request.requirement.id in CachedDB.all_reqs and \
-                    CachedDB.all_reqs[request.requirement.id] == request.requirement.s_name:
-                CachedDB.all_reqs.pop(request.requirement.id)
+        def formUpdated(self, request, context):
+            if request.form.id in CachedDB.all_forms and \
+                    CachedDB.all_forms[request.form.id] == request.form.s_name:
+                CachedDB.all_forms.pop(request.form.id)
             else:
-                CachedDB.all_reqs[request.requirement.id] = request.requirement.s_name
+                CachedDB.all_forms[request.form.id] = request.form.s_name
             return pb2.Empty()
 
         def vacancyUpdated(self, request, context):
@@ -98,21 +108,20 @@ class Servering:
             KeyboardsService.fillVacsKb()
             return pb2.Empty()
 
-        def reqToVacUpdated(self, request, context):
-            vac_id = request.vacancyRequirement.n_vacancy
-            req_id = request.vacancyRequirement.n_requirement
+        def formToVacUpdated(self, request, context):
+            vac_id = request.vacancyForm.n_vacancy
+            form_id = request.vacancyForm.n_form
             if request.delete:
-                if vac_id in CachedDB.req_to_vac and req_id in CachedDB.req_to_vac[vac_id]:
-                    CachedDB.req_to_vac[vac_id].pop(CachedDB.req_to_vac[vac_id].index(req_id))
-                    if len(CachedDB.req_to_vac[vac_id]) == 0:
-                        CachedDB.req_to_vac.pop(vac_id)
+                if vac_id in CachedDB.form_to_vac and form_id in CachedDB.form_to_vac[vac_id]:
+                    CachedDB.form_to_vac[vac_id].pop(CachedDB.form_to_vac[vac_id].index(form_id))
+                    if len(CachedDB.form_to_vac[vac_id]) == 0:
+                        CachedDB.form_to_vac.pop(vac_id)
             else:
-                if vac_id in CachedDB.req_to_vac:
-                    if req_id not in CachedDB.req_to_vac[vac_id]:
-                        CachedDB.req_to_vac[vac_id].append(vac_id)
+                if vac_id in CachedDB.form_to_vac:
+                    if form_id not in CachedDB.form_to_vac[vac_id]:
+                        CachedDB.form_to_vac[vac_id].append(vac_id)
                 else:
-                    CachedDB.req_to_vac[vac_id] = [req_id]
-            print(CachedDB.req_to_vac)
+                    CachedDB.form_to_vac[vac_id] = [form_id]
             return pb2.Empty()
 
     @staticmethod

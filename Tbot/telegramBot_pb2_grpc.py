@@ -34,9 +34,9 @@ class BotServiceStub(object):
                 request_serializer=telegramBot__pb2.UpdatedCompanyInfo.SerializeToString,
                 response_deserializer=telegramBot__pb2.Empty.FromString,
                 )
-        self.requirementUpdated = channel.unary_unary(
-                '/telegramBot.BotService/requirementUpdated',
-                request_serializer=telegramBot__pb2.UpdatedRequirement.SerializeToString,
+        self.formUpdated = channel.unary_unary(
+                '/telegramBot.BotService/formUpdated',
+                request_serializer=telegramBot__pb2.UpdatedForm.SerializeToString,
                 response_deserializer=telegramBot__pb2.Empty.FromString,
                 )
         self.vacancyUpdated = channel.unary_unary(
@@ -44,9 +44,9 @@ class BotServiceStub(object):
                 request_serializer=telegramBot__pb2.UpdatedVacancy.SerializeToString,
                 response_deserializer=telegramBot__pb2.Empty.FromString,
                 )
-        self.reqToVacUpdated = channel.unary_unary(
-                '/telegramBot.BotService/reqToVacUpdated',
-                request_serializer=telegramBot__pb2.UpdatedReqToVac.SerializeToString,
+        self.formToVacUpdated = channel.unary_unary(
+                '/telegramBot.BotService/formToVacUpdated',
+                request_serializer=telegramBot__pb2.UpdatedFormToVac.SerializeToString,
                 response_deserializer=telegramBot__pb2.Empty.FromString,
                 )
 
@@ -78,7 +78,7 @@ class BotServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def requirementUpdated(self, request, context):
+    def formUpdated(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -90,7 +90,7 @@ class BotServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def reqToVacUpdated(self, request, context):
+    def formToVacUpdated(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -119,9 +119,9 @@ def add_BotServiceServicer_to_server(servicer, server):
                     request_deserializer=telegramBot__pb2.UpdatedCompanyInfo.FromString,
                     response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
-            'requirementUpdated': grpc.unary_unary_rpc_method_handler(
-                    servicer.requirementUpdated,
-                    request_deserializer=telegramBot__pb2.UpdatedRequirement.FromString,
+            'formUpdated': grpc.unary_unary_rpc_method_handler(
+                    servicer.formUpdated,
+                    request_deserializer=telegramBot__pb2.UpdatedForm.FromString,
                     response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
             'vacancyUpdated': grpc.unary_unary_rpc_method_handler(
@@ -129,9 +129,9 @@ def add_BotServiceServicer_to_server(servicer, server):
                     request_deserializer=telegramBot__pb2.UpdatedVacancy.FromString,
                     response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
-            'reqToVacUpdated': grpc.unary_unary_rpc_method_handler(
-                    servicer.reqToVacUpdated,
-                    request_deserializer=telegramBot__pb2.UpdatedReqToVac.FromString,
+            'formToVacUpdated': grpc.unary_unary_rpc_method_handler(
+                    servicer.formToVacUpdated,
+                    request_deserializer=telegramBot__pb2.UpdatedFormToVac.FromString,
                     response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
     }
@@ -213,7 +213,7 @@ class BotService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def requirementUpdated(request,
+    def formUpdated(request,
             target,
             options=(),
             channel_credentials=None,
@@ -223,8 +223,8 @@ class BotService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/requirementUpdated',
-            telegramBot__pb2.UpdatedRequirement.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/formUpdated',
+            telegramBot__pb2.UpdatedForm.SerializeToString,
             telegramBot__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -247,7 +247,7 @@ class BotService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def reqToVacUpdated(request,
+    def formToVacUpdated(request,
             target,
             options=(),
             channel_credentials=None,
@@ -257,8 +257,8 @@ class BotService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/reqToVacUpdated',
-            telegramBot__pb2.UpdatedReqToVac.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/formToVacUpdated',
+            telegramBot__pb2.UpdatedFormToVac.SerializeToString,
             telegramBot__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

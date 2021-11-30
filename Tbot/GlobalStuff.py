@@ -21,8 +21,8 @@ class Conn:
 class CachedDB:
     info_ab_us: dict = {}
     all_vacs: dict = {}
-    all_reqs: dict = {}
-    req_to_vac: dict = {}
+    all_forms: dict = {}
+    form_to_vac: dict = {}
 
 
 class Keyboards:
@@ -34,8 +34,9 @@ class Keyboards:
 
 class Candidate:
     def __init__(self):
-        self.__main_info: dict = {"name": "", "birth": "", "phone": "", "address": "", "mail": "", "tg_id": ""}
-        self.reqs: dict = {}
+        self.__main_info: dict = {"name": "", "birth": "", "phone": "", "address": "", "mail": "", "external_resumes": "", "tg_id": ""}
+        self.forms: dict = {}
+        self.wantedVacancy = -1
 
     def main_info(self, index: int):
         i = 0
@@ -99,6 +100,17 @@ class Candidate:
     @tg_id.setter
     def tg_id(self, v: str):
         self.__main_info["tg_id"] = v
+
+    @property
+    def external_resumes(self):
+        return self.__main_info["external_resumes"]
+
+    @external_resumes.setter
+    def external_resumes(self, v: str):
+        self.__main_info["external_resumes"] = v
+
+    def get_main_info_length(self) -> int:
+        return len(self.__main_info)-1
 
     def mainInfoEmpty(self):
         if self.name == "":
