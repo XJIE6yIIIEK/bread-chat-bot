@@ -1,5 +1,6 @@
 const UserRepository = require('./usersRepository');
 const AuthService = require('../../auth/authUtils');
+const DBRepository = require('../../db/dbRepository');
 const ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class UserService {
@@ -23,6 +24,28 @@ class UserService {
         user.s_password = await AuthService.hashPass(user.s_password);
 
         await UserRepository.patch(user);
+    }
+
+    async get(userId){
+        var user = await UserRepository.get({
+            where: {
+                id: userId
+            }
+        });
+
+        var favorites = await DBRepository.rawQuery(
+            'SELECT t_candidates.id, t_candidates.s_name FROM t_favorites ' +
+            'JOIN t_favorites ' +
+            'ON t_favorites.n_candidate = t_candidates.id ' +
+            'WHERE t_favorites.n_user = ' + userId + ' ' +
+            'ORDER BY t_candidates.id ASC',
+            'SELECT'
+        );
+
+        return {
+            user: user,
+            favorites: favorites
+        };
     }
 }
 

@@ -10,7 +10,7 @@ class CandidatesController {
 
     async get(req, res, next){
         var candidateId = req.params.id;
-        const candidate = await CandidatesService.get(candidateId, req);
+        const candidate = await CandidatesService.get(candidateId, req.user.id);
         if(candidate instanceof ErrorHandler){
             return next(candidate);
         }
@@ -18,7 +18,7 @@ class CandidatesController {
     }
 
     async getAll(req, res, next){
-        var candidates = await CandidatesService.getAll(next);
+        var candidates = await CandidatesService.getAll(req.user.id);
         return res.status(200).json(candidates);
     }
 }

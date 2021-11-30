@@ -5,12 +5,18 @@ const Sequelize = require('../../db/db');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class CandidatesService {
-    async getAll(next){
+    async getAll(userId){
         const candidates = await DBRepository.rawQuery(
-            'SELECT t_candidates.id, t_candidates.s_name, t_candidate_statuses.s_name AS s_status FROM t_candidates ' +
+            'WITH t_user_favorites AS ( ' +
+            '   SELECT * FROM t_favorites ' +
+            '   WHERE t_favorites.n_user = ' + userId + ' ' +
+            ') ' +
+            'SELECT t_candidates.id, t_candidates.s_name, t_candidate_statuses.s_name AS s_status, t_user_favorites.n_candidate AS b_favorite FROM t_candidates ' +
             'JOIN t_candidate_statuses ' +
             'ON t_candidate_statuses.id = t_candidates.n_status ' +
-            'ORDER BY t_candidates.id',
+            'LEFT JOIN t_user_favorites ' +
+            'ON t_user_favorites.n_candidate = t_candidates.id ' +
+            'ORDER BY t_user_favorites.n_candidate ASC, t_candidates.id ASC',
             'SELECT'
         );
         return candidates;
@@ -30,7 +36,7 @@ class CandidatesService {
         await CandidatesRepository.delete(candidate);
     }
 
-    async get(candidateId, req){
+    async get(candidateId, userId){
         var candidate;
         try{
             candidate = await CandidatesRepository.get({
@@ -104,11 +110,20 @@ class CandidatesService {
             await CandidatesRepository.patch(candidate);
         }
 
+        const favorite = await DBRepository.rawQuery(
+            'SELECT t_users.s_name FROM t_users ' +
+            'JOIN t_favorites ' +
+            'ON t_favorites.n_user = t_users.id ' +
+            'WHERE t_favorites.n_candidate = ' + candidate.id + ' AND t_favorites.n_user = ' + userId,
+            'SELECT'
+        );
+
         return {
             candidate: candidate,
             resume: resume,
             appropriateVacancies: appropriateVacancies,
-            candidateStatus: status
+            candidateStatus: status,
+            favorite: (favorite == null) ? false : true
         };
     }
 }

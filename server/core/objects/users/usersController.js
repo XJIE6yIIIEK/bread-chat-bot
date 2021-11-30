@@ -21,6 +21,12 @@ class UserController {
 
         return res.status(203);
     }
+
+    async get(req, res, next){
+        var userId = req.user.id;
+        var user = await UserService.get(userId);
+        return res.status(200).json(user);
+    }
 }
 
 module.exports = new UserController();
