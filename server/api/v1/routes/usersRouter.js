@@ -10,7 +10,7 @@ router.get('/user', UserController.get);
 
 router.patch('/:id/changePassword', UserController.changePassword);
 
-routee.post('/favorites/:n_candidate', FavoritesController.create);
-routee.delete('/favorites/:n_candidate', FavoritesController.delete);
+router.post('/favorites/:n_candidate', FavoritesController.create);
+router.delete('/favorites/:n_candidate', FavoritesController.delete);
 
 module.exports = router;

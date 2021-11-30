@@ -1,4 +1,4 @@
-const ErrorHandler = require('../errorHandlers/errorHandlers');
+const ErrorHandler = require('../errorHandlers/errorHandler');
 const AuthUtils = require('../auth/authUtils');
 
 module.exports = (req, res, next) => {
