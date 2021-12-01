@@ -8,9 +8,24 @@ from threading import Thread
 from concurrent import futures
 
 
+def freeFormsZero() -> None:
+    CachedDB.form_to_vac[0] = []
+
+
+def freeSomeForms() -> None:
+    freeFormsZero()
+    for form in CachedDB.all_forms:
+        add: bool = True
+        for vac in CachedDB.form_to_vac:
+            if form in CachedDB.form_to_vac[vac]:
+                add = False
+        if add:
+            CachedDB.form_to_vac[0].append(form)
+
+
 class Clienting:
     @staticmethod
-    def setupClient():
+    def setupClient() -> None:
         GlobalStuff.Conn.channel = grpc.insecure_channel(GlobalStuff.Conn.server_ip)
         GlobalStuff.Conn.stub = pb2_g.BotServiceStub(GlobalStuff.Conn.channel)
 
@@ -31,8 +46,12 @@ class Clienting:
             else:
                 CachedDB.form_to_vac[ob.n_vacancy] = [ob.n_form]
 
+        freeSomeForms()
+
         for ob in cache.companyInfos:
             CachedDB.info_ab_us[ob.s_name] = ob.s_message
+
+        print("Main client setup is done. Getting cache is done.")
 
     @staticmethod
     def sendCandidateInfo(candidate: Candidate):
@@ -56,14 +75,18 @@ class Clienting:
                                   s_external_resumes=candidate.external_resumes)
         resumes = []
         for ob in candidate.forms:
-            resumes.append(pb2.CandidateResume(n_requirement=ob, s_value=candidate.forms[ob]))
-        GlobalStuff.Conn.stub.sendCandidateInfo(pb2.CandidateRequest(candidateMainInfo=main_info, candidateResumes=resumes, wantedVacancy=candidate.wantedVacancy))
+            resumes.append(pb2.CandidateResume(n_form=ob, s_value=candidate.forms[ob]))
+        request: pb2.CandidateRequest
+        if candidate.wantedVacancy != 0:
+            request = pb2.CandidateRequest(candidateMainInfo=main_info, candidateResumes=resumes, wantedVacancy=candidate.wantedVacancy)
+        else:
+            request = pb2.CandidateRequest(candidateMainInfo=main_info, candidateResumes=resumes)
+        GlobalStuff.Conn.stub.sendCandidateInfo(request)
 
     @staticmethod
     def getCandidateInfo(tg_id) -> Candidate:
         candidate = GlobalStuff.Conn.stub.getCandidateInfo(pb2.TgId(s_tg_id=str(tg_id)))
         out = Candidate()
-
         out.name = candidate.candidateMainInfo.s_name
         out.birth = candidate.candidateMainInfo.d_birth_date
         out.phone = candidate.candidateMainInfo.s_phone_number
@@ -77,7 +100,7 @@ class Clienting:
         out.wantedVacancy = candidate.wantedVacancy
 
         for ob in candidate.candidateResumes:
-            out.forms[ob.n_requirement] = ob.s_value
+            out.forms[ob.n_form] = ob.s_value
 
         return out
 
@@ -109,6 +132,7 @@ class Servering:
             return pb2.Empty()
 
         def formToVacUpdated(self, request, context):
+            freeFormsZero()
             vac_id = request.vacancyForm.n_vacancy
             form_id = request.vacancyForm.n_form
             if request.delete:
@@ -122,6 +146,7 @@ class Servering:
                         CachedDB.form_to_vac[vac_id].append(vac_id)
                 else:
                     CachedDB.form_to_vac[vac_id] = [form_id]
+            freeSomeForms()
             return pb2.Empty()
 
     @staticmethod
@@ -135,3 +160,38 @@ class Servering:
     @staticmethod
     def setupServer():
         Thread(target=Servering.serve, daemon=True).start()
+        print("Main server setup is done.")
+
+
+class Calendar:
+    class Clienting:
+        @staticmethod
+        def setupClient() -> None:
+            GlobalStuff.Conn.calendar_channel = grpc.insecure_channel(GlobalStuff.Conn.calendar_server_ip)
+            GlobalStuff.Conn.calendar_stub = pb2_g.BotServiceStub(GlobalStuff.Conn.calendar_channel)
+            print("Calendar client setup is done.")
+
+        @staticmethod
+        def candidateChooseItem():
+            pass
+
+    class Servering:
+        class ServClass(pb2_g.BotCalendarServiceServicer):
+            def interviewScheduled(self, request, context):
+                return pb2.Empty()
+
+            def systemHasTime(self, request, context):
+                return pb2.Empty()
+
+        @staticmethod
+        def serve():
+            server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+            pb2_g.add_BotServiceServicer_to_server(Calendar.Servering.ServClass(), server)
+            server.add_insecure_port(GlobalStuff.Conn.calendar_bot_ip)
+            server.start()
+            server.wait_for_termination()
+
+        @staticmethod
+        def setupServer():
+            Thread(target=Calendar.Servering.serve, daemon=True).start()
+            print("Calendar server setup is done.")

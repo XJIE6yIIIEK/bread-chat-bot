@@ -1,5 +1,4 @@
 import GlobalStuff
-from Utils import Shortcuts
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, KeyboardButton
 
 
@@ -16,8 +15,8 @@ def fillVacsKb():
 
 
 def fillReplyKbs():
-    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton(Shortcuts.Interview.talk_commands["tell_info"]))
-    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton(Shortcuts.Interview.talk_commands["want_work"]))
-    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton(Shortcuts.Interview.talk_commands["want_change"]))
-    GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton(Shortcuts.Interview.talk_commands["yes"]))
-    GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton(Shortcuts.Interview.talk_commands["no"]))
+    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["tell_info"]))
+    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["want_work"]))
+    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["want_change"]))
+    GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["yes"]))
+    GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["no"]))

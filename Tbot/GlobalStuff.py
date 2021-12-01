@@ -13,9 +13,13 @@ class BotStuff:
 class Conn:
     token: str = ""
     server_ip: str = ""
+    calendar_server_ip: str = ""
     bot_ip: str = ""
+    calendar_bot_ip: str = ""
     channel: grpc.Channel
+    calendar_channel: grpc.Channel
     stub: pb2_g.BotServiceStub
+    calendar_stub: pb2_g.BotCalendarServiceStub
 
 
 class CachedDB:
@@ -36,7 +40,7 @@ class Candidate:
     def __init__(self):
         self.__main_info: dict = {"name": "", "birth": "", "phone": "", "address": "", "mail": "", "external_resumes": "", "tg_id": ""}
         self.forms: dict = {}
-        self.wantedVacancy = -1
+        self.wantedVacancy: int = -1
 
     def main_info(self, index: int):
         i = 0
@@ -124,3 +128,21 @@ class Candidate:
         if self.mail == "":
             return "mail"
         return None
+
+
+class Phrases:
+    main_info_phrases = [{"R": "", "F": ""},
+                         {"R": "", "F": ""},
+                         {"R": "", "F": ""},
+                         {"R": "", "F": ""},
+                         {"R": "", "F": ""},
+                         {"R": "", "F": "", "A": ""}]
+
+    mistake_phrases = {"mistake": "", "too_long": "", "no_vacancies": "", "old_info": ""}
+
+    talk_phrases = {"what_info": "", "what_vacancy": "", "the_end": "", "main_info_done": "",
+                    "is_your_choice": "", "lets_talk": "", "main_info": "", "not_choice": "",
+                    "vacancy_info": "", "is_actual": "", "make_actual": "", "want_form": "",
+                    "form_fill": ""}
+
+    talk_commands = {"tell_info": "", "want_work": "", "want_change": "", "yes": "", "no": ""}

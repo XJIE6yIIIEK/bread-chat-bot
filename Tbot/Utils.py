@@ -4,7 +4,7 @@ import ipaddress
 import GlobalStuff
 from GlobalStuff import CachedDB, BotStuff, Keyboards
 import configparser
-import ConnectionService
+from ConnectionService import Clienting
 import Validation
 
 from aiogram.dispatcher import Dispatcher
@@ -19,31 +19,33 @@ def getPhrases() -> None:
     config = configparser.ConfigParser()
     config.read("phrases.ini", encoding="utf-8")
     try:
-        for step in range(len(Shortcuts.Interview.main_info_phrases)):
-            Shortcuts.Interview.main_info_phrases[step]["R"] = config["step"+str(step)]["R"].replace("_", " ")
-            Shortcuts.Interview.main_info_phrases[step]["F"] = config["step"+str(step)]["F"].replace("_", " ")
+        for step in range(len(GlobalStuff.Phrases.main_info_phrases)):
+            GlobalStuff.Phrases.main_info_phrases[step]["R"] = config["step"+str(step)]["R"].replace("_", " ")
+            GlobalStuff.Phrases.main_info_phrases[step]["F"] = config["step"+str(step)]["F"].replace("_", " ")
             if step == 5:
-                Shortcuts.Interview.main_info_phrases[step]["A"] = config["step"+str(step)]["A"].replace("_", " ")
-        Shortcuts.Interview.mistake_phrases["mistake"] = config["talk"]["mistake"]
-        Shortcuts.Interview.mistake_phrases["too_long"] = config["talk"]["too_long"]
-        Shortcuts.Interview.mistake_phrases["no_vacancies"] = config["talk"]["no_vacancies"]
-        Shortcuts.Interview.mistake_phrases["old_info"] = config["talk"]["old_info"]
-        Shortcuts.Interview.talk_phrases["what_info"] = config["talk"]["what_info"]
-        Shortcuts.Interview.talk_phrases["what_vacancy"] = config["talk"]["what_vacancy"]
-        Shortcuts.Interview.talk_phrases["is_your_choice"] = config["talk"]["is_your_choice"]
-        Shortcuts.Interview.talk_phrases["lets_talk"] = config["talk"]["lets_talk"]
-        Shortcuts.Interview.talk_phrases["main_info"] = config["talk"]["main_info"]
-        Shortcuts.Interview.talk_phrases["not_choice"] = config["talk"]["not_choice"]
-        Shortcuts.Interview.talk_phrases["vacancy_info"] = config["talk"]["vacancy_info"]
-        Shortcuts.Interview.talk_phrases["main_info_done"] = config["talk"]["main_info_done"]
-        Shortcuts.Interview.talk_phrases["the_end"] = config["talk"]["the_end"]
-        Shortcuts.Interview.talk_phrases["is_actual"] = config["talk"]["is_actual"]
-        Shortcuts.Interview.talk_phrases["make_actual"] = config["talk"]["make_actual"]
-        Shortcuts.Interview.talk_commands["tell_info"] = config["talk_commands"]["tell_info"]
-        Shortcuts.Interview.talk_commands["want_work"] = config["talk_commands"]["want_work"]
-        Shortcuts.Interview.talk_commands["want_change"] = config["talk_commands"]["want_change"]
-        Shortcuts.Interview.talk_commands["yes"] = config["talk_commands"]["yes"]
-        Shortcuts.Interview.talk_commands["no"] = config["talk_commands"]["no"]
+                GlobalStuff.Phrases.main_info_phrases[step]["A"] = config["step"+str(step)]["A"].replace("_", " ")
+        GlobalStuff.Phrases.mistake_phrases["mistake"] = config["talk"]["mistake"].replace("_", " ")
+        GlobalStuff.Phrases.mistake_phrases["too_long"] = config["talk"]["too_long"].replace("_", " ")
+        GlobalStuff.Phrases.mistake_phrases["no_vacancies"] = config["talk"]["no_vacancies"].replace("_", " ")
+        GlobalStuff.Phrases.mistake_phrases["old_info"] = config["talk"]["old_info"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["what_info"] = config["talk"]["what_info"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["what_vacancy"] = config["talk"]["what_vacancy"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["is_your_choice"] = config["talk"]["is_your_choice"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["lets_talk"] = config["talk"]["lets_talk"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["main_info"] = config["talk"]["main_info"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["not_choice"] = config["talk"]["not_choice"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["vacancy_info"] = config["talk"]["vacancy_info"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["main_info_done"] = config["talk"]["main_info_done"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["the_end"] = config["talk"]["the_end"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["is_actual"] = config["talk"]["is_actual"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["make_actual"] = config["talk"]["make_actual"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["want_form"] = config["talk"]["want_form"].replace("_", " ")
+        GlobalStuff.Phrases.talk_phrases["form_fill"] = config["talk"]["form_fill"].replace("_", " ")
+        GlobalStuff.Phrases.talk_commands["tell_info"] = config["talk_commands"]["tell_info"].replace("_", " ")
+        GlobalStuff.Phrases.talk_commands["want_work"] = config["talk_commands"]["want_work"].replace("_", " ")
+        GlobalStuff.Phrases.talk_commands["want_change"] = config["talk_commands"]["want_change"].replace("_", " ")
+        GlobalStuff.Phrases.talk_commands["yes"] = config["talk_commands"]["yes"].replace("_", " ")
+        GlobalStuff.Phrases.talk_commands["no"] = config["talk_commands"]["no"].replace("_", " ")
         print("Phrases config is done.")
     except KeyError:
         print("Phrases config error: File structure is invalid.")
@@ -54,11 +56,18 @@ def getConfig() -> None:
     config = configparser.ConfigParser()
     config.read("settings.ini")
     try:
-        GlobalStuff.Conn.token = config["S"]["token"]
-        GlobalStuff.Conn.server_ip = config["S"]["server_ip"]
+        GlobalStuff.Conn.token = config["main"]["token"]
+
+        GlobalStuff.Conn.server_ip = config["main"]["server_ip"]
         ipaddress.ip_address(GlobalStuff.Conn.server_ip.split(":")[0])
-        GlobalStuff.Conn.bot_ip = config["S"]["bot_ip"]
+        GlobalStuff.Conn.bot_ip = config["main"]["bot_ip"]
         ipaddress.ip_address(GlobalStuff.Conn.bot_ip.split(":")[0])
+
+        GlobalStuff.Conn.calendar_server_ip = config["calendar"]["server_ip"]
+        ipaddress.ip_address(GlobalStuff.Conn.calendar_server_ip.split(":")[0])
+        GlobalStuff.Conn.calendar_bot_ip = config["calendar"]["bot_ip"]
+        ipaddress.ip_address(GlobalStuff.Conn.calendar_bot_ip.split(":")[0])
+
         print("Network config is done.")
     except KeyError:
         print("Network config error: File structure is invalid.")
@@ -84,6 +93,9 @@ class BotStates(StatesGroup):
     VacancyChoice: State = State()
     InterviewMainChange: State = State()
     InterviewMain: State = State()
+    InterviewFormAsk: State = State()
+    InterviewFormYN: State = State()
+    InterviewFormAnswer: State = State()
     InterviewVac: State = State()
 
 
@@ -104,7 +116,7 @@ class Shortcuts:
         @staticmethod
         async def initUser(msg) -> None:
             state = Shortcuts.User.getState(msg)
-            candidate = ConnectionService.Clienting.getCandidateInfo(msg.from_user.id)
+            candidate = Clienting.getCandidateInfo(msg.from_user.id)
             candidate.tg_id = msg.from_user.id
             await state.update_data(candidate=candidate)
             await state.update_data(vac_to_int=-1)
@@ -131,11 +143,11 @@ class Shortcuts:
             state = Shortcuts.User.getState(msg)
             candidate = (await state.get_data())["candidate"]
             print(candidate)
-            ConnectionService.Clienting.sendCandidateInfo(candidate)
+            Clienting.sendCandidateInfo(candidate)
 
     class Messages:
         @staticmethod
-        async def send_msg(u_msg, msg: str, kb=None):
+        async def send_msg(u_msg, msg: str, kb=None) -> None:
             if kb is not None:
                 if kb != -1:
                     await BotStuff.bot.send_message(u_msg.from_user.id, msg, reply_markup=kb)
@@ -145,127 +157,166 @@ class Shortcuts:
                 await BotStuff.bot.send_message(u_msg.from_user.id, msg)
 
         @staticmethod
-        async def answer(call: types.CallbackQuery, text: str):
+        async def answer(call: types.CallbackQuery, text: str) -> None:
             await call.message.answer(text)
             await call.answer()
 
         @staticmethod
-        async def answer_popup(call: types.CallbackQuery, text: str):
+        async def answer_popup(call: types.CallbackQuery, text: str) -> None:
             await call.answer(text=text, show_alert=True)
 
         @staticmethod
-        def compare_message(msg: str, to: str):
+        def compare_message(msg: str, to: str) -> bool:
             return msg.lower().replace(" ", "") == to.lower().replace(" ", "")
 
     class Interview:
-        main_info_phrases = [{"R": "", "F": ""},
-                             {"R": "", "F": ""},
-                             {"R": "", "F": ""},
-                             {"R": "", "F": ""},
-                             {"R": "", "F": ""},
-                             {"R": "", "F": "", "A": ""}]
+        class MainInfoTalk:
+            @staticmethod
+            async def mainInfoAsk(call, first: bool = False) -> None:
+                state = Shortcuts.User.getState(call)
+                if first:
+                    await state.update_data(step=0)
+                step = int((await state.get_data())["step"])
+                candidate = (await state.get_data())["candidate"]
 
-        mistake_phrases = {"mistake": "", "too_long": "", "no_vacancies": "", "old_info": ""}
-
-        talk_phrases = {"what_info": "", "what_vacancy": "", "the_end": "", "main_info_done": "",
-                        "is_your_choice": "", "lets_talk": "", "main_info": "", "not_choice": "",
-                        "vacancy_info": "", "is_actual": "", "make_actual": ""}
-
-        talk_commands = {"tell_info": "", "want_work": "", "want_change": "", "yes": "", "no": ""}
-
-        @staticmethod
-        async def mainInfoAsk(call, first: bool = False):
-            state = Shortcuts.User.getState(call)
-            if first:
-                await state.update_data(step=0)
-            step = int((await state.get_data())["step"])
-            candidate = (await state.get_data())["candidate"]
-
-            if step < candidate.get_main_info_length():
-                if candidate.main_info(step)[1] != "":
-                    if not (candidate.main_info(step)[0] == "external_resumes" and candidate.external_resumes == "<!>"):
-                        await Shortcuts.Messages.send_msg(call,
-                                                          candidate.main_info(step)[1] +
-                                                          Shortcuts.Interview.main_info_phrases[step]["R"],
-                                                          Keyboards.yesno_kb)
+                if step < candidate.get_main_info_length():
+                    if candidate.main_info(step)[1] != "":
+                        if not (candidate.main_info(step)[0] == "external_resumes" and candidate.external_resumes == "<!>"):
+                            await Shortcuts.Messages.send_msg(call,
+                                                              candidate.main_info(step)[1] +
+                                                              GlobalStuff.Phrases.main_info_phrases[step]["R"],
+                                                              Keyboards.yesno_kb)
+                        else:
+                            await Shortcuts.Messages.send_msg(call,
+                                                              GlobalStuff.Phrases.main_info_phrases[step]["A"],
+                                                              Keyboards.yesno_kb)
                     else:
-                        await Shortcuts.Messages.send_msg(call,
-                                                          Shortcuts.Interview.main_info_phrases[step]["A"],
-                                                          Keyboards.yesno_kb)
-                else:
-                    await Shortcuts.Messages.send_msg(call, Shortcuts.Interview.main_info_phrases[step]["F"])
+                        await Shortcuts.Messages.send_msg(call, GlobalStuff.Phrases.main_info_phrases[step]["F"])
 
-        @staticmethod
-        async def mainInfoAnswer(msg) -> bool:
-            state = Shortcuts.User.getState(msg)
-            candidate = (await state.get_data())["candidate"]
-            step = int((await state.get_data())["step"])
-            if candidate.main_info(step)[0] == "external_resumes" and candidate.external_resumes == "<!>":
-                if Shortcuts.Messages.compare_message(msg.text, Shortcuts.Interview.talk_commands["yes"]):
-                    candidate.main_info_set(step, "")
-                    await state.update_data(candidate=candidate)
-                    return False
-            else:
-                if candidate.main_info(step)[1] != "":
-                    if Shortcuts.Messages.compare_message(msg.text, Shortcuts.Interview.talk_commands["no"]):
+            @staticmethod
+            async def mainInfoAnswer(msg) -> bool:
+                state = Shortcuts.User.getState(msg)
+                candidate = (await state.get_data())["candidate"]
+                step = int((await state.get_data())["step"])
+                if candidate.main_info(step)[0] == "external_resumes" and candidate.external_resumes == "<!>":
+                    if Shortcuts.Messages.compare_message(msg.text, GlobalStuff.Phrases.talk_commands["yes"]):
                         candidate.main_info_set(step, "")
                         await state.update_data(candidate=candidate)
                         return False
                 else:
-                    if step == 1 and not Validation.is_valid_date(msg.text):
-                        await Shortcuts.Messages.send_msg(msg, Shortcuts.Interview.mistake_phrases["mistake"])
-                        return False
-                    if step != 1 and not Validation.is_valid_str(msg.text):
-                        await Shortcuts.Messages.send_msg(msg, Shortcuts.Interview.mistake_phrases["too_long"])
-                        return False
-                    candidate.main_info_set(step, msg.text)
-            step += 1
-            await state.update_data(step=step)
-            await state.update_data(candidate=candidate)
-            return step >= candidate.get_main_info_length()
-
-        @staticmethod
-        async def reqAsk(call, first: bool = False):
-            state = Shortcuts.User.getState(call)
-            if first:
-                await state.update_data(step=0)
-            vti = int((await state.get_data())["vac_to_int"])
-            candidate = (await state.get_data())["candidate"]
-            step = int((await state.get_data())["step"])
-            if len(CachedDB.form_to_vac[vti]) > step:
-                form = CachedDB.form_to_vac[vti][step]
-                await Shortcuts.Messages.send_msg(call, CachedDB.all_forms[form])
-                if form in candidate.forms:
-                    await Shortcuts.Messages.send_msg(call, Shortcuts.Interview.talk_phrases["is_actual"] + candidate.forms[form], Keyboards.yesno_kb)
-
-        @staticmethod
-        async def reqAnswer(msg) -> bool:
-            state = Shortcuts.User.getState(msg)
-            vti = int((await state.get_data())["vac_to_int"])
-            candidate = (await state.get_data())["candidate"]
-            step = int((await state.get_data())["step"])
-            if len(CachedDB.form_to_vac[vti]) > step:
-                form = CachedDB.form_to_vac[vti][step]
-                if form in candidate.forms:
-                    if Shortcuts.Messages.compare_message(msg.text, Shortcuts.Interview.talk_commands["yes"]):
-                        step += 1
+                    if candidate.main_info(step)[1] != "":
+                        if Shortcuts.Messages.compare_message(msg.text, GlobalStuff.Phrases.talk_commands["no"]):
+                            candidate.main_info_set(step, "")
+                            await state.update_data(candidate=candidate)
+                            return False
                     else:
-                        candidate.forms.pop(form)
-                        await Shortcuts.Messages.send_msg(msg, Shortcuts.Interview.talk_phrases["make_actual"])
-                else:
-                    candidate.forms[form] = msg.text
-                    step += 1
+                        if step == 1 and not Validation.is_valid_date(msg.text):
+                            await Shortcuts.Messages.send_msg(msg, GlobalStuff.Phrases.mistake_phrases["mistake"])
+                            return False
+                        if step != 1 and not Validation.is_valid_str(msg.text):
+                            await Shortcuts.Messages.send_msg(msg, GlobalStuff.Phrases.mistake_phrases["too_long"])
+                            return False
+                        candidate.main_info_set(step, msg.text)
+                step += 1
                 await state.update_data(step=step)
                 await state.update_data(candidate=candidate)
-            return step >= len(CachedDB.form_to_vac[vti])
+                return step >= candidate.get_main_info_length()
+
+        class FreeFormTalk:
+            @staticmethod
+            async def freeFormAsk(call, first: bool = False) -> bool:
+                state = Shortcuts.User.getState(call)
+                if first:
+                    await state.update_data(step=0)
+                candidate = (await state.get_data())["candidate"]
+                step = int((await state.get_data())["step"])
+                if len(CachedDB.form_to_vac[0]) > step:
+                    form = CachedDB.form_to_vac[0][step]
+                    await Shortcuts.Messages.send_msg(call, CachedDB.all_forms[form])
+                    if form in candidate.forms:
+                        await Shortcuts.Messages.send_msg(call, GlobalStuff.Phrases.talk_phrases["is_actual"] + candidate.forms[form], Keyboards.yesno_kb)
+                    else:
+                        await Shortcuts.Messages.send_msg(call, GlobalStuff.Phrases.talk_phrases["want_form"], Keyboards.yesno_kb)
+                    return True
+                else:
+                    return False
+
+            @staticmethod
+            async def freeFormYN(call) -> bool:
+                state = Shortcuts.User.getState(call)
+                step = int((await state.get_data())["step"])
+                candidate = (await state.get_data())["candidate"]
+                form = CachedDB.form_to_vac[0][step]
+                case1: bool = form not in candidate.forms and Shortcuts.Messages.compare_message(call.text, GlobalStuff.Phrases.talk_commands["yes"])
+                case2: bool = form in candidate.forms and Shortcuts.Messages.compare_message(call.text, GlobalStuff.Phrases.talk_commands["no"])
+                if case1 or case2:
+                    if case2:
+                        candidate.forms.pop(form)
+                        await Shortcuts.Messages.send_msg(call, GlobalStuff.Phrases.talk_phrases["make_actual"])
+                    else:
+                        await Shortcuts.Messages.send_msg(call, GlobalStuff.Phrases.talk_phrases["form_fill"])
+                    return True
+                else:
+                    step += 1
+                    await state.update_data(step=step)
+                    return False
+
+            @staticmethod
+            async def freeFormAnswer(call) -> bool:
+                state = Shortcuts.User.getState(call)
+                candidate = (await state.get_data())["candidate"]
+                step = int((await state.get_data())["step"])
+                if len(CachedDB.form_to_vac[0]) > step:
+                    form = CachedDB.form_to_vac[0][step]
+                    candidate.forms[form] = call.text
+                    step += 1
+                    await state.update_data(step=step)
+                    await state.update_data(candidate=candidate)
+                return step >= len(CachedDB.form_to_vac[0])
+
+        class ReqTalk:
+            @staticmethod
+            async def reqAsk(call, first: bool = False) -> None:
+                state = Shortcuts.User.getState(call)
+                if first:
+                    await state.update_data(step=0)
+                vti = int((await state.get_data())["vac_to_int"])
+                candidate = (await state.get_data())["candidate"]
+                step = int((await state.get_data())["step"])
+                if len(CachedDB.form_to_vac[vti]) > step:
+                    form = CachedDB.form_to_vac[vti][step]
+                    await Shortcuts.Messages.send_msg(call, CachedDB.all_forms[form])
+                    if form in candidate.forms:
+                        await Shortcuts.Messages.send_msg(call, GlobalStuff.Phrases.talk_phrases["is_actual"] + candidate.forms[form], Keyboards.yesno_kb)
+
+            @staticmethod
+            async def reqAnswer(msg) -> bool:
+                state = Shortcuts.User.getState(msg)
+                vti = int((await state.get_data())["vac_to_int"])
+                candidate = (await state.get_data())["candidate"]
+                step = int((await state.get_data())["step"])
+                if len(CachedDB.form_to_vac[vti]) > step:
+                    form = CachedDB.form_to_vac[vti][step]
+                    if form in candidate.forms:
+                        if Shortcuts.Messages.compare_message(msg.text, GlobalStuff.Phrases.talk_commands["yes"]):
+                            step += 1
+                        else:
+                            candidate.forms.pop(form)
+                            await Shortcuts.Messages.send_msg(msg, GlobalStuff.Phrases.talk_phrases["make_actual"])
+                    else:
+                        candidate.forms[form] = msg.text
+                        step += 1
+                    await state.update_data(step=step)
+                    await state.update_data(candidate=candidate)
+                return step >= len(CachedDB.form_to_vac[vti])
 
         @staticmethod
-        async def endOfInterview(msg):
+        async def endOfInterview(msg) -> None:
             state = Shortcuts.User.getState(msg)
             candidate = (await state.get_data())["candidate"]
             candidate.wantedVacancy = await Shortcuts.User.getVTI(msg)
             await state.update_data(candidate=candidate)
-            # await state.update_data(interview=0)
+            await Shortcuts.User.setVTI(msg)
 
 
 async def shutdown(dispatcher: Dispatcher):

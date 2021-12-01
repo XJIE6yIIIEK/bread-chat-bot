@@ -262,3 +262,130 @@ class BotService(object):
             telegramBot__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class BotCalendarServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.interviewScheduled = channel.unary_unary(
+                '/telegramBot.BotCalendarService/interviewScheduled',
+                request_serializer=telegramBot__pb2.InterviewScheduledRequest.SerializeToString,
+                response_deserializer=telegramBot__pb2.Empty.FromString,
+                )
+        self.systemHasTime = channel.unary_unary(
+                '/telegramBot.BotCalendarService/systemHasTime',
+                request_serializer=telegramBot__pb2.TimeRequest.SerializeToString,
+                response_deserializer=telegramBot__pb2.Empty.FromString,
+                )
+        self.candidateChooseTime = channel.unary_unary(
+                '/telegramBot.BotCalendarService/candidateChooseTime',
+                request_serializer=telegramBot__pb2.TimeResponse.SerializeToString,
+                response_deserializer=telegramBot__pb2.Empty.FromString,
+                )
+
+
+class BotCalendarServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def interviewScheduled(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def systemHasTime(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def candidateChooseTime(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_BotCalendarServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'interviewScheduled': grpc.unary_unary_rpc_method_handler(
+                    servicer.interviewScheduled,
+                    request_deserializer=telegramBot__pb2.InterviewScheduledRequest.FromString,
+                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
+            ),
+            'systemHasTime': grpc.unary_unary_rpc_method_handler(
+                    servicer.systemHasTime,
+                    request_deserializer=telegramBot__pb2.TimeRequest.FromString,
+                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
+            ),
+            'candidateChooseTime': grpc.unary_unary_rpc_method_handler(
+                    servicer.candidateChooseTime,
+                    request_deserializer=telegramBot__pb2.TimeResponse.FromString,
+                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'telegramBot.BotCalendarService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class BotCalendarService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def interviewScheduled(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/interviewScheduled',
+            telegramBot__pb2.InterviewScheduledRequest.SerializeToString,
+            telegramBot__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def systemHasTime(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/systemHasTime',
+            telegramBot__pb2.TimeRequest.SerializeToString,
+            telegramBot__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def candidateChooseTime(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/candidateChooseTime',
+            telegramBot__pb2.TimeResponse.SerializeToString,
+            telegramBot__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
