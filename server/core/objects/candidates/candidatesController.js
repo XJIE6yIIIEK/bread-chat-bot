@@ -10,6 +10,9 @@ class CandidatesController {
 
     async get(req, res, next){
         var candidateId = req.params.id;
+        req.user = {
+            id: 1
+        };
         const candidate = await CandidatesService.get(candidateId, req.user.id);
         if(candidate instanceof ErrorHandler){
             return next(candidate);
@@ -18,6 +21,11 @@ class CandidatesController {
     }
 
     async getAll(req, res, next){
+        res.header('Access-Control-Expose-Headers', 'Location');
+        res.header('Location', req.header('Origin') + '/index.html');
+        req.user = {
+            id: 1
+        };
         var candidates = await CandidatesService.getAll(req.user.id);
         return res.status(200).json(candidates);
     }

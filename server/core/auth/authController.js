@@ -3,19 +3,26 @@ const ErrorHandler = require('../errorHandlers/errorHandler');
 
 class AuthController {
     async authenticate(req, res, next){
-        var token = await AuthService.authenticate(req.body);
-        if(token instanceof ErrorHandler){
-            return next(token);
+        var tokens = await AuthService.authenticate(req.body);
+        if(tokens instanceof ErrorHandler){
+            return next(tokens);
         }
         
-        return res
-                .cookie(
-                    "access-token",
-                    token, {
-                        httpOnly: true
-                    }
-                )
-                .status(203);
+        res.cookie(
+            'access_token',
+            tokens.accessToken, {
+                httpOnly: true
+            }
+        );
+
+        res.cookie(
+            'refresh_token',
+            tokens.refreshToken, {
+                httpOnly: true
+            }
+        );
+
+        return res.status(203);
     }
 }
 

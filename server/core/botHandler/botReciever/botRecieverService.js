@@ -56,7 +56,8 @@ class BotRecieverService {
                 'd_birth_date',
                 's_phone_number',
                 's_address',
-                'e_mail'
+                'e_mail',
+                's_external_resumes'
             ],
             where: {
                 s_tg_id: candidateInfo.s_tg_id
@@ -161,7 +162,8 @@ class BotRecieverService {
                 'd_birth_date',
                 's_phone_number',
                 's_address',
-                'e_mail'
+                'e_mail',
+                's_external_resumes'
             ],
             where: {
                 s_tg_id: tgId

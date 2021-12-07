@@ -18,11 +18,23 @@ class AuthService {
             return ErrorHandler.badRequest('Неверный пароль');
         }
 
-        var token = await AuthUtils.generateToken({
-            id: user.id
-        });
+        var accessToken = await AuthUtils.generateToken({
+                id: user.id
+            },
+            'access',
+            user.id
+        );
 
-        return token;
+        var refreshToken = await AuthUtils.generateToken(
+            {},
+            'refresh',
+            user.id
+        );
+
+        return {
+            accessToken: accessToken,
+            refreshToken: refreshToken
+        };
     }
 }
 

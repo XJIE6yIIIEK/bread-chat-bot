@@ -18,6 +18,14 @@ var Users = Sequelize.define('t_users', {
     e_mail: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    s_access_token: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    s_refresh_token: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 
