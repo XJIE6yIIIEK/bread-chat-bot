@@ -24,28 +24,12 @@ def getPhrases() -> None:
             GlobalStuff.Phrases.main_info_phrases[step]["F"] = config["step"+str(step)]["F"].replace("_", " ")
             if step == 5:
                 GlobalStuff.Phrases.main_info_phrases[step]["A"] = config["step"+str(step)]["A"].replace("_", " ")
-        GlobalStuff.Phrases.mistake_phrases["mistake"] = config["talk"]["mistake"].replace("_", " ")
-        GlobalStuff.Phrases.mistake_phrases["too_long"] = config["talk"]["too_long"].replace("_", " ")
-        GlobalStuff.Phrases.mistake_phrases["no_vacancies"] = config["talk"]["no_vacancies"].replace("_", " ")
-        GlobalStuff.Phrases.mistake_phrases["old_info"] = config["talk"]["old_info"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["what_info"] = config["talk"]["what_info"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["what_vacancy"] = config["talk"]["what_vacancy"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["is_your_choice"] = config["talk"]["is_your_choice"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["lets_talk"] = config["talk"]["lets_talk"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["main_info"] = config["talk"]["main_info"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["not_choice"] = config["talk"]["not_choice"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["vacancy_info"] = config["talk"]["vacancy_info"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["main_info_done"] = config["talk"]["main_info_done"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["the_end"] = config["talk"]["the_end"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["is_actual"] = config["talk"]["is_actual"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["make_actual"] = config["talk"]["make_actual"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["want_form"] = config["talk"]["want_form"].replace("_", " ")
-        GlobalStuff.Phrases.talk_phrases["form_fill"] = config["talk"]["form_fill"].replace("_", " ")
-        GlobalStuff.Phrases.talk_commands["tell_info"] = config["talk_commands"]["tell_info"].replace("_", " ")
-        GlobalStuff.Phrases.talk_commands["want_work"] = config["talk_commands"]["want_work"].replace("_", " ")
-        GlobalStuff.Phrases.talk_commands["want_change"] = config["talk_commands"]["want_change"].replace("_", " ")
-        GlobalStuff.Phrases.talk_commands["yes"] = config["talk_commands"]["yes"].replace("_", " ")
-        GlobalStuff.Phrases.talk_commands["no"] = config["talk_commands"]["no"].replace("_", " ")
+        for phrase in GlobalStuff.Phrases.mistake_phrases:
+            GlobalStuff.Phrases.mistake_phrases[phrase] = config["talk"][phrase]
+        for phrase in GlobalStuff.Phrases.talk_phrases:
+            GlobalStuff.Phrases.talk_phrases[phrase] = config["talk"][phrase]
+        for phrase in GlobalStuff.Phrases.talk_commands:
+            GlobalStuff.Phrases.talk_commands[phrase] = config["talk_commands"][phrase]
         print("Phrases config is done.")
     except KeyError:
         print("Phrases config error: File structure is invalid.")
@@ -91,6 +75,7 @@ def setupBot() -> None:
 class BotStates(StatesGroup):
     Hub: State = State()
     VacancyChoice: State = State()
+    CheckPrivacy: State = State()
     InterviewMainChange: State = State()
     InterviewMain: State = State()
     InterviewFormAsk: State = State()
@@ -110,14 +95,18 @@ async def SetBotCommands() -> None:
 class Shortcuts:
     class User:
         @staticmethod
-        def getState(msg):
+        def getState(msg) -> aiogram.dispatcher.storage.FSMContext:
             return BotStuff.dp.current_state(user=msg.from_user.id)
 
         @staticmethod
         async def initUser(msg) -> None:
             state = Shortcuts.User.getState(msg)
             candidate = Clienting.getCandidateInfo(msg.from_user.id)
-            candidate.tg_id = msg.from_user.id
+            if candidate.tg_id != msg.from_user.id:
+                candidate.first_time = True
+                candidate.tg_id = msg.from_user.id
+            else:
+                candidate.first_time = False
             await state.update_data(candidate=candidate)
             await state.update_data(vac_to_int=-1)
             await state.update_data(step=0)
@@ -137,6 +126,12 @@ class Shortcuts:
             state = Shortcuts.User.getState(msg)
             candidate: GlobalStuff.Candidate = (await state.get_data())["candidate"]
             return candidate.mainInfoEmpty() is None
+
+        @staticmethod
+        async def firstTime(msg) -> bool:
+            state = Shortcuts.User.getState(msg)
+            candidate = (await state.get_data())["candidate"]
+            return candidate.first_time
 
         @staticmethod
         async def send(msg) -> None:
@@ -176,8 +171,8 @@ class Shortcuts:
                 state = Shortcuts.User.getState(call)
                 if first:
                     await state.update_data(step=0)
-                step = int((await state.get_data())["step"])
                 candidate = (await state.get_data())["candidate"]
+                step = int((await state.get_data())["step"])
 
                 if step < candidate.get_main_info_length():
                     if candidate.main_info(step)[1] != "":
