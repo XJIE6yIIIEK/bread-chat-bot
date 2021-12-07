@@ -1,0 +1,2 @@
+var ip;
+var port;

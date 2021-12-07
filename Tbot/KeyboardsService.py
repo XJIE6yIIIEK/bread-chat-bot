@@ -15,8 +15,8 @@ def fillVacsKb():
 
 
 def fillReplyKbs():
-    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton('Расскажи мне про вашу компанию'))
-    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton('Хочу работать у вас'))
-    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton('Хочу изменить основную информацию о себе'))
-    GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton("Да"))
-    GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton("Нет"))
+    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["tell_info"]))
+    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["want_work"]))
+    GlobalStuff.Keyboards.hub_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["want_change"]))
+    GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["yes"]))
+    GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["no"]))
