@@ -1,23 +1,40 @@
-
-$.getJSON("http://46.146.165.142:60547/api/v1/vacancies", function(data) {
-    for ( key in data ) 
-    {   //console.log(key);
-        //console.log(data[key]);
-
+function fillTabs(data)
+{
+    for ( key in data )
+    {
+        console.log(key);
         AddTabs(data[key].s_name);
-
         document.querySelector(".tabs__nav-btn").click();
-    };
-  })
+    }
+}
 
-  $.getJSON("http://46.146.165.142:60547/api/v1/forms", function(data) {
-    for ( key in data ) 
-    {   console.log(key);
-        console.log(data[key]);       
-        
+$.ajax({
+    url:"http://46.146.165.142:60547/api/v1/vacancies",
+    success: function (data, textStatus, request)
+    {
+        fillTabs();
+    },
+    error: function (request, exception)
+    {
+        if (check(request))
+        {
+            return;
+        }
+    },
+    xhrFields: {
+        withCredentials: true
+    }
+})
+
+$.getJSON("http://46.146.165.142:60547/api/v1/forms", function(data) {
+    for ( key in data )
+    {
+        // console.log(key);
+        // console.log(data[key]);
+
         AddReq(data[key].s_name);
     };
-  })
+})
 
 function AddTabs(vac_name) {
     // создаем кнопку таба

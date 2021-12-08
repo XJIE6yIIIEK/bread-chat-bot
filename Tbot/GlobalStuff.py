@@ -41,6 +41,7 @@ class Candidate:
         self.__main_info: dict = {"name": "", "birth": "", "phone": "", "address": "", "mail": "", "external_resumes": "", "tg_id": ""}
         self.forms: dict = {}
         self.wantedVacancy: int = -1
+        self.__first_time: bool = True
 
     def main_info(self, index: int):
         i = 0
@@ -116,6 +117,14 @@ class Candidate:
     def get_main_info_length(self) -> int:
         return len(self.__main_info)-1
 
+    @property
+    def first_time(self):
+        return self.__first_time
+
+    @first_time.setter
+    def first_time(self, v: bool):
+        self.__first_time = v
+
     def mainInfoEmpty(self):
         if self.name == "":
             return "name"
@@ -143,6 +152,6 @@ class Phrases:
     talk_phrases = {"what_info": "", "what_vacancy": "", "the_end": "", "main_info_done": "",
                     "is_your_choice": "", "lets_talk": "", "main_info": "", "not_choice": "",
                     "vacancy_info": "", "is_actual": "", "make_actual": "", "want_form": "",
-                    "form_fill": ""}
+                    "form_fill": "", "privacy_check": "", "privacy_cancel": ""}
 
     talk_commands = {"tell_info": "", "want_work": "", "want_change": "", "yes": "", "no": ""}

@@ -35,10 +35,31 @@ async def help_com(msg: types.Message):
                                            "соответствующую кнопку навигации.")
 
 
-@BotStuff.dp.message_handler(state='*', commands=['change'])
-async def change_com(msg: types.Message):
+async def start_main_info_talk(msg):
     await Shortcuts.Interview.MainInfoTalk.mainInfoAsk(msg, True)
     await BotStates.InterviewMain.set()
+
+
+async def start_main_interview(msg):
+    if not await Shortcuts.User.firstTime(msg):
+        await start_main_info_talk(msg)
+    else:
+        await Shortcuts.Messages.send_msg(msg, Phrases.talk_phrases["privacy_check"], Keyboards.yesno_kb)
+        await BotStates.CheckPrivacy.set()
+
+
+@BotStuff.dp.message_handlers(state=BotStates.CheckPrivacy)
+async def check_privacy(msg: types.Message):
+    if Shortcuts.Messages.compare_message(msg.text, Phrases.talk_commands["yes"]):
+        await start_main_interview(msg)
+    else:
+        await Shortcuts.Messages.send_msg(msg, Phrases.talk_phrases["privacy_cancel"], Keyboards.hub_kb)
+        await BotStates.Hub.set()
+
+
+@BotStuff.dp.message_handler(state='*', commands=['change'])
+async def change_com(msg: types.Message):
+    await start_main_interview(msg)
 
 
 @BotStuff.dp.message_handler(state=BotStates.Hub)
@@ -51,8 +72,7 @@ async def hub_talk(msg: types.Message):
         else:
             await Shortcuts.Messages.send_msg(msg, Phrases.mistake_phrases["no_vacancies"])
     elif Shortcuts.Messages.compare_message(msg.text, Phrases.talk_commands["want_change"]):
-        await Shortcuts.Interview.MainInfoTalk.mainInfoAsk(msg, True)
-        await BotStates.InterviewMain.set()
+        await start_main_interview(msg)
 
 
 @BotStuff.dp.callback_query_handler(state=BotStates.Hub)
@@ -80,8 +100,7 @@ async def vacancy_choice(msg: types.Message):
             await BotStates.InterviewVac.set()
         else:
             await Shortcuts.Messages.send_msg(msg, Phrases.talk_phrases["main_info"])
-            await Shortcuts.Interview.MainInfoTalk.mainInfoAsk(msg, True)
-            await BotStates.InterviewMain.set()
+            await start_main_interview()
     else:
         await BotStates.Hub.set()
         await Shortcuts.User.setVTI(msg)
