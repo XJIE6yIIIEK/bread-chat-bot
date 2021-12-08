@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel = "stylesheet" href="style.css">
+    <link rel = "stylesheet" href="bot-setup-style.css">
     <title>Сайт с настройкой бота</title>
 </head>
 <body>
@@ -14,7 +14,6 @@
                     <a class = "nav_link" href = "index.html">главная</a>
                     <a class = "nav_link" href = "candidates.html">кандидаты</a>
                     <a class = "nav_link" href = "bot-setup.html">настройка бота</a>
-                    
                 </nav>
             </div>
         </div>
@@ -22,18 +21,23 @@
 
     <div class="tabs">
 
-        <div class="tabs__nav">
-
-            <button class="add_vac_button">+</button>          
+        <div class="tabs_header">
+            <button class="add_vac_button">Добавить вакансию</button>  
+            <button class="add_req_button" id="add_req">Добавить требование</button>
         </div>
 
-            <div class="tabs__content">
+        <div class="tabs_main">
+            <div class="tabs_nav">        
+            </div>
+           
+   
+           <div class="tabs_content">
+           </div>
+   
+           <div class="list-group" id="simpleList">
+            </div>
         </div>
         
-        <div class="list-group" id="simpleList">
-            
-            <button class="add_req_button" id="add_req">+</button>
-        </div>
     </div>
 
     <button>Сохранить изменения</button>
