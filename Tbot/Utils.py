@@ -38,7 +38,7 @@ def getPhrases() -> None:
 
 def getConfig() -> None:
     config = configparser.ConfigParser()
-    config.read("settings.ini")
+    read = config.read("settings.ini")
     try:
         GlobalStuff.Conn.token = config["main"]["token"]
 
@@ -142,14 +142,18 @@ class Shortcuts:
 
     class Messages:
         @staticmethod
-        async def send_msg(u_msg, msg: str, kb=None) -> None:
+        async def send_msg_to_user(user, msg: str, kb=None) -> None:
             if kb is not None:
                 if kb != -1:
-                    await BotStuff.bot.send_message(u_msg.from_user.id, msg, reply_markup=kb)
+                    await BotStuff.bot.send_message(user, msg, reply_markup=kb)
                 else:
-                    await BotStuff.bot.send_message(u_msg.from_user.id, msg, reply_markup=types.ReplyKeyboardRemove())
+                    await BotStuff.bot.send_message(user, msg, reply_markup=types.ReplyKeyboardRemove())
             else:
-                await BotStuff.bot.send_message(u_msg.from_user.id, msg)
+                await BotStuff.bot.send_message(user, msg)
+
+        @staticmethod
+        async def send_msg(u_msg, msg: str, kb=None) -> None:
+            await Shortcuts.Messages.send_msg_to_user(u_msg.from_user.id, msg, kb)
 
         @staticmethod
         async def answer(call: types.CallbackQuery, text: str) -> None:

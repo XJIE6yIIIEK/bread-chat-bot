@@ -107,7 +107,7 @@ class Clienting:
 
 class Servering:
     class ServClass(pb2_g.BotServiceServicer):
-        def infoUpdated(self, request, context):
+        def infoUpdated(self, request: pb2.UpdatedCompanyInfo, context):
             if request.info.s_name in CachedDB.info_ab_us and CachedDB.info_ab_us[request.info.s_name] == request.info.s_message:
                 CachedDB.info_ab_us.pop(request.info.s_name)
             else:
@@ -115,7 +115,7 @@ class Servering:
             KeyboardsService.fillInfoKb()
             return pb2.Empty()
 
-        def formUpdated(self, request, context):
+        def formUpdated(self, request: pb2.UpdatedForm, context):
             if request.form.id in CachedDB.all_forms and \
                     CachedDB.all_forms[request.form.id] == request.form.s_name:
                 CachedDB.all_forms.pop(request.form.id)
@@ -123,7 +123,7 @@ class Servering:
                 CachedDB.all_forms[request.form.id] = request.form.s_name
             return pb2.Empty()
 
-        def vacancyUpdated(self, request, context):
+        def vacancyUpdated(self, request: pb2.UpdatedVacancy, context):
             if request.vacancy.id in CachedDB.all_vacs and CachedDB.all_vacs[request.vacancy.id] == request.vacancy.s_name:
                 CachedDB.all_vacs.pop(request.vacancy.id)
             else:
@@ -131,7 +131,7 @@ class Servering:
             KeyboardsService.fillVacsKb()
             return pb2.Empty()
 
-        def formToVacUpdated(self, request, context):
+        def formToVacUpdated(self, request: pb2.UpdatedFormToVac, context):
             freeFormsZero()
             vac_id = request.vacancyForm.n_vacancy
             form_id = request.vacancyForm.n_form
@@ -163,35 +163,13 @@ class Servering:
         print("Main server setup is done.")
 
 
-class Calendar:
-    class Clienting:
-        @staticmethod
-        def setupClient() -> None:
-            GlobalStuff.Conn.calendar_channel = grpc.insecure_channel(GlobalStuff.Conn.calendar_server_ip)
-            GlobalStuff.Conn.calendar_stub = pb2_g.BotServiceStub(GlobalStuff.Conn.calendar_channel)
-            print("Calendar client setup is done.")
+class CalendarClienting:
+    @staticmethod
+    def setupClient() -> None:
+        GlobalStuff.Conn.calendar_channel = grpc.insecure_channel(GlobalStuff.Conn.calendar_server_ip)
+        GlobalStuff.Conn.calendar_stub = pb2_g.BotServiceStub(GlobalStuff.Conn.calendar_channel)
+        print("Calendar client setup is done.")
 
-        @staticmethod
-        def candidateChooseItem():
-            pass
-
-    class Servering:
-        class ServClass(pb2_g.BotCalendarServiceServicer):
-            def interviewScheduled(self, request, context):
-                return pb2.Empty()
-
-            def systemHasTime(self, request, context):
-                return pb2.Empty()
-
-        @staticmethod
-        def serve():
-            server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-            pb2_g.add_BotServiceServicer_to_server(Calendar.Servering.ServClass(), server)
-            server.add_insecure_port(GlobalStuff.Conn.calendar_bot_ip)
-            server.start()
-            server.wait_for_termination()
-
-        @staticmethod
-        def setupServer():
-            Thread(target=Calendar.Servering.serve, daemon=True).start()
-            print("Calendar server setup is done.")
+    @staticmethod
+    def candidateChooseItem():
+        pass
