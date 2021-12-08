@@ -20,3 +20,10 @@ def fillReplyKbs():
     GlobalStuff.Keyboards.hub_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["want_change"]))
     GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["yes"]))
     GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["no"]))
+
+
+def createDatesKb(times) -> InlineKeyboardMarkup:
+    kb = InlineKeyboardMarkup()
+    for time in times:
+        kb.add(InlineKeyboardButton(time.begin+"-"+time.end, callback_data=time.begin))
+    return kb
