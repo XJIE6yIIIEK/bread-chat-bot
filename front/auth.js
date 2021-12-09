@@ -1,8 +1,10 @@
-function check(request)
+function authCheck(request)
 {
     if (request.getResponseHeader("Location"))
     {
-        window.location.href = "auth-page.html";
+        alert("SUCC");
+        // window.location.href = "auth-page.html";
+        window.location.href = request.getResponseHeader("Location")
         return true;
     }
     return false
@@ -11,7 +13,7 @@ function check(request)
 function auth(login, password)
 {$.ajax
     ({
-        url: "http://46.146.165.142:60547/api/v1/auth",
+        url: address()+endpoints.auth,
         data: {"e_mail":login, "s_password":password},
         dataType: "json",
         success: function (data, textStatus, request) {alert("WTF SUCC");},
