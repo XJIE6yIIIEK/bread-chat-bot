@@ -25,6 +25,14 @@ h1, h2, h3, h4, h5, h6
     z-index: 1000;
 }
 
+.container
+{
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
 .header_inner
 {
    display: flex;
@@ -143,15 +151,6 @@ h1, h2, h3, h4, h5, h6
 
     color: rgb(39, 37, 37);
     text-decoration: none;
-}
-
-/* Container */
-.container
-{
-    width: 100%;
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 10px;
 }
 
 /* Body */
