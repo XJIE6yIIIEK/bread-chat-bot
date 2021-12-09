@@ -1,2 +1,16 @@
-var ip;
-var port;
+const ip = "46.146.165.142";
+const port = "60547";
+
+function address()
+{
+    return "https://"+ip+":"+port+"/"
+}
+
+class endpoints
+{
+    static auth = "api/v1/auth";
+    static vacancies = "api/v1/vacancies";
+    static forms = "api/v1/forms";
+    static formsToVacs = "api/v1/formToVacs/1";
+    static candidates = "api/v1/candidates";
+}
