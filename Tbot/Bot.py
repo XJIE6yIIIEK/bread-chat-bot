@@ -2,6 +2,7 @@ from GlobalStuff import CachedDB, Keyboards, BotStuff, Phrases
 import Utils
 from Utils import Shortcuts
 import ConnectionService
+import CalendarServering
 import KeyboardsService
 from Utils import BotStates
 from aiogram import types
@@ -165,6 +166,7 @@ if __name__ == '__main__':
 
         ConnectionService.Servering.setupServer()
 
+        # CalendarServering.setupServer()
         # ConnectionService.Calendar.Clienting.setupClient()
         # ConnectionService.Calendar.Servering.setupServer()
 

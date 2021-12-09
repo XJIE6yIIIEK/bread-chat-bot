@@ -1,10 +1,11 @@
-
-$.getJSON("http://46.146.165.142:60547/api/v1/candidates", function(data) {
-    for ( key in data ) 
-    {   console.log(key);
+function fillAllCandidates(data)
+{
+    for ( key in data )
+    {
+        console.log(key);
         console.log(data[key]);
 
-       // создаём ячейку для кандидата 
+        // создаём ячейку для кандидата
         let tr = document.createElement('tr');
 
         let candidate = tr.appendChild(document.createElement('th'));
@@ -21,8 +22,17 @@ $.getJSON("http://46.146.165.142:60547/api/v1/candidates", function(data) {
 
         $("#table_cand").append(tr);
     };
-  })
+}
+$.ajax({
+    url: address()+endpoints.candidates,
+    success: function (data, textStatus, request)
+    {
+        authCheck(request);
+        fillAllCandidates(data);
+    }
+})
 
-  $("body").on("click", ".candidates", function() {
-    sessionStorage.setItem('id_cand', this.id); 
-    });
+$("body").on("click", ".candidates", function()
+{
+    sessionStorage.setItem('id_cand', this.id);
+});

@@ -1,33 +1,55 @@
-/*
-$.getJSON("http://46.146.165.142:60547/api/v1/vacancies", function(data) {
-    for ( key in data ) 
-    {   //console.log(key);
+function fillAllTabs(data)
+{
+    for ( key in data )
+    {
+        //console.log(key);
         //console.log(data[key]);
 
         AddTabs(data[key].s_name);
 
         document.querySelector(".tabs_nav-btn").click();
     };
-  })
+}
+function fillAllReqs(data)
+{
+    for ( key in data )
+    {
+        console.log(key);
+        console.log(data[key]);
 
-  $.getJSON("http://46.146.165.142:60547/api/v1/forms", function(data) {
-    for ( key in data ) 
-    {   console.log(key);
-        console.log(data[key]);       
-        
         AddReq(data[key].s_name);
     };
-  })
+}
+function fillFormsToVacs(data)
+{
 
-  $.getJSON("http://46.146.165.142:60547/api/v1/formToVacs/1", function(data) {
-    for ( key in data ) 
-    {   //console.log(key);
-        //console.log(data[key]);       
-        
-        //AddReq(data[key].s_name);
-    };
-  })
-*/
+}
+function getAllInfo()
+{
+    $.ajax({
+        url: address() + endpoints.vacancies,
+        success: function (data, textStatus, request) {
+            fillAllTabs(data);
+        },
+        error: function(request, textStatus, errorThrown){
+            authCheck(request);
+        }
+    })
+    $.ajax({
+        url: address() + endpoints.forms,
+        success: function (data, textStatus, request) {
+            fillAllReqs(data);
+        }
+    })
+    $.ajax({
+        url: address() + endpoints.formsToVacs,
+        success: function (data, textStatus, request) {
+            fillFormsToVacs(data);
+        }
+    })
+}
+
+getAllInfo(); // <- Uncomment to turn on info getting
 
 // создание вакансии и поля её контента
 function AddTabs(vac_name) {
