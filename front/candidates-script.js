@@ -27,8 +27,13 @@ $.ajax({
     url: address()+endpoints.candidates,
     success: function (data, textStatus, request)
     {
-        authCheck(request);
         fillAllCandidates(data);
+    },
+    error: function(request, textStatus, errorThrown){
+        authCheck(request);
+    },
+    xhrFields: {
+        withCredentials: true
     }
 })
 

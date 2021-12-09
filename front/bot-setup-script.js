@@ -33,6 +33,9 @@ function getAllInfo()
         },
         error: function(request, textStatus, errorThrown){
             authCheck(request);
+        },
+        xhrFields: {
+            withCredentials: true
         }
     })
     $.ajax({
