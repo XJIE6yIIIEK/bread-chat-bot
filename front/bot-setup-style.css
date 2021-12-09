@@ -25,6 +25,14 @@ h1, h2, h3, h4, h5, h6
     z-index: 1000;
 }
 
+.container
+{
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
 .header_inner
 {
    display: flex;
@@ -88,21 +96,21 @@ h1, h2, h3, h4, h5, h6
     color: black;
     padding: 22px 16px;
     width: 100%;
-    border: none;
+    border-color: #f1f1f1;
     text-align: left;
     cursor: pointer;
     transition: 0.3s;
 }
 .tabs_nav-btn:last-child {
-    border-right: none;
+    /*border-right: none;*/
 }
 .tabs_nav-btn:hover {
     background-color: #ddd;
 }
 .tabs_nav-btn.active {
     background-color: #5e3ddf;
-    border-right-color: #5e3ddf;
-    color: #fff;
+    border-color: #5e3ddf;
+    border-right: none;
 }
 
 .tabs_content{
@@ -110,7 +118,6 @@ h1, h2, h3, h4, h5, h6
 }
 .tabs_item {
     /*padding: 0px 12px;*/
-    border: 1px solid #ccc;
     /*width: 70%;*/
     /*border-left: none;*/
     width: 300px;
@@ -124,7 +131,9 @@ h1, h2, h3, h4, h5, h6
 
 .list-group{   
    /* width: 100%;
-    max-width: 600px; */  
+    max-width: 600px; */
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;  
 }
 .list-group-item{
     display: block;
