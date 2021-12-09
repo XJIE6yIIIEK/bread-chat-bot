@@ -15,6 +15,7 @@ h1, h2, h3, h4, h5, h6
 /* Header*/
 .header
 {
+    
     width: 100%;
     padding-top: 30px;
 
@@ -35,9 +36,11 @@ h1, h2, h3, h4, h5, h6
 
 .header_inner
 {
+   /*
    display: flex;
    justify-content: flex-end; 
    align-items: center;
+   */
 }
 
 .menu_lines{ 
@@ -46,6 +49,24 @@ h1, h2, h3, h4, h5, h6
     content:"";
     height: 5px; 
     width:30px;
+}
+
+/* Nav */
+.nav
+{
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.nav_link
+{
+    display:  inline-block;
+    vertical-align: top;
+    margin: 0 15px;
+    position: relative;
+
+    color: rgb(39, 37, 37);
+    text-decoration: none;
 }
 
 .left-container{
@@ -149,24 +170,6 @@ h1, h2, h3, h4, h5, h6
 
 .remove_req_button{
     cursor: pointer;
-}
-
-/* Nav */
-.nav
-{
-    font-size: 14px;
-    text-transform: uppercase;
-}
-
-.nav_link
-{
-    display:  inline-block;
-    vertical-align: top;
-    margin: 0 15px;
-    position: relative;
-
-    color: rgb(39, 37, 37);
-    text-decoration: none;
 }
 
 /* Body */
