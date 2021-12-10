@@ -63,48 +63,67 @@ h1, h2, h3, h4, h5, h6
     margin: 0 15px;
     position: relative;
 
-    color: #fff;
+    color: #e9e9e9;
     text-decoration: none;
+    transition: color 0.1s linear;
 }
 
-.left-container{
-   
+.nav_link:hover
+{
+    color: #aaaaaa;
 }
 
-.right-container{
-   
+.left_container_nav{
+    padding-left: 10px;
+}
+
+.right_container_nav{
+    padding-right: 10px;
 }
 
 .menu_lines{ 
     margin: 0 15px;
     
-    border-bottom: 17px double #fff;; 
-    border-top: 6px solid #fff;; 
+    border-bottom: 17px double #f1f1f1;; 
+    border-top: 6px solid #f1f1f1;; 
     content:"";
     height: 5px; 
     width:30px;
 }
 
-.dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-}
-
 .dropdown {
+    cursor: pointer;   
     position: relative;
     display: inline-block;
+}
+
+.dropbtn {
+    margin: 0 15px;
+    
+    border-bottom: 15px double #f1f1f1;; 
+    border-top: 5px solid #f1f1f1;; 
+    height: 4px; 
+    width:30px;
+
+    transition: color 0.1s linear;
+}
+
+.dropdown:hover .dropbtn {
+    border-bottom: 15px double #aaaaaa;; 
+    border-top: 5px solid #aaaaaa;; 
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
+    left: -116px;
+
     background-color: #f1f1f1;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
     z-index: 1;
+    
 }
 
 .dropdown-content a {
@@ -114,11 +133,13 @@ h1, h2, h3, h4, h5, h6
     display: block;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content a:hover {
+    background-color: #aaaaaa;
+}
 
-.dropdown:hover .dropdown-content {display: block;}
-
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.dropdown:hover .dropdown-content{
+    display: block;
+}
 
 /* Tabs */
 .tabs {
@@ -241,7 +262,7 @@ h1, h2, h3, h4, h5, h6
     background: #ECE9E0;
     color: #656665;
     border: 16px solid #ECE9E0;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .table_candidate
@@ -250,7 +271,7 @@ h1, h2, h3, h4, h5, h6
     background: #ECE9E0;
     color: #656665;
     border: 16px solid #ECE9E0;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .table_resume
@@ -259,7 +280,7 @@ h1, h2, h3, h4, h5, h6
     background: #ECE9E0;
     color: #656665;
     border: 16px solid #ECE9E0;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .table_approp_vacans
@@ -271,7 +292,7 @@ h1, h2, h3, h4, h5, h6
     background: #ECE9E0;
     color: #656665;
     border: 16px solid #ECE9E0;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .table_head_style

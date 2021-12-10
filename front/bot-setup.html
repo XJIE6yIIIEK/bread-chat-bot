@@ -8,39 +8,40 @@
 <body>
 
     <header class = "header">
-        <div class = "container">
-            <div class = "header_inner">   
-                <nav class = "nav">
-                    <a class = "nav_link" href = "index.html">главная</a>
-                    <a class = "nav_link" href = "candidates.html">кандидаты</a>
-                    <a class = "nav_link" href = "bot-setup.html">настройка бота</a>
-                </nav>
+        <div class = "header_inner">   
+                <div class="left_container_nav">
+                    <a class = "nav_link" href = "index.html">Главная</a>
+                    <a class = "nav_link" href = "candidates.html">Кандидаты</a>
+                    <a class = "nav_link" href = "bot-setup.html">Настройка бота</a>
+                </div>
+
+                <div class="right_container_nav">
+                    <div class="dropdown">
+                        <div class="dropbtn"></div>
+                        <div class="dropdown-content">
+                          <a href="#">Личный кабинет</a>
+                          <a href="auth-page.html">Выход</a>
+                        </div>
+                      </div>
+                </div>
             </div>
         </div>
     </header>
 
     <div class="tabs">
-
-        <div class="tabs_header">
+        <div class="left_container_tabs">
             <button class="add_vac_button">Добавить вакансию</button>  
-            <button class="add_req_button" id="add_req">Добавить требование</button>
-        </div>
-
-        <div class="tabs_main">
-            <div class="tabs_nav">        
-            </div>
-           
-   
-           <div class="tabs_content">
-           </div>
-   
-           <div class="list-group" id="simpleList">
+            <div class="tab_flex">
+                <div class="tabs_nav"></div>
+                <div class="tabs_content"></div>
             </div>
         </div>
         
+        <div class="right_container_tabs">
+           <button class="add_req_button" id="add_req">Добавить требование</button>
+           <div class="list-group" id="simpleList"></div>   
+        </div> 
     </div>
-
-    <button>Сохранить изменения</button>
         
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="config.js"></script>
