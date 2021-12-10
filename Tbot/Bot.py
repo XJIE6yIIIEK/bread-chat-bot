@@ -2,7 +2,6 @@ from GlobalStuff import CachedDB, Keyboards, BotStuff, Phrases
 import Utils
 from Utils import Shortcuts
 import ConnectionService
-import CalendarServering
 import KeyboardsService
 from Utils import BotStates
 from aiogram import types
@@ -49,8 +48,8 @@ async def start_main_interview(msg):
         await BotStates.CheckPrivacy.set()
 
 
-@BotStuff.dp.message_handlers(state=BotStates.CheckPrivacy)
-async def check_privacy(msg: types.Message):
+@BotStuff.dp.message_handler(state=BotStates.CheckPrivacy)
+async def check_privacy_process(msg: types.Message):
     if Shortcuts.Messages.compare_message(msg.text, Phrases.talk_commands["yes"]):
         await start_main_interview(msg)
     else:

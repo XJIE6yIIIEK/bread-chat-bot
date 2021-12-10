@@ -14,10 +14,10 @@ class ServClass(pb2_g.BotCalendarServiceServicer):
 
     def systemHasTime(self, request: pb2.TimeRequest, context):
         tg_id = request.s_tg_id
-        await Shortcuts.Messages.send_msg_to_user(tg_id, "Возможность назначить собеседование:")
+        #await Shortcuts.Messages.send_msg_to_user(tg_id, "Возможность назначить собеседование:")
         for date in request.dates:
             kb = KeyboardsService.createDatesKb(date.times)
-            Shortcuts.Messages.send_msg_to_user(tg_id, date.date)
+            #Shortcuts.Messages.send_msg_to_user(tg_id, date.date)
         return pb2.Empty()
 
 
