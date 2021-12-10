@@ -3,7 +3,6 @@ function authCheck(request)
     if (request.getResponseHeader("Location"))
     {
         alert("SUCC");
-        // window.location.href = "auth-page.html";
         window.location.href = request.getResponseHeader("Location")
         return true;
     }
@@ -40,7 +39,7 @@ function errorMessage()
 }
 function goToMain()
 {
-    document.location.href = "index.html";
+    window.location.href = "index.html";
 }
 
 $("body").on("click", ".enter_button", function(){

@@ -1,35 +1,42 @@
+let form_id_count = 0;
+
 function fillAllTabs(data)
 {
     for ( key in data )
     {
-        //console.log(key);
-        //console.log(data[key]);
-
-        AddTabs(data[key].s_name);
-
-        document.querySelector(".tabs_nav-btn").click();
+        AddTab(data[key].s_name);
+        let allLists = document.getElementsByClassName("tabs_item");
+        let listNow = allLists[allLists.length-1];
+        for (form in data[key].forms)
+        {
+            let form_id = data[key].forms[form].n_form;
+            let form_name = document.getElementsByClassName("form_id:"+form_id)[0].getElementsByClassName("input-tabs-item")[0].value
+            AddForm(form_name, form_id, listNow);
+            form_id_count = Math.max(form_id_count, form_id);
+        }
     };
+    document.querySelector(".tabs_nav-btn").click();
 }
-function fillAllReqs(data)
+function fillAllForms(data)
 {
     for ( key in data )
     {
-        console.log(key);
-        console.log(data[key]);
-
-        AddReq(data[key].s_name);
+        AddForm(data[key].s_name, data[key].id);
     };
 }
-function fillFormsToVacs(data)
-{
 
+function fillAllInfo(data)
+{
+    fillAllForms(data.forms);
+    fillAllTabs(data.vacancies);
 }
+
 function getAllInfo()
 {
     $.ajax({
-        url: address() + endpoints.vacancies,
+        url: address() + endpoints.botSettings,
         success: function (data, textStatus, request) {
-            fillAllTabs(data);
+            fillAllInfo(data);
         },
         error: function(request, textStatus, errorThrown){
             authCheck(request);
@@ -38,24 +45,33 @@ function getAllInfo()
             withCredentials: true
         }
     })
-    $.ajax({
-        url: address() + endpoints.forms,
-        success: function (data, textStatus, request) {
-            fillAllReqs(data);
+}
+
+getAllInfo();
+
+function checkSameForm(list, item)
+{
+    let new_form_id = item.getAttribute("form_id");
+
+    list.childNodes.forEach(function(ob){
+        if (ob != item && ob.parentNode.parentNode.classList.contains("active") && ob.getAttribute("form_id") == new_form_id)
+        {
+            ob.remove();
         }
     })
-    $.ajax({
-        url: address() + endpoints.formsToVacs,
-        success: function (data, textStatus, request) {
-            fillFormsToVacs(data);
+}
+function changeForm(text, form_id, source)
+{
+    document.querySelectorAll(".list-group-item").forEach(function (form){
+        if (form != source && form.getAttribute("form_id")==form_id)
+        {
+            form.getElementsByClassName("input-tabs-item")[0].value = text;
         }
     })
 }
 
-getAllInfo(); // <- Uncomment to turn on info getting
-
 // создание вакансии и поля её контента
-function AddTabs(vac_name) {
+function AddTab(vac_name) {
     // создаем кнопку таба
     let tab_button = document.createElement("button");
     tab_button.classList.add("tabs_nav-btn");
@@ -89,7 +105,16 @@ function AddTabs(vac_name) {
     list_group.id = list_name;
     document.body.appendChild(list_group);
     list_name = document.getElementById(list_name);
-    Sortable.create(list_name, {group: 'shared', animation: 150}); // если сразу вносить list_name, то не будет работать
+    Sortable.create(list_name, {group: 'shared',
+        animation: 150,
+        scroll:true,
+        scrollSensitivity: 80,
+        scrollSpeed: 100,
+        onAdd: function (evt)
+        {
+            checkSameForm(evt.to, evt.item);
+        }
+    }); // если сразу вносить list_name, то не будет работать
     let parent_tabs_item = document.querySelector(".tabs_content");
 
     tab_item.appendChild(list_group);
@@ -100,15 +125,20 @@ function AddTabs(vac_name) {
 }
 
 // создание сортируемого списка требований
-function AddReq (req_name){
+function AddForm (frm_name, form_id, list= document.getElementById("simpleList")){
     let div = document.createElement("div");
     div.classList.add("list-group-item");
+    div.classList.add("form_id:"+form_id);
+    div.setAttribute("form_id", form_id);
 
     let input = document.createElement("input");
     input.classList.add("input-tabs-item");
     input.placeholder = "Вопрос*";
-    if (req_name != null)
-    input.value = req_name;
+    if (frm_name != null)
+    input.value = frm_name;
+    input.addEventListener("input", function(evt){
+        changeForm(evt.target.value, form_id, evt.target);
+    });
     div.appendChild(input);
 
     let button = document.createElement("button");
@@ -117,18 +147,18 @@ function AddReq (req_name){
   
     div.appendChild(button);
 
-    let list = document.getElementById("simpleList");
     list.appendChild(div);
 }
 
 // добавление таба по клику
 $("body").on("click", ".add_vac_button", function(){
-    AddTabs(null);
+    AddTab(null);
 });
 
 // добавление требования по клику
 $("body").on("click", ".add_req_button", function(){
-    AddReq(null);
+    form_id_count+=1;
+    AddForm(null, form_id_count);
 });
 
 // удаление таба по клику
@@ -149,7 +179,19 @@ $("body").on("click", ".remove_vac_button", function() {
 
 // удаление требования по клику
 $("body").on("click", ".remove_req_button", function() {
-    $(this).parent().remove(); 
+    if (this.parentNode.parentNode.id == "simpleList") // Если в основном листе
+    {
+        let this_form_id = this.parentNode.getAttribute("form_id");
+        document.querySelectorAll(".list-group-item").forEach(function (form) {
+            if (form.getAttribute("form_id")==this_form_id)
+            {
+                form.remove();
+            }
+        })
+    }
+    else {
+        $(this).parent().remove();
+    }
 });
 
 // обработка клика на кнопку таба
@@ -175,4 +217,12 @@ Sortable.create(simpleList, {
     name: 'shared',
     pull: 'clone',
     put: false
-},animation: 150});
+},animation: 150,
+    onClone: function (evt)
+    {
+        let input = evt.clone.getElementsByClassName("input-tabs-item")[0];
+        input.addEventListener("input", function(evt){
+            changeForm(evt.target.value, input.parentNode.getAttribute("form_id"), evt.target);
+        });
+    }
+});
