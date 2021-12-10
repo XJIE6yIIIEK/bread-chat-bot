@@ -1,10 +1,9 @@
-let form_id_count = 0;
-
 function fillAllTabs(data)
 {
     for ( key in data )
     {
-        AddTab(data[key].s_name);
+        let vac_id = data[key].id
+        AddTab(data[key].s_name, vac_id);
         let allLists = document.getElementsByClassName("tabs_item");
         let listNow = allLists[allLists.length-1];
         for (form in data[key].forms)
@@ -12,10 +11,13 @@ function fillAllTabs(data)
             let form_id = data[key].forms[form].n_form;
             let form_name = document.getElementsByClassName("form_id:"+form_id)[0].getElementsByClassName("input-tabs-item")[0].value
             AddForm(form_name, form_id, listNow);
-            form_id_count = Math.max(form_id_count, form_id);
         }
     };
-    document.querySelector(".tabs_nav-btn").click();
+    let tab = document.querySelector(".tabs_nav-btn");
+    if (tab != null)
+    {
+        tab.click();
+    }
 }
 function fillAllForms(data)
 {
@@ -52,16 +54,20 @@ getAllInfo();
 function checkSameForm(list, item)
 {
     let new_form_id = item.getAttribute("form_id");
+    let hassame = false;
 
     list.childNodes.forEach(function(ob){
         if (ob != item && ob.parentNode.parentNode.classList.contains("active") && ob.getAttribute("form_id") == new_form_id)
         {
             ob.remove();
+            hassame = true;
         }
     })
+    return hassame;
 }
 function changeForm(text, form_id, source)
 {
+    renameForm(form_id, text);
     document.querySelectorAll(".list-group-item").forEach(function (form){
         if (form != source && form.getAttribute("form_id")==form_id)
         {
@@ -71,14 +77,18 @@ function changeForm(text, form_id, source)
 }
 
 // создание вакансии и поля её контента
-function AddTab(vac_name) {
+function AddTab(vac_name, vac_id) {
     // создаем кнопку таба
     let tab_button = document.createElement("button");
     tab_button.classList.add("tabs_nav-btn");
+    tab_button.setAttribute("vac_id", vac_id);
     let number_tab = $('.tabs_nav-btn').length + 1;
     tab_button.setAttribute("data-tab", "tab_" + number_tab);
     
     let input = document.createElement("input");
+    input.addEventListener("input", function(evt){
+        renameVacancy(evt.target.parentNode.getAttribute("vac_id"), evt.target.value);
+    });
     input.classList.add("input-tabs-item");
     input.placeholder = "вакансия*";
     if (vac_name != null)
@@ -96,7 +106,8 @@ function AddTab(vac_name) {
     // создаем контент таба
     let tab_item = document.createElement("div");
     tab_item.classList.add("tabs_item");
-    let tabId = tab_button.getAttribute("data-tab");
+    tab_item.setAttribute("vac_id", vac_id);
+    let tabId = tab_button.getAttribute("data-tab");;
     tab_item.id = tabId;
 
     let list_group = document.createElement("div");
@@ -112,7 +123,11 @@ function AddTab(vac_name) {
         scrollSpeed: 100,
         onAdd: function (evt)
         {
-            checkSameForm(evt.to, evt.item);
+            let hs = checkSameForm(evt.to, evt.item);
+            if (!hs)
+            {
+                createFTV(evt.to.parentNode.getAttribute("vac_id"), evt.item.getAttribute("form_id"));
+            }
         }
     }); // если сразу вносить list_name, то не будет работать
     let parent_tabs_item = document.querySelector(".tabs_content");
@@ -152,19 +167,19 @@ function AddForm (frm_name, form_id, list= document.getElementById("simpleList")
 
 // добавление таба по клику
 $("body").on("click", ".add_vac_button", function(){
-    AddTab(null);
+    createVacancy();
 });
 
 // добавление требования по клику
 $("body").on("click", ".add_req_button", function(){
-    form_id_count+=1;
-    AddForm(null, form_id_count);
+    createForm();
 });
 
 // удаление таба по клику
 $("body").on("click", ".remove_vac_button", function() {
-    $(this).parent().remove(); 
+    $(this).parent().remove();
     let tab_id = $(this).parent().attr("data-tab");
+    deleteVacancy(this.parentNode.getAttribute("vac_id"));
     $("#" + tab_id).remove();
 
     if ($(".tabs_nav-btn").length > 0 && ! $(".tabs_nav-btn").hasClass('active'))
@@ -179,9 +194,10 @@ $("body").on("click", ".remove_vac_button", function() {
 
 // удаление требования по клику
 $("body").on("click", ".remove_req_button", function() {
+    let this_form_id = this.parentNode.getAttribute("form_id");
     if (this.parentNode.parentNode.id == "simpleList") // Если в основном листе
     {
-        let this_form_id = this.parentNode.getAttribute("form_id");
+        deleteForm(this_form_id);
         document.querySelectorAll(".list-group-item").forEach(function (form) {
             if (form.getAttribute("form_id")==this_form_id)
             {
@@ -190,6 +206,7 @@ $("body").on("click", ".remove_req_button", function() {
         })
     }
     else {
+        deleteFTV(this.parentNode.parentNode.getAttribute("vac_id"), this_form_id);
         $(this).parent().remove();
     }
 });
@@ -209,8 +226,6 @@ $("body").on("click", ".tabs_nav-btn", function() {
         }
 });
 
-//document.querySelector(".tabs__nav-btn").click();
-
 // drag and drop
 Sortable.create(simpleList, {
     group: {
@@ -226,3 +241,68 @@ Sortable.create(simpleList, {
         });
     }
 });
+
+function createForm()
+{
+    $.ajax({
+        type: "POST",
+        url: address()+endpoints.forms,
+        success: function (data) {
+            AddForm(null, data.id);
+        }
+    })
+}
+function renameForm(form_id, text)
+{
+    $.ajax({
+        type: "PUT",
+        url: address() + endpoints.forms + "/" + form_id,
+        data: {s_name:text}
+    })
+}
+function deleteForm(form_id)
+{
+    $.ajax({
+        type:"DELETE",
+        url: address() + endpoints.forms + "/" + form_id
+    })
+}
+function createVacancy()
+{
+    $.ajax({
+        type:"POST",
+        url:address()+endpoints.vacancies,
+        success: function (data){
+            AddTab(null, data.id)
+        }
+    })
+}
+function renameVacancy(vac_id, text)
+{
+    $.ajax({
+        type: "PUT",
+        url: address() + endpoints.vacancies + "/" + vac_id,
+        data: {s_name:text}
+    })
+}
+function deleteVacancy(vac_id)
+{
+    $.ajax({
+        type:"DELETE",
+        url: address() + endpoints.vacancies + "/" + vac_id
+    })
+}
+function createFTV(vac_id, form_id)
+{
+    $.ajax({
+        type:"POST",
+        url:address()+endpoints.formsToVacs + "/" + vac_id + "/" + form_id
+    })
+}
+function deleteFTV(vac_id, form_id)
+{
+    $.ajax({
+        type:"DELETE",
+        url: address() + endpoints.formsToVacs + "/" + vac_id + "/" + form_id
+    })
+}
