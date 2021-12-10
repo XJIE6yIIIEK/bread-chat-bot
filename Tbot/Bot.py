@@ -180,3 +180,4 @@ if __name__ == '__main__':
             print("Connection failed. *-*")
         else:
             print("Something gone wrong. X_X")
+    input()
