@@ -35,7 +35,7 @@ function auth(login, password)
 }
 function errorMessage()
 {
-    document.getElementById("error_label").innerHTML = "Неверный логие или пароль.";
+    document.getElementById("error_label").innerHTML = "Неверный логин или пароль";
 }
 function goToMain()
 {
