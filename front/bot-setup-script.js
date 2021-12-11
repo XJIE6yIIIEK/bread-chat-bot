@@ -5,7 +5,7 @@ function fillAllTabs(data)
         let vac_id = data[key].id
         AddTab(data[key].s_name, vac_id);
         let allLists = document.getElementsByClassName("tabs_item");
-        let listNow = allLists[allLists.length-1];
+        let listNow = (allLists[allLists.length-1]).childNodes[0];
         for (form in data[key].forms)
         {
             let form_id = data[key].forms[form].n_form;
@@ -206,7 +206,7 @@ $("body").on("click", ".remove_req_button", function() {
         })
     }
     else {
-        deleteFTV(this.parentNode.parentNode.getAttribute("vac_id"), this_form_id);
+        deleteFTV(this.parentNode.parentNode.parentNode.getAttribute("vac_id"), this_form_id);
         $(this).parent().remove();
     }
 });
