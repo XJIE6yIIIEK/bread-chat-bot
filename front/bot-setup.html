@@ -28,7 +28,31 @@
         </div>
     </header>
 
-    <div class="tabs">
+    <div class="body_head">
+        <button  class="button_vac active" 
+            onclick="
+                document.querySelector('.tabs').classList.add('active'), 
+                document.querySelector('.comp_info').classList.remove('active'),
+
+                document.querySelector('.button_vac').classList.add('active'), 
+                document.querySelector('.button_info').classList.remove('active')
+            ">
+        Настройка вакансий
+        </button>  
+
+        <button class="button_info" 
+            onclick="
+                document.querySelector('.comp_info').classList.add('active'), 
+                document.querySelector('.tabs').classList.remove('active'),
+
+                document.querySelector('.button_info').classList.add('active'), 
+                document.querySelector('.button_vac').classList.remove('active')
+            ">
+        Информация о компании
+        </button>  
+    </div>
+
+    <div class="tabs active">
         <div class="left_container_tabs">
             <button class="add_vac_button">Добавить вакансию</button>  
             <div class="tab_flex">
@@ -42,13 +66,19 @@
            <div class="list-group" id="simpleList"></div>   
         </div> 
     </div>
-        
+
+    <div class="comp_info">
+        <button class="add_info_button" id="add_info">Добавить информацию</button>
+        <div class="list-group-info" id="simpleList_info"> </div>
+    </div>       
+
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="config.js"></script>
     <!-- Latest Sortable -->
     <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
     <script src="auth.js"></script>
   
-    <script src="bot-setup-script.js"></script>
+    <script src="vacancy-setup-script.js"></script>
+    <script src="company-info-setup-script.js"></script>
 </body>
 </html>

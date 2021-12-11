@@ -81,16 +81,6 @@ h1, h2, h3, h4, h5, h6
     padding-right: 10px;
 }
 
-.menu_lines{ 
-    margin: 0 15px;
-    
-    border-bottom: 17px double #f1f1f1;; 
-    border-top: 6px solid #f1f1f1;; 
-    content:"";
-    height: 5px; 
-    width:30px;
-}
-
 .dropdown {
     cursor: pointer;   
     position: relative;
