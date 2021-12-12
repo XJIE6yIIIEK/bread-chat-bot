@@ -48,7 +48,7 @@ async def start_main_interview(msg):
 @BotStuff.dp.message_handler(state=BotStates.CheckPrivacy)
 async def check_privacy_process(msg: types.Message):
     if Shortcuts.Messages.compare_message(msg.text, Phrases.talk_commands["yes"]):
-        await start_main_interview(msg)
+        await start_main_info_talk(msg)
     else:
         await Shortcuts.Messages.send_msg(msg, Phrases.talk_phrases["privacy_cancel"], Keyboards.hub_kb)
         await BotStates.Hub.set()
@@ -157,7 +157,6 @@ async def req_info_talk(msg: types.Message):
 
 @BotStuff.dp.callback_query_handler(state="*")
 async def start_date_choose(call: types.CallbackQuery):
-    print("A")
     if call.data == Phrases.talk_commands["start_date_choose"]:
         pass
 
