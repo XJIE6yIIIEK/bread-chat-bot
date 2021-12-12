@@ -34,6 +34,7 @@ class Keyboards:
     vacs_kb: InlineKeyboardMarkup = InlineKeyboardMarkup()
     yesno_kb: ReplyKeyboardMarkup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     hub_kb: ReplyKeyboardMarkup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
+    ok_kb: ReplyKeyboardMarkup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 
 
 class Candidate:
@@ -152,6 +153,7 @@ class Phrases:
     talk_phrases = {"on_start": "", "help": "", "what_info": "", "what_vacancy": "", "the_end": "", "main_info_done": "",
                     "is_your_choice": "", "lets_talk": "", "main_info": "", "not_choice": "",
                     "vacancy_info": "", "is_actual": "", "make_actual": "", "want_form": "",
-                    "form_fill": "", "privacy_check": "", "privacy_cancel": ""}
+                    "form_fill": "", "privacy_check": "", "privacy_cancel": "", "candidate_approved": ""}
 
-    talk_commands = {"tell_info": "", "want_work": "", "want_change": "", "yes": "", "no": ""}
+    talk_commands = {"tell_info": "", "want_work": "", "want_change": "", "yes": "", "no": "", "ok": "",
+                     "choose_date": ""}

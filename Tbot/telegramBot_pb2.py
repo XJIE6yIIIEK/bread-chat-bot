@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11telegramBot.proto\x12\x0btelegramBot\"\x07\n\x05\x45mpty\"\xb0\x01\n\x05\x43\x61\x63he\x12\'\n\tvacancies\x18\x01 \x03(\x0b\x32\x14.telegramBot.Vacancy\x12 \n\x05\x66orms\x18\x02 \x03(\x0b\x32\x11.telegramBot.Form\x12,\n\nformToVacs\x18\x03 \x03(\x0b\x32\x18.telegramBot.VacancyForm\x12.\n\x0c\x63ompanyInfos\x18\x04 \x03(\x0b\x32\x18.telegramBot.CompanyInfo\"\"\n\x04\x46orm\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06s_name\x18\x02 \x01(\t\"%\n\x07Vacancy\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06s_name\x18\x02 \x01(\t\"0\n\x0bVacancyForm\x12\x11\n\tn_vacancy\x18\x01 \x01(\x05\x12\x0e\n\x06n_form\x18\x02 \x01(\x05\"0\n\x0b\x43ompanyInfo\x12\x0e\n\x06s_name\x18\x01 \x01(\t\x12\x11\n\ts_message\x18\x02 \x01(\t\"\x94\x01\n\x10\x43\x61ndidateRequest\x12\x31\n\x11\x63\x61ndidateMainInfo\x18\x01 \x01(\x0b\x32\x16.telegramBot.Candidate\x12\x36\n\x10\x63\x61ndidateResumes\x18\x02 \x03(\x0b\x32\x1c.telegramBot.CandidateResume\x12\x15\n\rwantedVacancy\x18\x03 \x01(\x05\"2\n\x0f\x43\x61ndidateResume\x12\x0e\n\x06n_form\x18\x01 \x01(\x05\x12\x0f\n\x07s_value\x18\x02 \x01(\t\"\x99\x01\n\tCandidate\x12\x0e\n\x06s_name\x18\x01 \x01(\t\x12\x14\n\x0c\x64_birth_date\x18\x02 \x01(\t\x12\x16\n\x0es_phone_number\x18\x03 \x01(\t\x12\x11\n\ts_address\x18\x04 \x01(\t\x12\x0e\n\x06\x65_mail\x18\x05 \x01(\t\x12\x0f\n\x07s_tg_id\x18\x06 \x01(\t\x12\x1a\n\x12s_external_resumes\x18\x07 \x01(\t\"\x17\n\x04TgId\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\"7\n\x0eUpdatedVacancy\x12%\n\x07vacancy\x18\x01 \x01(\x0b\x32\x14.telegramBot.Vacancy\".\n\x0bUpdatedForm\x12\x1f\n\x04\x66orm\x18\x01 \x01(\x0b\x32\x11.telegramBot.Form\"Q\n\x10UpdatedFormToVac\x12-\n\x0bvacancyForm\x18\x01 \x01(\x0b\x32\x18.telegramBot.VacancyForm\x12\x0e\n\x06\x64\x65lete\x18\x02 \x01(\x08\"<\n\x12UpdatedCompanyInfo\x12&\n\x04info\x18\x01 \x01(\x0b\x32\x18.telegramBot.CompanyInfo\"Z\n\x19InterviewScheduledRequest\x12\x18\n\x10s_candidate_name\x18\x01 \x01(\t\x12\x13\n\x0bs_user_name\x18\x02 \x01(\t\x12\x0e\n\x06s_date\x18\x03 \x01(\t\"P\n\x0bTimeRequest\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\x12\x0e\n\x06n_user\x18\x02 \x01(\x05\x12 \n\x05\x64\x61tes\x18\x03 \x03(\x0b\x32\x11.telegramBot.Date\"P\n\x0cTimeResponse\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\x12\x0e\n\x06n_user\x18\x02 \x01(\x05\x12\x1f\n\x04\x64\x61te\x18\x03 \x01(\x0b\x32\x11.telegramBot.Date\"6\n\x04\x44\x61te\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12 \n\x05times\x18\x02 \x03(\x0b\x32\x11.telegramBot.Time\"\"\n\x04Time\x12\r\n\x05\x62\x65gin\x18\x01 \x01(\t\x12\x0b\n\x03\x65nd\x18\x02 \x01(\t2\xd9\x03\n\nBotService\x12\x32\n\x08getCache\x12\x12.telegramBot.Empty\x1a\x12.telegramBot.Cache\x12\x46\n\x11sendCandidateInfo\x12\x1d.telegramBot.CandidateRequest\x1a\x12.telegramBot.Empty\x12\x44\n\x10getCandidateInfo\x12\x11.telegramBot.TgId\x1a\x1d.telegramBot.CandidateRequest\x12\x42\n\x0binfoUpdated\x12\x1f.telegramBot.UpdatedCompanyInfo\x1a\x12.telegramBot.Empty\x12;\n\x0b\x66ormUpdated\x12\x18.telegramBot.UpdatedForm\x1a\x12.telegramBot.Empty\x12\x41\n\x0evacancyUpdated\x12\x1b.telegramBot.UpdatedVacancy\x1a\x12.telegramBot.Empty\x12\x45\n\x10\x66ormToVacUpdated\x12\x1d.telegramBot.UpdatedFormToVac\x1a\x12.telegramBot.Empty2\xeb\x01\n\x12\x42otCalendarService\x12P\n\x12interviewScheduled\x12&.telegramBot.InterviewScheduledRequest\x1a\x12.telegramBot.Empty\x12=\n\rsystemHasTime\x12\x18.telegramBot.TimeRequest\x1a\x12.telegramBot.Empty\x12\x44\n\x13\x63\x61ndidateChooseTime\x12\x19.telegramBot.TimeResponse\x1a\x12.telegramBot.Emptyb\x06proto3'
+  serialized_pb=b'\n\x11telegramBot.proto\x12\x0btelegramBot\"\x07\n\x05\x45mpty\"\xb0\x01\n\x05\x43\x61\x63he\x12\'\n\tvacancies\x18\x01 \x03(\x0b\x32\x14.telegramBot.Vacancy\x12 \n\x05\x66orms\x18\x02 \x03(\x0b\x32\x11.telegramBot.Form\x12,\n\nformToVacs\x18\x03 \x03(\x0b\x32\x18.telegramBot.VacancyForm\x12.\n\x0c\x63ompanyInfos\x18\x04 \x03(\x0b\x32\x18.telegramBot.CompanyInfo\"\"\n\x04\x46orm\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06s_name\x18\x02 \x01(\t\"%\n\x07Vacancy\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06s_name\x18\x02 \x01(\t\"0\n\x0bVacancyForm\x12\x11\n\tn_vacancy\x18\x01 \x01(\x05\x12\x0e\n\x06n_form\x18\x02 \x01(\x05\"<\n\x0b\x43ompanyInfo\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06s_name\x18\x02 \x01(\t\x12\x11\n\ts_message\x18\x03 \x01(\t\"\x94\x01\n\x10\x43\x61ndidateRequest\x12\x31\n\x11\x63\x61ndidateMainInfo\x18\x01 \x01(\x0b\x32\x16.telegramBot.Candidate\x12\x36\n\x10\x63\x61ndidateResumes\x18\x02 \x03(\x0b\x32\x1c.telegramBot.CandidateResume\x12\x15\n\rwantedVacancy\x18\x03 \x01(\x05\"2\n\x0f\x43\x61ndidateResume\x12\x0e\n\x06n_form\x18\x01 \x01(\x05\x12\x0f\n\x07s_value\x18\x02 \x01(\t\"\x99\x01\n\tCandidate\x12\x0e\n\x06s_name\x18\x01 \x01(\t\x12\x14\n\x0c\x64_birth_date\x18\x02 \x01(\t\x12\x16\n\x0es_phone_number\x18\x03 \x01(\t\x12\x11\n\ts_address\x18\x04 \x01(\t\x12\x0e\n\x06\x65_mail\x18\x05 \x01(\t\x12\x0f\n\x07s_tg_id\x18\x06 \x01(\t\x12\x1a\n\x12s_external_resumes\x18\x07 \x01(\t\"\x17\n\x04TgId\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\"7\n\x0eUpdatedVacancy\x12%\n\x07vacancy\x18\x01 \x01(\x0b\x32\x14.telegramBot.Vacancy\".\n\x0bUpdatedForm\x12\x1f\n\x04\x66orm\x18\x01 \x01(\x0b\x32\x11.telegramBot.Form\"Q\n\x10UpdatedFormToVac\x12-\n\x0bvacancyForm\x18\x01 \x01(\x0b\x32\x18.telegramBot.VacancyForm\x12\x0e\n\x06\x64\x65lete\x18\x02 \x01(\x08\"<\n\x12UpdatedCompanyInfo\x12&\n\x04info\x18\x01 \x01(\x0b\x32\x18.telegramBot.CompanyInfo\"k\n\x19InterviewScheduledRequest\x12\x18\n\x10s_candidate_name\x18\x01 \x01(\t\x12\x13\n\x0bs_user_name\x18\x02 \x01(\t\x12\x0e\n\x06s_date\x18\x03 \x01(\t\x12\x0f\n\x07s_tg_id\x18\x04 \x01(\t\"P\n\x0bTimeRequest\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\x12\x0e\n\x06n_user\x18\x02 \x01(\x05\x12 \n\x05\x64\x61tes\x18\x03 \x03(\x0b\x32\x11.telegramBot.Date\"P\n\x0cTimeResponse\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\x12\x0e\n\x06n_user\x18\x02 \x01(\x05\x12\x1f\n\x04\x64\x61te\x18\x03 \x01(\x0b\x32\x11.telegramBot.Date\"6\n\x04\x44\x61te\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12 \n\x05times\x18\x02 \x03(\x0b\x32\x11.telegramBot.Time\"\"\n\x04Time\x12\r\n\x05\x62\x65gin\x18\x01 \x01(\t\x12\x0b\n\x03\x65nd\x18\x02 \x01(\t2\xd9\x03\n\nBotService\x12\x32\n\x08getCache\x12\x12.telegramBot.Empty\x1a\x12.telegramBot.Cache\x12\x46\n\x11sendCandidateInfo\x12\x1d.telegramBot.CandidateRequest\x1a\x12.telegramBot.Empty\x12\x44\n\x10getCandidateInfo\x12\x11.telegramBot.TgId\x1a\x1d.telegramBot.CandidateRequest\x12\x42\n\x0binfoUpdated\x12\x1f.telegramBot.UpdatedCompanyInfo\x1a\x12.telegramBot.Empty\x12;\n\x0b\x66ormUpdated\x12\x18.telegramBot.UpdatedForm\x1a\x12.telegramBot.Empty\x12\x41\n\x0evacancyUpdated\x12\x1b.telegramBot.UpdatedVacancy\x1a\x12.telegramBot.Empty\x12\x45\n\x10\x66ormToVacUpdated\x12\x1d.telegramBot.UpdatedFormToVac\x1a\x12.telegramBot.Empty2\xeb\x01\n\x12\x42otCalendarService\x12P\n\x12interviewScheduled\x12&.telegramBot.InterviewScheduledRequest\x1a\x12.telegramBot.Empty\x12=\n\rsystemHasTime\x12\x18.telegramBot.TimeRequest\x1a\x12.telegramBot.Empty\x12\x44\n\x13\x63\x61ndidateChooseTime\x12\x19.telegramBot.TimeResponse\x1a\x12.telegramBot.Emptyb\x06proto3'
 )
 
 
@@ -229,15 +229,22 @@ _COMPANYINFO = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='s_name', full_name='telegramBot.CompanyInfo.s_name', index=0,
+      name='id', full_name='telegramBot.CompanyInfo.id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='s_message', full_name='telegramBot.CompanyInfo.s_message', index=1,
+      name='s_name', full_name='telegramBot.CompanyInfo.s_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='s_message', full_name='telegramBot.CompanyInfo.s_message', index=2,
+      number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -255,7 +262,7 @@ _COMPANYINFO = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=347,
-  serialized_end=395,
+  serialized_end=407,
 )
 
 
@@ -300,8 +307,8 @@ _CANDIDATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=398,
-  serialized_end=546,
+  serialized_start=410,
+  serialized_end=558,
 )
 
 
@@ -339,8 +346,8 @@ _CANDIDATERESUME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=548,
-  serialized_end=598,
+  serialized_start=560,
+  serialized_end=610,
 )
 
 
@@ -413,8 +420,8 @@ _CANDIDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=601,
-  serialized_end=754,
+  serialized_start=613,
+  serialized_end=766,
 )
 
 
@@ -445,8 +452,8 @@ _TGID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=756,
-  serialized_end=779,
+  serialized_start=768,
+  serialized_end=791,
 )
 
 
@@ -477,8 +484,8 @@ _UPDATEDVACANCY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=781,
-  serialized_end=836,
+  serialized_start=793,
+  serialized_end=848,
 )
 
 
@@ -509,8 +516,8 @@ _UPDATEDFORM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=838,
-  serialized_end=884,
+  serialized_start=850,
+  serialized_end=896,
 )
 
 
@@ -548,8 +555,8 @@ _UPDATEDFORMTOVAC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=886,
-  serialized_end=967,
+  serialized_start=898,
+  serialized_end=979,
 )
 
 
@@ -580,8 +587,8 @@ _UPDATEDCOMPANYINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=969,
-  serialized_end=1029,
+  serialized_start=981,
+  serialized_end=1041,
 )
 
 
@@ -614,6 +621,13 @@ _INTERVIEWSCHEDULEDREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='s_tg_id', full_name='telegramBot.InterviewScheduledRequest.s_tg_id', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -626,8 +640,8 @@ _INTERVIEWSCHEDULEDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1031,
-  serialized_end=1121,
+  serialized_start=1043,
+  serialized_end=1150,
 )
 
 
@@ -672,8 +686,8 @@ _TIMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1123,
-  serialized_end=1203,
+  serialized_start=1152,
+  serialized_end=1232,
 )
 
 
@@ -718,8 +732,8 @@ _TIMERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1205,
-  serialized_end=1285,
+  serialized_start=1234,
+  serialized_end=1314,
 )
 
 
@@ -757,8 +771,8 @@ _DATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1287,
-  serialized_end=1341,
+  serialized_start=1316,
+  serialized_end=1370,
 )
 
 
@@ -796,8 +810,8 @@ _TIME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1343,
-  serialized_end=1377,
+  serialized_start=1372,
+  serialized_end=1406,
 )
 
 _CACHE.fields_by_name['vacancies'].message_type = _VACANCY
@@ -976,8 +990,8 @@ _BOTSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1380,
-  serialized_end=1853,
+  serialized_start=1409,
+  serialized_end=1882,
   methods=[
   _descriptor.MethodDescriptor(
     name='getCache',
@@ -1062,8 +1076,8 @@ _BOTCALENDARSERVICE = _descriptor.ServiceDescriptor(
   index=1,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1856,
-  serialized_end=2091,
+  serialized_start=1885,
+  serialized_end=2120,
   methods=[
   _descriptor.MethodDescriptor(
     name='interviewScheduled',
