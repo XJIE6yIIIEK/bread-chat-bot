@@ -177,37 +177,38 @@ $("body").on("click", ".add_req_button", function(){
 
 // удаление таба по клику
 $("body").on("click", ".remove_vac_button", function() {
-    $(this).parent().remove();
-    let tab_id = $(this).parent().attr("data-tab");
-    deleteVacancy(this.parentNode.getAttribute("vac_id"));
-    $("#" + tab_id).remove();
+    if (confirm("Удалить вакансию?")) {
+        $(this).parent().remove();
+        let tab_id = $(this).parent().attr("data-tab");
+        deleteVacancy(this.parentNode.getAttribute("vac_id"));
+        $("#" + tab_id).remove();
 
-    if ($(".tabs_nav-btn").length > 0 && ! $(".tabs_nav-btn").hasClass('active'))
-    {
-        let first_tab_button = $(".tabs_nav-btn").first();
-        first_tab_button.addClass("active");
+        if ($(".tabs_nav-btn").length > 0 && !$(".tabs_nav-btn").hasClass('active')) {
+            let first_tab_button = $(".tabs_nav-btn").first();
+            first_tab_button.addClass("active");
 
-        let first_tab_content = $(".tabs_item").first();
-        first_tab_content.addClass("active");
+            let first_tab_content = $(".tabs_item").first();
+            first_tab_content.addClass("active");
+        }
     }
 });
 
 // удаление требования по клику
 $("body").on("click", ".remove_req_button", function() {
-    let this_form_id = this.parentNode.getAttribute("form_id");
-    if (this.parentNode.parentNode.id == "simpleList") // Если в основном листе
-    {
-        deleteForm(this_form_id);
-        document.querySelectorAll(".list-group-item").forEach(function (form) {
-            if (form.getAttribute("form_id")==this_form_id)
-            {
-                form.remove();
-            }
-        })
-    }
-    else {
-        deleteFTV(this.parentNode.parentNode.parentNode.getAttribute("vac_id"), this_form_id);
-        $(this).parent().remove();
+    if (confirm("Удалить требование?")) {
+        let this_form_id = this.parentNode.getAttribute("form_id");
+        if (this.parentNode.parentNode.id == "simpleList") // Если в основном листе
+        {
+            deleteForm(this_form_id);
+            document.querySelectorAll(".list-group-item").forEach(function (form) {
+                if (form.getAttribute("form_id") == this_form_id) {
+                    form.remove();
+                }
+            })
+        } else {
+            deleteFTV(this.parentNode.parentNode.parentNode.getAttribute("vac_id"), this_form_id);
+            $(this).parent().remove();
+        }
     }
 });
 
