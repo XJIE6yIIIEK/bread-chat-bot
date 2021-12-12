@@ -11,6 +11,9 @@ class endpoints
     static auth = "api/v1/auth";
     static vacancies = "api/v1/vacancies";
     static forms = "api/v1/forms";
-    static formsToVacs = "api/v1/formToVacs/1";
+    static formsToVacs = "api/v1/formToVacs";
     static candidates = "api/v1/candidates";
+    static botSettings = "api/v1/botSettings";
+    static authCheck = "api/v1/auth/check";
+    static info = "api/v1/commands";
 }

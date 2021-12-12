@@ -149,7 +149,7 @@ class Phrases:
 
     mistake_phrases = {"mistake": "", "too_long": "", "no_vacancies": "", "old_info": ""}
 
-    talk_phrases = {"what_info": "", "what_vacancy": "", "the_end": "", "main_info_done": "",
+    talk_phrases = {"on_start": "", "help": "", "what_info": "", "what_vacancy": "", "the_end": "", "main_info_done": "",
                     "is_your_choice": "", "lets_talk": "", "main_info": "", "not_choice": "",
                     "vacancy_info": "", "is_actual": "", "make_actual": "", "want_form": "",
                     "form_fill": "", "privacy_check": "", "privacy_cancel": ""}

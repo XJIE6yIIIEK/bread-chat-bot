@@ -3,7 +3,6 @@ function authCheck(request)
     if (request.getResponseHeader("Location"))
     {
         alert("SUCC");
-        // window.location.href = "auth-page.html";
         window.location.href = request.getResponseHeader("Location")
         return true;
     }
@@ -36,11 +35,11 @@ function auth(login, password)
 }
 function errorMessage()
 {
-    document.getElementById("error_label").innerHTML = "Неверный логие или пароль.";
+    document.getElementById("error_label").innerHTML = "Неверный логин или пароль";
 }
 function goToMain()
 {
-    document.location.href = "index.html";
+    window.location.href = "index.html";
 }
 
 $("body").on("click", ".enter_button", function(){
