@@ -154,6 +154,10 @@ h1, h2, h3, h4, h5, h6
 
     font-size: 20px;
 }
+.button_vac:hover{
+    background: #e2e2e2;
+    transition: background-color 0.3s;
+}
 .button_vac.active {
     background-color: #153949;
     color: #f1f1f1;
@@ -171,6 +175,10 @@ h1, h2, h3, h4, h5, h6
     cursor: pointer;
     
     font-size: 20px;
+}
+.button_info:hover{
+    background: #e2e2e2;
+    transition: background-color 0.3s;
 }
 .button_info.active {
     background-color: #153949;
@@ -190,7 +198,7 @@ h1, h2, h3, h4, h5, h6
 }
 
 .list-group-info{
-    max-height: 480px;
+    max-height: 500px;
     overflow-y: scroll;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
@@ -205,6 +213,29 @@ h1, h2, h3, h4, h5, h6
     border: 1px solid rgba(0,0,0,.125);
 }
 
+.add_info_button{
+    display: block;
+    margin-left: auto;
+    margin-right: auto; 
+    margin-bottom: 10px;
+    
+    border: none;
+    border-radius: 5px;
+
+    height: 30px;
+    width: 150px;
+
+    cursor: pointer;
+
+    background-color: #e2e2e2;
+
+    color: #153949;
+    font-weight: bold;
+    font-size: 12px;
+}
+.add_info_button:active{
+    background-color: #bdbdbd;
+ }
 /* Tabs */
 .tabs {
     display: none;
@@ -232,6 +263,11 @@ h1, h2, h3, h4, h5, h6
 }
 
 .add_vac_button{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px; 
+
     border: none;
     border-radius: 5px;
 
@@ -241,9 +277,20 @@ h1, h2, h3, h4, h5, h6
     cursor: pointer;
 
     background-color: #e2e2e2;
+
     color: #153949;
+    font-weight: bold;
+    font-size: 12px;
+}
+.add_vac_button:active{
+   background-color: #bdbdbd;
 }
 .add_req_button{
+    display: block;
+    margin-left: auto;
+    margin-right: auto; 
+    margin-bottom: 10px;
+
     border: none;
     border-radius: 5px;
 
@@ -256,16 +303,21 @@ h1, h2, h3, h4, h5, h6
 
     color: #153949;
     font-weight: bold;
-    font-size: 10px;
+    font-size: 12px;
 }
+.add_req_button:active{
+    background-color: #bdbdbd;
+ }
 
 .tabs_nav {
-    /*position: relative;*/
-    /*float: left;*/
+    height: 500px;
+
+    overflow-y: scroll;
+
     background-color: #f1f1f1;
 }
 .tabs_nav-btn {
-    display: block;
+    display: flex;
     background-color: #e2e1e1;
     color: black;
     padding: 22px 16px;
@@ -290,8 +342,11 @@ h1, h2, h3, h4, h5, h6
 }
 
 .tabs_content{
-    max-height: 480px;
-    max-height: 100px; 
+    height: 500px;
+
+    margin-left: 5px;
+
+    background-color: #e2e2e2;
 }
 .tabs_item {
     /*padding: 0px 12px;*/
@@ -309,18 +364,55 @@ h1, h2, h3, h4, h5, h6
 .list-group{   
    /* width: 100%;
     max-width: 600px; */
-    max-height: 480px;
+    
+    max-height: 500px;
     overflow-y: scroll;
     border: 1px solid #ccc;
     background-color: #f1f1f1;  
 }
 .list-group-item{
-    display: block;
+    display: flex;
     padding: 22px 16px;
     background-color: #fff;
     border: 1px solid rgba(0,0,0,.125);
 }
 
-.remove_req_button{
+.input-tabs-item{
+    border-radius: 5px;
+
+    height: auto;
+    width: auto;
+}
+
+.remove_vac_button{
+    background: none;
+    border: none;
+
     cursor: pointer;
+
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.remove_req_button{
+    background: none;
+    border: none;
+
+    cursor: pointer;
+
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.remove_info_button{
+    background: none;
+    border: none;
+
+    cursor: pointer;
+
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
 }

@@ -51,7 +51,6 @@ hr {
     border: none;
     cursor: pointer;
     width: 100%;
-    opacity: 0.9;
 }
 
 .registerbtn:hover {
@@ -82,6 +81,13 @@ hr {
 .enter_button:hover
 {
     background: #0d2530;
+    transition: background-color 0.3s;
+}
+
+.enter_button:active
+{
+    background: black;
+    transition: background-color 0.3s;
 }
 
 .e{
