@@ -5,6 +5,7 @@ service BotService {
     rpc getCache (Empty) returns (Cache);
     rpc sendCandidateInfo (CandidateRequest) returns (Empty);
     rpc getCandidateInfo (TgId) returns (CandidateRequest);
+    rpc candidateRejectVacancy () returns ();
 
     rpc infoUpdated (UpdatedCompanyInfo) returns (Empty);
     rpc formUpdated (UpdatedForm) returns (Empty);
@@ -118,4 +119,9 @@ message Date {
 message Time {
     string begin = 1;
     string end = 2;
+}
+
+message Rejection {
+    string s_tg_id = 1;
+    int32 n_vacancy = 2;
 }
