@@ -72,7 +72,12 @@ $.ajax({
     url:address()+endpoints.candidates+"/"+ id_cand_on_second_page,
     success: function (data, textStatus, request)
     {
-        authCheck(request);
         fillCandidate(data);
+    },
+    error: function(request, textStatus, errorThrown){
+        authCheck(request);
+    },
+    xhrFields: {
+        withCredentials: true
     }
 })
