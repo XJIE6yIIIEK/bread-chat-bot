@@ -137,16 +137,18 @@ h1, h2, h3, h4, h5, h6
     justify-content: space-between;
 
     width: 100%;
-    max-width: 600px;
+    max-width: 1000px;
     margin: 30px auto;
 }
 
-.button_vac {
+#buttons_body_head {
     border-radius: 5px;
     border: none;
 
     height: 50px;
     width: 250px;
+
+    margin: 0 20px 0 20px;
 
     background: none;
 
@@ -154,35 +156,17 @@ h1, h2, h3, h4, h5, h6
 
     font-size: 20px;
 }
-.button_vac:hover{
+#buttons_body_head:hover{
     background: #e2e2e2;
     transition: background-color 0.3s;
 }
-.button_vac.active {
+#buttons_body_head.active {
     background-color: #153949;
     color: #f1f1f1;
 }
 
-.button_info {
-    border-radius: 5px;
-    border: none;
-
-    height: 50px;
-    width: 250px;
-
-    background: none;
-
-    cursor: pointer;
-    
-    font-size: 20px;
-}
-.button_info:hover{
-    background: #e2e2e2;
-    transition: background-color 0.3s;
-}
-.button_info.active {
-    background-color: #153949;
-    color: #f1f1f1;
+.vac_settings{
+    display: flex;
 }
 
 /* Comp Info */
@@ -237,11 +221,11 @@ h1, h2, h3, h4, h5, h6
     background-color: #bdbdbd;
  }
 /* Tabs */
-.tabs {
+.vac_and_common {
     display: none;
 }
 
-.tabs.active {
+.vac_and_common.active {
     display: flex;
     justify-content: space-between; 
 
@@ -256,6 +240,34 @@ h1, h2, h3, h4, h5, h6
 
 .tab_flex{
     display: flex;
+}
+
+.vac{
+  display: none;  
+}
+
+.vac.active{
+    display: block;  
+}
+
+.common{
+    display: none;  
+}
+  
+.common.active{
+    display: block;
+    
+    width: 300px;
+    height: 500px;
+
+    background-color: #e2e2e2;
+}
+
+.list-group-common {
+    max-height: 500px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
 }
 
 .right_container_tabs{
