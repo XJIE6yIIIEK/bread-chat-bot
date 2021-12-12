@@ -15,5 +15,4 @@ class endpoints
     static candidates = "api/v1/candidates";
     static botSettings = "api/v1/botSettings";
     static authCheck = "api/v1/auth/check";
-    static info = "api/v1/commands";
 }
