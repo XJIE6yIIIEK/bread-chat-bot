@@ -1,3 +1,4 @@
+// rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
 function authCheck(request)
 {
     if (request.getResponseHeader("Location"))
