@@ -67,7 +67,8 @@ function checkSameForm(list, item)
 }
 function changeForm(text, form_id, source)
 {
-    renameForm(form_id, text);
+    renameAfterTimeout(renameForm, source, form_id, text);
+    //renameForm(form_id, text);
     document.querySelectorAll(".list-group-item").forEach(function (form){
         if (form != source && form.getAttribute("form_id")==form_id)
         {
@@ -86,8 +87,11 @@ function AddTab(vac_name, vac_id) {
     tab_button.setAttribute("data-tab", "tab_" + number_tab);
     
     let input = document.createElement("input");
+    input.setAttribute("timer_id","-1");
     input.addEventListener("input", function(evt){
-        renameVacancy(evt.target.parentNode.getAttribute("vac_id"), evt.target.value);
+        let target = evt.target;
+        renameAfterTimeout(renameVacancy, target, target.parentNode.getAttribute("vac_id"), target.value);
+        //renameVacancy(evt.target.parentNode.getAttribute("vac_id"), evt.target.value);
     });
     input.classList.add("input-tabs-item");
     input.placeholder = "вакансия*";
@@ -149,6 +153,7 @@ function AddForm (frm_name, form_id, list= document.getElementById("simpleList")
     let input = document.createElement("input");
     input.classList.add("input-tabs-item");
     input.placeholder = "Вопрос*";
+    input.setAttribute("timer_id","-1");
     if (frm_name != null)
     input.value = frm_name;
     input.addEventListener("input", function(evt){
@@ -242,6 +247,16 @@ Sortable.create(simpleList, {
         });
     }
 });
+
+function renameAfterTimeout(func, target, id, text)
+{
+    let last_timer = target.getAttribute("timer_id");
+    if (last_timer != "-1")
+    {
+        clearTimeout(last_timer);
+    }
+    target.setAttribute("timer_id", setTimeout(func, 1000, id, text));
+}
 
 function createForm()
 {
