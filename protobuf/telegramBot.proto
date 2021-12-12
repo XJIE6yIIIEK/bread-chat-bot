@@ -44,8 +44,9 @@ message VacancyForm {
 }
 
 message CompanyInfo {
-    string s_name = 1;
-    string s_message = 2;
+    string id = 1;
+    string s_name = 2;
+    string s_message = 3;
 }
 
 message CandidateRequest {
@@ -94,6 +95,7 @@ message InterviewScheduledRequest {
     string s_candidate_name = 1;
     string s_user_name = 2;
     string s_date = 3;
+    string s_tg_id = 4;
 }
 
 message TimeRequest {

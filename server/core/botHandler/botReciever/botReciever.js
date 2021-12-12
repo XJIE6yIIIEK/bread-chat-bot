@@ -54,7 +54,9 @@ class BotRecieverController {
 
         var candidate = await BotRecieverService.addCandidateInfo(candidateInfo);
         await BotRecieverService.addCandidateResume(candidate, candidateResumes);
-        await BotRecieverService.addWantedVacancy(candidate, wantedVacancy);
+        if(wantedVacancy){
+            await BotRecieverService.addWantedVacancy(candidate, wantedVacancy);
+        }
 
         callback(null, {});
     }
