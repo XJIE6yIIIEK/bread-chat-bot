@@ -5,7 +5,7 @@ service BotService {
     rpc getCache (Empty) returns (Cache);
     rpc sendCandidateInfo (CandidateRequest) returns (Empty);
     rpc getCandidateInfo (TgId) returns (CandidateRequest);
-    rpc candidateRejectVacancy () returns ();
+    rpc candidateRejectVacancy (Rejection) returns ();
 
     rpc infoUpdated (UpdatedCompanyInfo) returns (Empty);
     rpc formUpdated (UpdatedForm) returns (Empty);
