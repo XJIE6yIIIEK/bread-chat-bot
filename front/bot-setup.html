@@ -8,46 +8,77 @@
 <body>
 
     <header class = "header">
-        <div class = "container">
-            <div class = "header_inner">   
-                <nav class = "nav">
-                    <a class = "nav_link" href = "index.html">главная</a>
-                    <a class = "nav_link" href = "candidates.html">кандидаты</a>
-                    <a class = "nav_link" href = "bot-setup.html">настройка бота</a>
-                </nav>
+        <div class = "header_inner">   
+                <div class="left_container_nav">
+                    <a class = "nav_link" href = "index.html">Главная</a>
+                    <a class = "nav_link" href = "candidates.html">Кандидаты</a>
+                    <a class = "nav_link" href = "bot-setup.html">Настройка бота</a>
+                </div>
+
+                <div class="right_container_nav">
+                    <div class="dropdown">
+                        <div class="dropbtn"></div>
+                        <div class="dropdown-content">
+                          <a href="#">Личный кабинет</a>
+                          <a href="auth-page.html">Выход</a>
+                        </div>
+                      </div>
+                </div>
             </div>
         </div>
     </header>
 
-    <div class="tabs">
+    <div class="body_head">
+        <button  class="button_vac active" 
+            onclick="
+                document.querySelector('.tabs').classList.add('active'), 
+                document.querySelector('.comp_info').classList.remove('active'),
 
-        <div class="tabs_header">
-            <button class="add_vac_button">Добавить вакансию</button>  
-            <button class="add_req_button" id="add_req">Добавить требование</button>
-        </div>
+                document.querySelector('.button_vac').classList.add('active'), 
+                document.querySelector('.button_info').classList.remove('active')
+            ">
+        Настройка вакансий
+        </button>  
 
-        <div class="tabs_main">
-            <div class="tabs_nav">        
-            </div>
-           
-   
-           <div class="tabs_content">
-           </div>
-   
-           <div class="list-group" id="simpleList">
-            </div>
-        </div>
-        
+        <button class="button_info" 
+            onclick="
+                document.querySelector('.comp_info').classList.add('active'), 
+                document.querySelector('.tabs').classList.remove('active'),
+
+                document.querySelector('.button_info').classList.add('active'), 
+                document.querySelector('.button_vac').classList.remove('active')
+            ">
+        Информация о компании
+        </button>  
     </div>
 
-    <button>Сохранить изменения</button>
+    <div class="tabs active">
+        <div class="left_container_tabs">
+            <button class="add_vac_button">Добавить вакансию</button>  
+            <div class="tab_flex">
+                <div class="tabs_nav"></div>
+                <div class="tabs_content"></div>
+            </div>
+        </div>
         
+        <div class="right_container_tabs">
+           <button class="add_req_button" id="add_req">Добавить требование</button>
+           <div class="list-group" id="simpleList"></div>   
+        </div> 
+    </div>
+
+    <div class="comp_info">
+        <button class="add_info_button" id="add_info">Добавить информацию</button>
+        <div class="list-group-info" id="simpleList_info"> </div>
+    </div>       
+
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="config.js"></script>
     <!-- Latest Sortable -->
     <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
     <script src="auth.js"></script>
   
-    <script src="bot-setup-script.js"></script>
+    <script src="vacancy-setup-script.js"></script>
+    <script src="company-info-setup-script.js"></script>
 </body>
 </html>
