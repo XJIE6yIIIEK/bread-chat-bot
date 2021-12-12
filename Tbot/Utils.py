@@ -82,6 +82,7 @@ class BotStates(StatesGroup):
     InterviewFormYN: State = State()
     InterviewFormAnswer: State = State()
     InterviewVac: State = State()
+    ChooseDate: State = State()
 
 
 async def SetBotCommands() -> None:
@@ -97,6 +98,10 @@ class Shortcuts:
         @staticmethod
         def getState(msg) -> aiogram.dispatcher.storage.FSMContext:
             return BotStuff.dp.current_state(user=msg.from_user.id)
+
+        @staticmethod
+        def getStateByTGID(tg_id) -> aiogram.dispatcher.storage.FSMContext:
+            return BotStuff.dp.current_state(user=tg_id)
 
         @staticmethod
         async def initUser(msg) -> None:

@@ -78,7 +78,7 @@ async def hub_button(call: types.CallbackQuery):
     key = call.data[4:]
     if case == "iau:":
         if key in CachedDB.info_ab_us:
-            await Shortcuts.Messages.answer(call, CachedDB.info_ab_us[key])
+            await Shortcuts.Messages.answer(call, CachedDB.info_ab_us[key]["message"])
         else:
             await Shortcuts.Messages.answer(call, Phrases.mistake_phrases["old_info"])
     elif case == "vac:":
@@ -153,6 +153,13 @@ async def req_info_talk(msg: types.Message):
         await BotStates.Hub.set()
     else:
         await Shortcuts.Interview.ReqTalk.reqAsk(msg)
+
+
+@BotStuff.dp.callback_query_handler(state="*")
+async def start_date_choose(call: types.CallbackQuery):
+    print("A")
+    if call.data == Phrases.talk_commands["start_date_choose"]:
+        pass
 
 
 if __name__ == '__main__':

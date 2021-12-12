@@ -49,7 +49,7 @@ class Clienting:
         freeSomeForms()
 
         for ob in cache.companyInfos:
-            CachedDB.info_ab_us[ob.s_name] = ob.s_message
+            CachedDB.info_ab_us[ob.id] = {"name": ob.s_name, "message": ob.s_message}
 
         print("Main client setup is done. Getting cache is done.")
 
@@ -108,10 +108,12 @@ class Clienting:
 class Servering:
     class ServClass(pb2_g.BotServiceServicer):
         def infoUpdated(self, request: pb2.UpdatedCompanyInfo, context):
-            if request.info.s_name in CachedDB.info_ab_us and CachedDB.info_ab_us[request.info.s_name] == request.info.s_message:
-                CachedDB.info_ab_us.pop(request.info.s_name)
+            if (request.info.id in CachedDB.info_ab_us) and \
+                    (CachedDB.info_ab_us[request.info.id]["name"] == request.info.s_name) and \
+                    (CachedDB.info_ab_us[request.info.id]["message"] == request.info.s_message):
+                CachedDB.info_ab_us.pop(request.info.id)
             else:
-                CachedDB.info_ab_us[request.info.s_name] = request.info.s_message
+                CachedDB.info_ab_us[request.info.id] = {"name": request.info.s_name, "message": request.info.s_message}
             KeyboardsService.fillInfoKb()
             return pb2.Empty()
 

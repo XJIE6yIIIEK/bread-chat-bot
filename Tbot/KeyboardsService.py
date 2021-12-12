@@ -4,8 +4,9 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, KeyboardBu
 
 def fillInfoKb():
     GlobalStuff.Keyboards.info_kb = InlineKeyboardMarkup()
-    for ob in GlobalStuff.CachedDB.info_ab_us:
-        GlobalStuff.Keyboards.info_kb.add(InlineKeyboardButton(ob, callback_data="iau:"+str(ob)))
+    iau = GlobalStuff.CachedDB.info_ab_us
+    for ob in iau:
+        GlobalStuff.Keyboards.info_kb.add(InlineKeyboardButton(iau[ob]["name"], callback_data="iau:"+str(ob)))
 
 
 def fillVacsKb():
@@ -20,6 +21,13 @@ def fillReplyKbs():
     GlobalStuff.Keyboards.hub_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["want_change"]))
     GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["yes"]))
     GlobalStuff.Keyboards.yesno_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["no"]))
+    GlobalStuff.Keyboards.ok_kb.add(KeyboardButton(GlobalStuff.Phrases.talk_commands["ok"]))
+
+
+def chooseDateKb() -> InlineKeyboardMarkup:
+    kb = InlineKeyboardMarkup()
+    kb.add(InlineKeyboardButton(GlobalStuff.Phrases.talk_commands["choose_date "], callback_data="start_date_choose"))
+    return kb
 
 
 def createDatesKb(times) -> InlineKeyboardMarkup:
