@@ -28,6 +28,10 @@ class UserService {
 
     async get(userId){
         var user = await UserRepository.get({
+            attributes: [
+                's_name',
+                'e_mail'
+            ],
             where: {
                 id: userId
             }

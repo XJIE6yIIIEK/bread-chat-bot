@@ -10,4 +10,4 @@ def is_valid_date(text: str) -> bool:
 
 
 def is_valid_str(text: str) -> bool:
-    return len(text) <= 64
+    return len(text) <= 256

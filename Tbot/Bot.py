@@ -18,10 +18,7 @@ Utils.setupBot()
 async def start_com(msg: types.Message):
     await Utils.SetBotCommands()
     await Shortcuts.Messages.send_msg(msg,
-                                      "Приветствую!\n"
-                                      "Для получения помощи используйте команду /help\n"
-                                      "Если бот не отвечает на ваши запросы, перезапустите его с помощью команды /start\n"
-                                      "Отсутствие отклика после будет означать, что бот временно выведен из строя.",
+                                      Phrases.talk_phrases["on_start"],
                                       Keyboards.hub_kb)
     await BotStates.Hub.set()
     await Shortcuts.User.initUser(msg)
@@ -100,7 +97,7 @@ async def vacancy_choice(msg: types.Message):
             await BotStates.InterviewVac.set()
         else:
             await Shortcuts.Messages.send_msg(msg, Phrases.talk_phrases["main_info"])
-            await start_main_interview()
+            await start_main_interview(msg)
     else:
         await BotStates.Hub.set()
         await Shortcuts.User.setVTI(msg)

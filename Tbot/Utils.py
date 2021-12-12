@@ -20,16 +20,16 @@ def getPhrases() -> None:
     config.read("phrases.ini", encoding="utf-8")
     try:
         for step in range(len(GlobalStuff.Phrases.main_info_phrases)):
-            GlobalStuff.Phrases.main_info_phrases[step]["R"] = config["step"+str(step)]["R"].replace("_", " ")
-            GlobalStuff.Phrases.main_info_phrases[step]["F"] = config["step"+str(step)]["F"].replace("_", " ")
+            GlobalStuff.Phrases.main_info_phrases[step]["R"] = config["step"+str(step)]["R"].replace("_", " ").replace("\\n", "\n")
+            GlobalStuff.Phrases.main_info_phrases[step]["F"] = config["step"+str(step)]["F"].replace("_", " ").replace("\\n", "\n")
             if step == 5:
-                GlobalStuff.Phrases.main_info_phrases[step]["A"] = config["step"+str(step)]["A"].replace("_", " ")
+                GlobalStuff.Phrases.main_info_phrases[step]["A"] = config["step"+str(step)]["A"].replace("_", " ").replace("\\n", "\n")
         for phrase in GlobalStuff.Phrases.mistake_phrases:
-            GlobalStuff.Phrases.mistake_phrases[phrase] = config["talk"][phrase]
+            GlobalStuff.Phrases.mistake_phrases[phrase] = config["talk"][phrase].replace("_", " ").replace("\\n", "\n")
         for phrase in GlobalStuff.Phrases.talk_phrases:
-            GlobalStuff.Phrases.talk_phrases[phrase] = config["talk"][phrase]
+            GlobalStuff.Phrases.talk_phrases[phrase] = config["talk"][phrase].replace("_", " ").replace("\\n", "\n")
         for phrase in GlobalStuff.Phrases.talk_commands:
-            GlobalStuff.Phrases.talk_commands[phrase] = config["talk_commands"][phrase]
+            GlobalStuff.Phrases.talk_commands[phrase] = config["talk_commands"][phrase].replace("_", " ").replace("\\n", "\n")
         print("Phrases config is done.")
     except KeyError:
         print("Phrases config error: File structure is invalid.")
