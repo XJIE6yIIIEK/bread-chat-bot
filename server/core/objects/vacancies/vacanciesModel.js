@@ -9,8 +9,7 @@ var Vacancies = Sequelize.define('t_vacancies', {
     },
     s_name: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: true
     }
 });
 

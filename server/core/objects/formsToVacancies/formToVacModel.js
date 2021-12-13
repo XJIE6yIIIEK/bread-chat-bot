@@ -1,7 +1,7 @@
 var Sequelize = require('../../db/db');
 var {DataTypes} = require('sequelize');
 
-var FormToVacs = Sequelize.define('t_form_to_vac', {
+var FormToVacs = Sequelize.define('t_form_to_vacs', {
     n_vacancy: {
         type: DataTypes.INTEGER,
         primaryKey: true,

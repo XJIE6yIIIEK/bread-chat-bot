@@ -2,11 +2,13 @@ var Router = require('express');
 var router = new Router();
 const CommandsController = require('../../../core/objects/commands/botCommands/commandsController');
 
+var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
+
 router.post('/', CommandsController.create);
 router.get('/', CommandsController.getAll);
 
-router.patch('/:s_name', CommandsController.patch);
-router.delete('/:s_name', CommandsController.delete);
-router.get('/:s_name', CommandsController.get);
+router.put('/:id', CommandsController.patch);
+router.delete('/:id', CommandsController.delete);
+router.get('/:id', CommandsController.get);
 
 module.exports = router;

@@ -11,8 +11,8 @@ class AuthService {
     async verifyToken(token, tokenType, id, callbacks){
         jwttoken.verify(
             token,
-            process.env.JWT_SECRET_WORD,
-            function(err, data) {
+            (tokenType == 's_access_token' ? process.env.JWT_ACCESS_SECRET_WORD : process.env.JWT_REFRESH_SECRET_WORD),
+            async function(err, data) {
                 //Токен не валиден
                 if(err && err.name != 'TokenExpiredError'){
                     return callbacks.tokenError();
@@ -57,13 +57,13 @@ class AuthService {
 
         var token = jwttoken.sign(
             payload,
-            (tokenType == 'access' ? process.env.JWT_ACCESS_SECRET_WORD : process.env.JWT_REFRESH_SECRET_WORD), 
+            (tokenType == 's_access_token' ? process.env.JWT_ACCESS_SECRET_WORD : process.env.JWT_REFRESH_SECRET_WORD), 
             {
-                expiresIn: (tokenType == 'access' ? process.env.JWT_ACCESS_EXPIRE_TIME : process.env.JWT_REFRESH_EXPIRE_TIME)
+                expiresIn: (tokenType == 's_access_token' ? process.env.JWT_ACCESS_EXPIRE_TIME : process.env.JWT_REFRESH_EXPIRE_TIME)
             }
         );
 
-        if(tokenType == 'access'){
+        if(tokenType == 's_access_token'){
             user.s_access_token = token;
         } else {
             user.s_refresh_token = token;

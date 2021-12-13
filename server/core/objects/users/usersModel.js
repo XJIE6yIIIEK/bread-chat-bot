@@ -15,7 +15,7 @@ var Users = Sequelize.define('t_users', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    e_mail: {
+    s_login: {
         type: DataTypes.STRING,
         allowNull: true
     },

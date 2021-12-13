@@ -19,7 +19,7 @@ class CommandsService {
     async patch(data, next){
         var command = await CommandsRepository.get({
             where: {
-                s_name: data.s_name
+                id: data.id
             }
         });
 
@@ -40,10 +40,10 @@ class CommandsService {
         await CommandsRepository.patch(command);
     }
 
-    async delete(s_name, next){
+    async delete(id, next){
         var command = await CommandsRepository.get({
             where: {
-                s_name: s_name
+                id: id
             }
         });
 
@@ -52,16 +52,16 @@ class CommandsService {
         }
 
         await BotTransmitterService.infoUpdated({
-            s_name: command.s_name
+            id: command.id
         });
 
         await CommandsRepository.delete(command);
     }
 
-    async get(s_name, next){
+    async get(id, next){
         var command = await CommandsRepository.get({
             where: {
-                s_name: s_name
+                id: id
             }
         });
 

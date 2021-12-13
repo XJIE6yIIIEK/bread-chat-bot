@@ -2,6 +2,10 @@ const CandidatesRepository = require('./candidatesRepository');
 const DBRepository = require('../../db/dbRepository');
 const CandidateStatusesRepository = require('../candidateStatuses/candidateStatusesRepository');
 const Sequelize = require('../../db/db');
+const CalendarReposiotry = require('../calendar/calendarRepository');
+const CalendarService = require('../calendar/calendarService');
+const CalendarTransmitterService = require('../../calendarHandler/calendarTransmitterService');
+const BotCalendarTransmitterService = require('../../botHandler/botCalendarTransmitter/botCalendarTransmitterService');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class CandidatesService {
@@ -125,6 +129,71 @@ class CandidatesService {
             candidateStatus: status,
             favorite: (favorite == null) ? false : true
         };
+    }
+
+    async meetingAvailability(suggestionsData, n_user, n_candidate, n_vacancy, responseCallback){
+        if(suggestionsData.err){
+            switch(suggestionsData.err){
+                case 'noAvailTime': {
+                    responseCallback(ErrorHandler.badRequest(
+                        'Нет свободного времени для собеседования. Задайте другой интервал для поиска или сократите время собеседования'
+                    ));
+                } break;
+
+                case 'notSignedIn': {
+                    responseCallback(ErrorHandler.badRequest(
+                        'Авторизуйтесь в сервисах Microsoft в личном кабинете'
+                    ));
+                } break;
+            }
+            return;
+        }
+
+        CalendarService.setMeetingAvailability(n_user, n_vacancy, n_candidate);
+
+        BotCalendarTransmitterService.sendSuggestions(suggestionsData, n_vacancy, n_candidate);
+        
+        responseCallback({message: 'Время для собеседования найдено. Кандидату отправлены все возможные варианты собеседования.'});
+        return;
+    }
+
+    async setMeeting(userId, candidateId, vacancyId, meetingData, responseCallback){        
+        var meeting = await CalendarReposiotry.get({
+            where: {
+                n_vacancy: vacancyId,
+                n_candidate: candidateId
+            }
+        });
+
+        if(!meeting){
+            await CalendarTransmitterService.createNewMeeting(
+                userId,
+                meetingData,
+                responseCallback,
+                async (suggestionsData) => {
+                    this.meetingAvailability(suggestionsData, userId, candidateId, vacancyId, responseCallback);
+                }
+            );
+            return;
+        }
+
+        if(!meeting.n_user == userId){
+
+        }
+
+        switch(meeting.n_status){
+            case 1: {
+
+            } break;
+
+            case 2: {
+                
+            } break;
+
+            case 3: {
+
+            } break;
+        }
     }
 }
 

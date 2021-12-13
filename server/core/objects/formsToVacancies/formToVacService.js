@@ -1,5 +1,6 @@
 const FormToVacsRepository = require('./formToVacRepository');
 const BotTransmitterService = require('../../botHandler/botTransmitter/botTransmitterService');
+const FormsService = require('../forms/formsService');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class FormToVacsService {
@@ -10,6 +11,8 @@ class FormToVacsService {
             formToVac: formToVac,
             delete: false
         });
+
+        await FormsService.deleteGeneral(formToVac.n_form);
 
         return formToVac;
     }
@@ -24,15 +27,30 @@ class FormToVacsService {
     }
 
     async delete(data, next){
-        var formToVac = await FormToVacsRepository.get({
-            where: {
-                n_vacancy: data.n_vacancy,
-                n_form: data.n_form
-            }
-        });
+        var formToVac;
+        
+        try{
+            formToVac = await FormToVacsRepository.get({
+                where: {
+                    n_vacancy: data.n_vacancy,
+                    n_form: data.n_form
+                }
+            });
+        } catch(e) {
+            return ErrorHandler.badRequest(
+                'Неверные значения соответствия', 
+                {
+                    error: e.message,
+                    requestValues: {
+                        n_vacancy: data.n_vacancy,
+                        n_form: data.n_form
+                    }
+                }
+            );
+        }
 
         if(!formToVac){
-            return next(ErrorHandler.notFound('Соединение не найдено'));
+            return ErrorHandler.notFound('Соединение не найдено');
         }
 
         await BotTransmitterService.formToVacUpdated({

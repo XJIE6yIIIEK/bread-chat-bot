@@ -4,8 +4,16 @@ const ErrorHandler = require('../errorHandlers/errorHandler');
 
 class AuthService {
     async authenticate(credentials){
+        if(!credentials.s_login){
+            return ErrorHandler.badRequest('Отсутствует логин');
+        }
+
+        if(!credentials.s_password){
+            return ErrorHandler.badRequest('Отсутствует пароль');
+        }
+
         var user = await UserRepository.get({
-            e_mail: credentials.e_mail
+            s_login: credentials.s_login
         });
 
         if(!user){
@@ -21,17 +29,18 @@ class AuthService {
         var accessToken = await AuthUtils.generateToken({
                 id: user.id
             },
-            'access',
+            's_access_token',
             user.id
         );
 
         var refreshToken = await AuthUtils.generateToken(
             {},
-            'refresh',
+            's_refresh_token',
             user.id
         );
 
         return {
+            userId: user.id,
             accessToken: accessToken,
             refreshToken: refreshToken
         };

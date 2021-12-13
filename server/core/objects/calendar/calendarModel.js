@@ -1,7 +1,7 @@
 var Sequelize = require('../../db/db');
 var {DataTypes} = require('sequelize');
 
-var Calendar = Sequelize.define('t_calendar', {
+var Calendar = Sequelize.define('t_meetings', {
     n_candidate: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,9 +12,18 @@ var Calendar = Sequelize.define('t_calendar', {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
     },
-    n_user: {
+    n_vacancy: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        references: {
+            model: 't_vacancies',
+            key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+    },
+    n_user: {
+        type: DataTypes.INTEGER,
         references: {
             model: 't_users',
             key: 'id'
@@ -22,9 +31,24 @@ var Calendar = Sequelize.define('t_calendar', {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
     },
+    n_status: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+        references: {
+            model: 't_meeting_statuses',
+            key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+    },
     d_date: {
-        type: DataTypes.DATEONLY,
-        allowNull: false
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    s_duration: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 

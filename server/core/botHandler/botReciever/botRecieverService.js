@@ -10,6 +10,7 @@ class BotRecieverService {
     async getCache(){
         const companyInfos = await CommandsRepository.getAll({
             attributes: [
+                'id',
                 's_name',
                 's_message'
             ]
@@ -18,7 +19,8 @@ class BotRecieverService {
         const forms = await FormsRepository.getAll({
             attributes: [
                 'id',
-                's_name'
+                's_name',
+                'b_general'
             ]
         });
 
@@ -163,6 +165,7 @@ class BotRecieverService {
                 's_phone_number',
                 's_address',
                 'e_mail',
+                's_tg_id',
                 's_external_resumes'
             ],
             where: {

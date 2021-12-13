@@ -5,7 +5,7 @@ class CandidatesController {
     async delete(req, res, next){
         var candidateId = req.params.id;
         await CandidatesService.delete(candidateId, next);
-        return res.status(203);
+        return res.status(203).end();
     }
 
     async get(req, res, next){
@@ -17,17 +17,36 @@ class CandidatesController {
         if(candidate instanceof ErrorHandler){
             return next(candidate);
         }
-        return res.status(200).json(candidate);
+        return res.status(200).json(candidate).end();
     }
 
     async getAll(req, res, next){
-        res.header('Access-Control-Expose-Headers', 'Location');
-        res.header('Location', req.header('Origin') + '/index.html');
         req.user = {
             id: 1
         };
         var candidates = await CandidatesService.getAll(req.user.id);
-        return res.status(200).json(candidates);
+        return res.status(200).json(candidates).end();
+    }
+
+    async setMeeting(req, res, next){
+        userId = req.user.id;
+        candidateId = req.params.id;
+        vacancyId = req.params.n_vacancy;
+        meetingData = req.body;
+
+        await CandidatesService.setMeeting(
+            userId,
+            candidateId,
+            vacancyId,
+            meetingData,
+            async (result) => {
+                if(result instanceof ErrorHandler){
+                    return next(result);
+                }
+
+                return res.status(200).json(result).end();
+            }
+        );
     }
 }
 

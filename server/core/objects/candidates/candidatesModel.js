@@ -44,6 +44,11 @@ var Candidates = Sequelize.define('t_candidates', {
     s_external_resumes: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    b_rejected: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     }
 });
 

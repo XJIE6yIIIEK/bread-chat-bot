@@ -9,7 +9,12 @@ var Forms = Sequelize.define('t_forms', {
     },
     s_name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
+    },
+    b_general: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
     }
 });
 
