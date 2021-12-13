@@ -121,9 +121,9 @@ message Date {
 }
 
 message Time {
-    string beginISO = 1;
-    string endISO = 2;
-    string beginEnd = 3
+    string beginEnd = 1;
+    string beginISO = 2;
+    string endISO = 3;
 }
 
 message Rejection {
