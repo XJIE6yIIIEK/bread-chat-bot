@@ -32,6 +32,7 @@ message Cache {
 message Form {
     int32 id = 1;
     string s_name = 2;
+    bool b_general = 3;
 }
 
 message Vacancy {
@@ -101,14 +102,14 @@ message InterviewScheduledRequest {
 
 message TimeRequest {
     string s_tg_id = 1;
-    int32 n_user = 2;
+    int32 n_vacancy = 2;
     repeated Date dates = 3;
 }
 
 message TimeResponse {
     string s_tg_id = 1;
-    int32 n_user = 2;
-    Date date = 3;
+    int32 n_vacancy = 2;
+    Time date = 3;
 }
 
 message Date {
@@ -117,8 +118,9 @@ message Date {
 }
 
 message Time {
-    string begin = 1;
-    string end = 2;
+    string beginISO = 1;
+    string endISO = 2;
+    string beginEnd = 3
 }
 
 message Rejection {
