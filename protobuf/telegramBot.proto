@@ -14,10 +14,12 @@ service BotService {
 }
 
 service BotCalendarService {
-    rpc interviewScheduled (InterviewScheduledRequest) returns (Empty);
     rpc systemHasTime (TimeRequest) returns (Empty);
+    rpc interviewScheduled (InterviewScheduledRequest) returns (Empty);
 
     rpc candidateChooseTime (TimeResponse) returns (Empty);
+    rpc rejectMeeting (Rejection) returns (Empty);
+    rpc rejectAll (HardReject) returns (Empty);
 }
 
 message Empty {}
@@ -94,10 +96,11 @@ message UpdatedCompanyInfo {
 }
 
 message InterviewScheduledRequest {
-    string s_candidate_name = 1;
-    string s_user_name = 2;
-    string s_date = 3;
-    string s_tg_id = 4;
+    string s_vacancy = 1;
+    string s_candidate_name = 2;
+    string s_user_name = 3;
+    string s_date = 4;
+    string s_tg_id = 5;
 }
 
 message TimeRequest {
@@ -126,4 +129,8 @@ message Time {
 message Rejection {
     string s_tg_id = 1;
     int32 n_vacancy = 2;
+}
+
+message HardReject {
+    string s_tg_id = 1;
 }
