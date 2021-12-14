@@ -1,7 +1,9 @@
+import GlobalStuff
 from GlobalStuff import CachedDB, Keyboards, BotStuff, Phrases
 import Utils
 from Utils import Shortcuts
 import ConnectionService
+import CalendarServering
 import KeyboardsService
 from Utils import BotStates
 from aiogram import types
@@ -32,31 +34,106 @@ async def help_com(msg: types.Message):
                                            "соответствующую кнопку навигации.")
 
 
-async def start_main_info_talk(msg):
-    await Shortcuts.Interview.MainInfoTalk.mainInfoAsk(msg, True)
-    await BotStates.InterviewMain.set()
-
-
-async def start_main_interview(msg):
-    if not await Shortcuts.User.firstTime(msg):
-        await start_main_info_talk(msg)
-    else:
-        await Shortcuts.Messages.send_msg(msg, Phrases.talk_phrases["privacy_check"], Keyboards.yesno_kb)
-        await BotStates.CheckPrivacy.set()
-
-
-@BotStuff.dp.message_handler(state=BotStates.CheckPrivacy)
-async def check_privacy_process(msg: types.Message):
-    if Shortcuts.Messages.compare_message(msg.text, Phrases.talk_commands["yes"]):
-        await start_main_info_talk(msg)
-    else:
-        await Shortcuts.Messages.send_msg(msg, Phrases.talk_phrases["privacy_cancel"], Keyboards.hub_kb)
-        await BotStates.Hub.set()
-
-
 @BotStuff.dp.message_handler(state='*', commands=['change'])
 async def change_com(msg: types.Message):
     await start_main_interview(msg)
+
+
+@BotStuff.dp.message_handler(state='*', commands=['set_meeting'])
+async def set_meeting(msg: types.Message):
+    dates = GlobalStuff.CachedDB.dates[str(msg.from_user.id)]
+    kb = KeyboardsService.createMeetingVacanciesKb(dates)
+    await Shortcuts.Messages.send_msg(msg, "Выберите вакансию, дату собеседования на которую хотите установить:", kb)
+    if kb is None:
+        await Shortcuts.Messages.send_msg(msg, "К сожалению, сейчас нет одобренных вакансий для Вас.")
+
+
+async def showDatesPage(call, vac: int, page_start: int = 0):
+    await call.answer()
+    tg_id = str(call.from_user.id)
+    vac_dates = GlobalStuff.CachedDB.dates[tg_id][vac]
+    kb = KeyboardsService.createDatesKb(vac_dates, vac, page_start)
+    await call.message.edit_text("Выберите день собеседования:", reply_markup=kb)
+
+
+async def showTimesPage(call, vac: int, date: int):
+    await call.answer()
+    tg_id = str(call.from_user.id)
+    date_times = GlobalStuff.CachedDB.dates[tg_id][vac][date].times
+    kb = KeyboardsService.createTimesKb(date_times, vac, date)
+    await call.message.edit_text("Выберите время: ", reply_markup=kb)
+
+
+@BotStuff.dp.callback_query_handler(lambda callback_query: callback_query.data.split("/")[0] == "meeting", state='*')
+async def choose_interview_date(call: types.CallbackQuery):
+    guide = call.data.split("/")
+
+    if guide[1] == "vac":
+        await showDatesPage(call, int(guide[2]))
+    elif guide[1] == "prev":
+        await showDatesPage(call, int(guide[2]), int(guide[3]))
+    elif guide[1] == "next":
+        await showDatesPage(call, int(guide[2]), int(guide[3]))
+    elif guide[1] == "date":
+        await showTimesPage(call, int(guide[2]), int(guide[3]))
+    elif guide[1] == "back":
+        await showDatesPage(call, int(guide[2]))
+    elif guide[1] == "confirm":
+        tg_id = str(call.from_user.id)
+        vac = int(guide[2])
+        date = GlobalStuff.CachedDB.dates[tg_id][vac][int(guide[3])].date
+        time = GlobalStuff.CachedDB.dates[tg_id][vac][int(guide[3])].times[int(guide[4])]
+        kb = KeyboardsService.createTimeConfirmKb(call.data, int(guide[2]), int(guide[3]))
+        await call.message.edit_text("Ваш выбор: "+date+" : "+time.beginEnd+"Вы уверены?", reply_markup=kb)
+    elif guide[1] == "set":
+        tg_id = str(call.from_user.id)
+        vac = int(guide[2])
+        date = int(guide[3])
+        time = GlobalStuff.CachedDB.dates[tg_id][vac][date].times[int(guide[4])]
+        await call.answer()
+        await call.message.edit_text("Собеседование назначено! Посмотреть даты назначенных вакансий вы можете используя команду /get_meetings", reply_markup=None)
+        await Shortcuts.User.setMeeting(call, vac, time)
+        GlobalStuff.CachedDB.dates[tg_id].pop(vac)
+        ConnectionService.CalendarClienting.candidateChooseTime(tg_id, vac, time)
+
+
+@BotStuff.dp.message_handler(state='*', commands=['get_meetings'])
+async def get_meetings(msg: types.Message):
+    meetings = await Shortcuts.User.getMeetings(msg)
+    dates_text = ""
+    for vac in meetings:
+        dates_text += meetings[vac]+"\n"
+    await Shortcuts.Messages.send_msg(msg, "Назначенные собеседования:"+dates_text+"Вы можете использовать команду /reject для отмены собеседований.")
+
+
+async def ShowMeetingRej(msg):
+    meetings = await Shortcuts.User.getMeetings(msg)
+    kb = KeyboardsService.createRejectionKb(meetings)
+    await Shortcuts.Messages.send_msg(msg, "Назначенные собеседования:", kb)
+
+
+@BotStuff.dp.message_handler(state='*', commands=['reject'])
+async def reject_meetings(msg: types.Message):
+    await ShowMeetingRej(msg)
+
+
+@BotStuff.dp.callback_query_handler(lambda callback_query: callback_query.data.split("/")[0] == "reject", state='*')
+async def reject_confirm(call: types.CallbackQuery):
+    guide = call.data.split("/")
+    if guide[1] == "ask":
+        kb = KeyboardsService.createRejectConfirmKb(call.data)
+        await call.message.edit_text("Вы уверены?", reply_markup=kb)
+    elif guide[1] == "cancel":
+        await ShowMeetingRej(call)
+    elif guide[1] == "confirm":
+        tg_id = str(call.from_user.id)
+        if guide[2] == "all":
+            await Shortcuts.User.deleteAllMeetings(call)
+            ConnectionService.CalendarClienting.rejectAll(tg_id)
+        else:
+            vac = int(guide[2])
+            await Shortcuts.User.deleteMeeting(call, vac)
+            ConnectionService.CalendarClienting.rejectMeeting(tg_id, vac)
 
 
 @BotStuff.dp.message_handler(state=BotStates.Hub)
@@ -86,6 +163,28 @@ async def hub_button(call: types.CallbackQuery):
         await Shortcuts.User.setVTI(call, int(key))
         await Shortcuts.Messages.send_msg(call, CachedDB.all_vacs[int(key)] + Phrases.talk_phrases["is_your_choice"], Keyboards.yesno_kb)
         await BotStates.VacancyChoice.set()
+
+
+async def start_main_info_talk(msg):
+    await Shortcuts.Interview.MainInfoTalk.mainInfoAsk(msg, True)
+    await BotStates.InterviewMain.set()
+
+
+async def start_main_interview(msg):
+    if not await Shortcuts.User.firstTime(msg):
+        await start_main_info_talk(msg)
+    else:
+        await Shortcuts.Messages.send_msg(msg, Phrases.talk_phrases["privacy_check"], Keyboards.yesno_kb)
+        await BotStates.CheckPrivacy.set()
+
+
+@BotStuff.dp.message_handler(state=BotStates.CheckPrivacy)
+async def check_privacy_process(msg: types.Message):
+    if Shortcuts.Messages.compare_message(msg.text, Phrases.talk_commands["yes"]):
+        await start_main_info_talk(msg)
+    else:
+        await Shortcuts.Messages.send_msg(msg, Phrases.talk_phrases["privacy_cancel"], Keyboards.hub_kb)
+        await BotStates.Hub.set()
 
 
 @BotStuff.dp.message_handler(state=BotStates.VacancyChoice)
@@ -142,6 +241,7 @@ async def form_info_answer(msg: types.Message):
         await main_info_done(msg)
     else:
         await Shortcuts.Interview.FreeFormTalk.freeFormAsk(msg)
+        await BotStates.InterviewFormAsk.set()
 
 
 @BotStuff.dp.message_handler(state=BotStates.InterviewVac)
@@ -168,9 +268,8 @@ if __name__ == '__main__':
 
         ConnectionService.Servering.setupServer()
 
-        # CalendarServering.setupServer()
-        # ConnectionService.Calendar.Clienting.setupClient()
-        # ConnectionService.Calendar.Servering.setupServer()
+        CalendarServering.setupServer()
+        ConnectionService.CalendarClienting.setupClient()
 
         KeyboardsService.fillInfoKb()
         KeyboardsService.fillVacsKb()

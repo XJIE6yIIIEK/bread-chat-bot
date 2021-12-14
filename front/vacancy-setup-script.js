@@ -1,3 +1,4 @@
+
 function fillAllTabs(data)
 {
     for ( key in data )
@@ -25,6 +26,11 @@ function fillAllForms(data)
     {
         AddForm(data[key].s_name, data[key].id);
     };
+    for ( key in data ) {
+        if (data[key].b_general) {
+            AddForm(data[key].s_name, data[key].id, document.getElementById("simpleList_common"));
+        }
+    }
 }
 
 function fillAllInfo(data)
@@ -65,9 +71,23 @@ function checkSameForm(list, item)
     })
     return hassame;
 }
+function checkGeneral(item)
+{
+    let out = false;
+    document.getElementById("simpleList_common").childNodes.forEach(function (ob){
+        if (ob.classList != undefined){
+            if (ob.getAttribute("form_id") == item.getAttribute("form_id"))
+            {
+                out = true;
+            }
+        }
+    })
+    return out;
+}
 function changeForm(text, form_id, source)
 {
-    renameForm(form_id, text);
+    renameAfterTimeout(renameForm, source, form_id, text);
+    //renameForm(form_id, text);
     document.querySelectorAll(".list-group-item").forEach(function (form){
         if (form != source && form.getAttribute("form_id")==form_id)
         {
@@ -86,8 +106,10 @@ function AddTab(vac_name, vac_id) {
     tab_button.setAttribute("data-tab", "tab_" + number_tab);
     
     let input = document.createElement("input");
+    input.setAttribute("timer_id","-1");
     input.addEventListener("input", function(evt){
-        renameVacancy(evt.target.parentNode.getAttribute("vac_id"), evt.target.value);
+        let target = evt.target;
+        renameAfterTimeout(renameVacancy, target, target.parentNode.getAttribute("vac_id"), target.value);
     });
     input.classList.add("input-tabs-item");
     input.placeholder = "вакансия*";
@@ -126,7 +148,14 @@ function AddTab(vac_name, vac_id) {
             let hs = checkSameForm(evt.to, evt.item);
             if (!hs)
             {
-                createFTV(evt.to.parentNode.getAttribute("vac_id"), evt.item.getAttribute("form_id"));
+                if (!checkGeneral(evt.item)) {
+                    createFTV(evt.to.parentNode.getAttribute("vac_id"), evt.item.getAttribute("form_id"));
+                }
+                else
+                {
+                    evt.item.remove();
+                    alert("Требование является общим, потому добавление его в требования вакансии невозможно. Вы можете удалить требование из списка общих требований.");
+                }
             }
         }
     }); // если сразу вносить list_name, то не будет работать
@@ -149,6 +178,7 @@ function AddForm (frm_name, form_id, list= document.getElementById("simpleList")
     let input = document.createElement("input");
     input.classList.add("input-tabs-item");
     input.placeholder = "Вопрос*";
+    input.setAttribute("timer_id","-1");
     if (frm_name != null)
     input.value = frm_name;
     input.addEventListener("input", function(evt){
@@ -195,19 +225,29 @@ $("body").on("click", ".remove_vac_button", function() {
 
 // удаление требования по клику
 $("body").on("click", ".remove_req_button", function() {
-    if (confirm("Удалить требование?")) {
-        let this_form_id = this.parentNode.getAttribute("form_id");
-        if (this.parentNode.parentNode.id == "simpleList") // Если в основном листе
-        {
-            deleteForm(this_form_id);
-            document.querySelectorAll(".list-group-item").forEach(function (form) {
-                if (form.getAttribute("form_id") == this_form_id) {
-                    form.remove();
-                }
-            })
-        } else {
-            deleteFTV(this.parentNode.parentNode.parentNode.getAttribute("vac_id"), this_form_id);
-            $(this).parent().remove();
+    if (this.parentNode.parentNode.id == "simpleList_common")
+    {
+        if (confirm("Удалить требование?")) {
+            removeGeneral(this.parentNode.getAttribute("form_id"));
+            this.parentNode.remove();
+        }
+    }
+    else {
+        if (confirm("Удалить требование?")) {
+            let this_form_id = this.parentNode.getAttribute("form_id");
+            if (this.parentNode.parentNode.id == "simpleList") // Если в основном листе
+            {
+                deleteForm(this_form_id);
+                document.querySelectorAll(".list-group-item").forEach(function (form) {
+                    if (form.getAttribute("form_id") == this_form_id) {
+                        form.remove();
+                    }
+                })
+            }
+            else {
+                deleteFTV(this.parentNode.parentNode.parentNode.getAttribute("vac_id"), this_form_id);
+                $(this).parent().remove();
+            }
         }
     }
 });
@@ -242,6 +282,16 @@ Sortable.create(simpleList, {
         });
     }
 });
+
+function renameAfterTimeout(func, target, id, text)
+{
+    let last_timer = target.getAttribute("timer_id");
+    if (last_timer != "-1")
+    {
+        clearTimeout(last_timer);
+    }
+    target.setAttribute("timer_id", setTimeout(func, 1000, id, text));
+}
 
 function createForm()
 {
