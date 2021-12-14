@@ -160,6 +160,33 @@ class Shortcuts:
             candidate = (await state.get_data())["candidate"]
             Clienting.sendCandidateInfo(candidate)
 
+        @staticmethod
+        async def setMeeting(msg, vac: int, date: str) -> None:
+            state = Shortcuts.User.getState(msg)
+            candidate = (await state.get_data())["candidate"]
+            candidate.meetings[vac] = date
+            await state.update_data(candidate=candidate)
+
+        @staticmethod
+        async def getMeetings(msg) -> dict:
+            state = Shortcuts.User.getState(msg)
+            candidate = (await state.get_data())["candidate"]
+            return candidate.meetings
+
+        @staticmethod
+        async def deleteMeeting(msg, vac: int) -> None:
+            state = Shortcuts.User.getState(msg)
+            candidate = (await state.get_data())["candidate"]
+            candidate.meetings.pop(vac)
+            await state.update_data(candidate=candidate)
+
+        @staticmethod
+        async def deleteAllMeetings(msg) -> None:
+            state = Shortcuts.User.getState(msg)
+            candidate = (await state.get_data())["candidate"]
+            candidate.meetings = {}
+            await state.update_data(candidate=candidate)
+
     class Messages:
         @staticmethod
         async def send_msg_to_user(user: int, msg: str, kb=None) -> None:

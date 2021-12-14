@@ -30,6 +30,7 @@ class CachedDB:
     form_to_vac: dict = {}
 
     dates: dict = {}
+    dates_assigned: dict = {}
 
 
 class Keyboards:
@@ -46,6 +47,7 @@ class Candidate:
         self.forms: dict = {}
         self.wantedVacancy: int = -1
         self.__first_time: bool = True
+        self.meetings: dict = {}
 
     def main_info(self, index: int):
         i = 0

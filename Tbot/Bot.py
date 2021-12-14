@@ -82,8 +82,8 @@ async def choose_interview_date(call: types.CallbackQuery):
         tg_id = str(call.from_user.id)
         vac = int(guide[2])
         date = GlobalStuff.CachedDB.dates[tg_id][vac][int(guide[3])].date
-        time = GlobalStuff.CachedDB.dates[tg_id][vac][guide[3]].times[int(guide[4])]
-        kb = KeyboardsService.createTimeConfirmKb(call.data, int(guide[2], int(guide[3])))
+        time = GlobalStuff.CachedDB.dates[tg_id][vac][int(guide[3])].times[int(guide[4])]
+        kb = KeyboardsService.createTimeConfirmKb(call.data, int(guide[2]), int(guide[3]))
         await call.message.edit_text("Ваш выбор: "+date+" : "+time.beginEnd+"Вы уверены?", reply_markup=kb)
     elif guide[1] == "set":
         tg_id = str(call.from_user.id)
@@ -91,13 +91,49 @@ async def choose_interview_date(call: types.CallbackQuery):
         date = int(guide[3])
         time = GlobalStuff.CachedDB.dates[tg_id][vac][date].times[int(guide[4])]
         await call.answer()
-        await call.message.edit_text("Собеседование назначено!", reply_markup=None)
+        await call.message.edit_text("Собеседование назначено! Посмотреть даты назначенных вакансий вы можете используя команду /get_meetings", reply_markup=None)
+        await Shortcuts.User.setMeeting(call, vac, time)
+        GlobalStuff.CachedDB.dates[tg_id].pop(vac)
         ConnectionService.CalendarClienting.candidateChooseTime(tg_id, vac, time)
 
 
 @BotStuff.dp.message_handler(state='*', commands=['get_meetings'])
 async def get_meetings(msg: types.Message):
-    pass
+    meetings = await Shortcuts.User.getMeetings(msg)
+    dates_text = ""
+    for vac in meetings:
+        dates_text += meetings[vac]+"\n"
+    await Shortcuts.Messages.send_msg(msg, "Назначенные собеседования:"+dates_text+"Вы можете использовать команду /reject для отмены собеседований.")
+
+
+async def ShowMeetingRej(msg):
+    meetings = await Shortcuts.User.getMeetings(msg)
+    kb = KeyboardsService.createRejectionKb(meetings)
+    await Shortcuts.Messages.send_msg(msg, "Назначенные собеседования:", kb)
+
+
+@BotStuff.dp.message_handler(state='*', commands=['reject'])
+async def reject_meetings(msg: types.Message):
+    await ShowMeetingRej(msg)
+
+
+@BotStuff.dp.callback_query_handler(lambda callback_query: callback_query.data.split("/")[0] == "reject", state='*')
+async def reject_confirm(call: types.CallbackQuery):
+    guide = call.data.split("/")
+    if guide[1] == "ask":
+        kb = KeyboardsService.createRejectConfirmKb(call.data)
+        await call.message.edit_text("Вы уверены?", reply_markup=kb)
+    elif guide[1] == "cancel":
+        await ShowMeetingRej(call)
+    elif guide[1] == "confirm":
+        tg_id = str(call.from_user.id)
+        if guide[2] == "all":
+            await Shortcuts.User.deleteAllMeetings(call)
+            ConnectionService.CalendarClienting.rejectAll(tg_id)
+        else:
+            vac = int(guide[2])
+            await Shortcuts.User.deleteMeeting(call, vac)
+            ConnectionService.CalendarClienting.rejectMeeting(tg_id, vac)
 
 
 @BotStuff.dp.message_handler(state=BotStates.Hub)

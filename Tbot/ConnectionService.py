@@ -94,6 +94,9 @@ class Clienting:
         out.external_resumes = external_resumes
         out.wantedVacancy = candidate.wantedVacancy
 
+        for meeting in candidate.candidateMeetings:
+            out.meetings[meeting.n_vacancy] = meeting.d_date
+
         if out.name != "":
             out.first_time = False
 

@@ -78,3 +78,16 @@ def createTimeConfirmKb(call_data: str, vac: int, date: int):
     return kb
 
 
+def createRejectionKb(meetings: dict) -> InlineKeyboardMarkup:
+    kb = InlineKeyboardMarkup()
+    for vac in meetings:
+        kb.add(InlineKeyboardButton(GlobalStuff.CachedDB.all_vacs[vac]+" : "+meetings[vac], "reject/ask/"+str(vac)))
+    kb.add(InlineKeyboardButton("Отменить все собеседования", "reject/ask/"+"all"))
+    return kb
+
+
+def createRejectConfirmKb(call_data: str):
+    kb = InlineKeyboardMarkup()
+    kb.add(InlineKeyboardButton("Да", callback_data=call_data.replace("ask", "confirm")))
+    kb.add(InlineKeyboardButton("Нет", callback_data="reject/cancel"))
+    return kb
