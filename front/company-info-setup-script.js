@@ -21,7 +21,7 @@ function AddInfo (info_id, info_name, info_message){
     div.classList.add("list-group-item-info");
     div.setAttribute("info_id", info_id);
 
-    let input_name_button = document.createElement("input");
+    let input_name_button = document.createElement("textarea");
     input_name_button.classList.add("input-tabs-item");
     input_name_button.placeholder = "Наименование кнопки*";
     input_name_button.setAttribute("timer_id", "0");
@@ -29,8 +29,9 @@ function AddInfo (info_id, info_name, info_message){
     input_name_button.value = info_name;
     div.appendChild(input_name_button);
 
-    let input_info = document.createElement("input");
+    let input_info = document.createElement("textarea");
     input_info.classList.add("input-tabs-item");
+    input_info.id = ("info_company");
     input_info.placeholder = "Информация о компании*";
     input_info.setAttribute("timer_id","0");
     if (info_message != null)
