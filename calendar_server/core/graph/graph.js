@@ -86,6 +86,16 @@ class GraphService {
         
         return events;
     }
+
+    async setMeetingTime(msalClient, userId, start, end){
+        var client = await this.getAuthenticatedClient(msalClient, userId);
+        var user = await this.getUserDetails(msalClient, userId);
+
+        const timeZoneId = iana.findIana(user.mailboxSettings.timeZone)[0];
+
+        var startTime = zonedTimeToUtc(new Date(start), timeZoneId.valueOf());
+        var endTime = addDays(zonedTimeToUtc(new Date(end), timeZoneId.valueOf()), 1);
+    }
 }
 
 module.exports = new GraphService();

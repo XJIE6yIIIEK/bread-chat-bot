@@ -24,16 +24,33 @@ class CalendarTransmitter {
         this.client = new calendar_proto.CalendarService(process.env.CALENDAR_ADDRESS + ':' + process.env.CALENDAR_PORT, grpc.credentials.createInsecure());
     }
 
-    async findMeetingTime(meetingPayload, callback){
+    async findMeetingTime(meetingPayload, callbackToService){
         this.client.findMeetingTime(
             meetingPayload,
             (error, response) => {
-                if(response.err){
-                    console.log(err);
+                if(!response){
                     return;
                 }
 
-                callback(response);
+                callbackToService(response);
+            }
+        );
+    }
+
+    async trySetMeetingTime(data, candidateServiceCallback, rpcCallback){
+        this.client.trySetMeetingTime({
+                n_user: data.n_user,
+                beginISO: data.date.times[0].beginISO,
+                endISO: data.date.times[0].endISO
+            },
+            (error, response) => {
+                if(error){
+                    rpcCallback({err: 'wrongTime'});
+                    return;
+                }
+                
+                rpcCallback();
+                candidateServiceCallback();
             }
         );
     }

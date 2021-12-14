@@ -149,6 +149,7 @@ class CandidatesService {
             return;
         }
 
+        
         CalendarService.setMeetingAvailability(n_user, n_vacancy, n_candidate);
 
         BotCalendarTransmitterService.sendSuggestions(suggestionsData, n_vacancy, n_candidate);
@@ -169,7 +170,6 @@ class CandidatesService {
             await CalendarTransmitterService.createNewMeeting(
                 userId,
                 meetingData,
-                responseCallback,
                 async (suggestionsData) => {
                     this.meetingAvailability(suggestionsData, userId, candidateId, vacancyId, responseCallback);
                 }
@@ -177,23 +177,38 @@ class CandidatesService {
             return;
         }
 
-        if(!meeting.n_user == userId){
-
-        }
-
         switch(meeting.n_status){
             case 1: {
-
+                responseCallback(ErrorHandler.badRequest('Кандидат ещё рассматривает предложение на собеседование.'));
             } break;
 
             case 2: {
-                
+                responseCallback(ErrorHandler.badRequest('Кандидату уже назначено собеседование.'));
             } break;
 
-            case 3: {
+            case 3:
+            case 4: {
+                if(!meeting.n_user == userId){
+                    responseCallback(ErrorHandler.badRequest('Невозможно управлять кандидатами других HR.'));
+                    break;
+                }
 
+                await CalendarTransmitterService.createNewMeeting(
+                    userId,
+                    meetingData,
+                    async (suggestionsData) => {
+                        this.meetingAvailability(suggestionData, userId, candidateId, vacancyId, responseCallback);
+                    }
+                );
             } break;
         }
+    }
+
+    async setMeetingTime(data, meeting){
+        meeting.n_status = 2;
+        meeting.d_date = data.date.times[0].beginISO;
+
+        CalendarRepository.patch(meeting);
     }
 }
 

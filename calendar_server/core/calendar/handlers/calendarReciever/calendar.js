@@ -24,7 +24,8 @@ class CalendarReciever {
         this.server = new grpc.Server();
 
         this.server.addService(calendar_reciever_proto.CalendarService.service, {
-            findMeetingTime: this.findMeetingTime
+            findMeetingTime: this.findMeetingTime,
+            trySetMeetingTime: this.trySetMeetingTime
         });
 
         this.server.bindAsync(process.env.CALENDAR_ADDRESS + ':' + process.env.CALENDAR_PORT, grpc.ServerCredentials.createInsecure(), () => {
@@ -40,7 +41,17 @@ class CalendarReciever {
         };
 
         var result = await CalendarService.findMeetingTime(call.request.userId, meetingData);
-        callback(result);
+        callback(null, result);
+    }
+
+    async trySetMeetingTime(call, callback){
+        var meetingData = {
+            n_user: call.request.n_user,
+            beginISO: call.request.beginISO,
+            endISO: call.request.endISO
+        }
+
+        
     }
 }
 

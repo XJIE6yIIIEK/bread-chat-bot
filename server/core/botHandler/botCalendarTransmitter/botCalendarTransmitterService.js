@@ -9,10 +9,12 @@ class BotCalendarTransmitterService {
             }
         });
 
+        delete suggestions.err;
+
         var data = {
             s_tg_id: candidate.s_tg_id,
             n_vacancy: n_vacancy,
-            dates: suggestions
+            dates: suggestions.dates
         };
         BotCalendarTransmitter.sendSuggestions(data);
     }

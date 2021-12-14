@@ -29,10 +29,11 @@ class CandidatesController {
     }
 
     async setMeeting(req, res, next){
-        userId = req.user.id;
-        candidateId = req.params.id;
-        vacancyId = req.params.n_vacancy;
-        meetingData = req.body;
+        var userId = 1;
+        //var userId = req.user.id;
+        var candidateId = req.params.id;
+        var vacancyId = req.params.n_vacancy;
+        var meetingData = req.body;
 
         await CandidatesService.setMeeting(
             userId,

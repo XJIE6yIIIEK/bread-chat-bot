@@ -5,6 +5,7 @@ var CandidatesRepository = require('../../objects/candidates/candidatesRepositor
 var ResumesRepository = require('../../objects/resumes/resumesRepository');
 var FormToVacsRepository = require('../../objects/formsToVacancies/formToVacRepository');
 var WantedVacanciesRepository = require('../../objects/wantedVacancy/wantedVacancyRepository');
+var DBRepository = require('../../db/dbRepository');
 
 class BotRecieverService {
     async getCache(){
@@ -186,9 +187,18 @@ class BotRecieverService {
             }
         });
 
+        const meetings = await DBRepository.rawQuery(
+            'SELECT t_meetings.n_vacancy, t_meetings.n_status, t_meeting_statuses.s_name AS s_status, to_char(t_meetings.d_date, "DD.MM.YYYY HH:mm") AS d_date FROM t_meetings ' +
+            `WHERE n_candidate = ${candidate.id} ` +
+            'JOIN t_meeting_statuses ' +
+            'ON t_meeting_statuses.id = t_meetings.n_status',
+            'SELECT'
+        );
+
         return {
             candidateMainInfo: candidate,
-            candidateResumes: resume
+            candidateResumes: resume,
+            candidateMeetings: meetings
         };
     }
 }

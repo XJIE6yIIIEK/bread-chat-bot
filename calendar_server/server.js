@@ -8,7 +8,7 @@ var fs = require('fs');
 const HTTP_PORT = process.env.HTTP_PORT || 5000;
 const HTTPS_PORT = process.env.HTTPS_PORT || 5001;
 
-//var CalendarReciever = require('./core/calendar/handlers/calendarReciever/calendar');
+var CalendarReciever = require('./core/calendar/handlers/calendarReciever/calendar');
 const sequelize = require('./core/db/db');
 const models = require('./core/db/models');
 const AuthRouter = require('./api/routes/authRouter');
@@ -58,7 +58,7 @@ var start = async () => {
 
         dbInit();
 
-        //CalendarReciever.initialize();
+        CalendarReciever.initialize();
     } catch(e) {
         throw e;
     }

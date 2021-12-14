@@ -17,6 +17,7 @@ const models = require('./core/db/models');
 const BotReciever = require('./core/botHandler/botReciever/botReciever');
 const BotTransmitter = require('./core/botHandler/botTransmitter/botTransmitter');
 const BotCalendarTransmittrer = require('./core/botHandler/botCalendarTransmitter/botCalendarTransmitter');
+const BotCalendarReciever = require('./core/botHandler/botCalendarReciever/botCalendarReciever');
 const CalendarTransmitter = require('./core/calendarHandler/calendarTransmitter');
 const ErrorHandlerMiddleware = require('./core/middlewares/errorMiddleware');
 const dbInitialization = require('./core/db/dbInit');
@@ -74,6 +75,8 @@ var start = async () => {
         BotTransmitter.initialize();
 
         BotCalendarTransmittrer.initialize();
+        BotCalendarReciever.initialize();
+
         CalendarTransmitter.initialize();
     } catch(e) {
         throw e;

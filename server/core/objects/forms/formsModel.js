@@ -14,7 +14,7 @@ var Forms = Sequelize.define('t_forms', {
     b_general: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true
+        defaultValue: false
     }
 });
 

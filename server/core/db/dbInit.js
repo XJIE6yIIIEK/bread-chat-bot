@@ -38,6 +38,12 @@ module.exports = async () => {
         }
     });
 
+    var meetingStatusTimeout = await  MeetingStatusesRepository.get({
+        where: {
+            id: 4
+        }
+    });
+
     if(!candidateStatusNotReaded){
         await CandidateStatusesRepository.create({
             s_name: 'Ожидает рассмотрения'
@@ -71,6 +77,12 @@ module.exports = async () => {
     if(!meetingStatusRejectedByCandidate){
         await MeetingStatusesRepository.create({
             s_name: 'Предложенное время отклонено кандидатом'
+        });
+    }
+
+    if(!meetingStatusTimeout){
+        await MeetingStatusesRepository.create({
+            s_name: 'Превышено время ожидания ответа от кандидата'
         });
     }
 }

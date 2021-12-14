@@ -45,10 +45,6 @@ var Calendar = Sequelize.define('t_meetings', {
     d_date: {
         type: DataTypes.DATE,
         allowNull: true
-    },
-    s_duration: {
-        type: DataTypes.STRING,
-        allowNull: true
     }
 });
 

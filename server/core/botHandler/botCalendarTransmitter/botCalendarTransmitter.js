@@ -28,7 +28,7 @@ class BotCalendarTransmitter {
         this.client.systemHasTime(
             data,
             (error, response) => {
-                
+                console.log(error);
             }
         );
     }
