@@ -15,14 +15,17 @@ service BotService {
 
 service BotCalendarService {
     rpc systemHasTime (TimeRequest) returns (Empty);
-    rpc interviewScheduled (InterviewScheduledRequest) returns (Empty);
 
-    rpc candidateChooseTime (TimeResponse) returns (Empty);
+    rpc candidateChooseTime (TimeResponse) returns (Error);
     rpc rejectMeeting (Rejection) returns (Empty);
     rpc rejectAll (HardReject) returns (Empty);
 }
 
 message Empty {}
+
+message Error {
+    string err = 1;
+}
 
 message Cache {
     repeated Vacancy vacancies = 1;
