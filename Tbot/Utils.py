@@ -1,5 +1,6 @@
 import aiogram.utils.exceptions
 import ipaddress
+import requests
 
 import GlobalStuff
 from GlobalStuff import CachedDB, BotStuff, Keyboards
@@ -89,12 +90,18 @@ async def SetBotCommands() -> None:
     await BotStuff.dp.bot.set_my_commands([
         types.BotCommand("start", "Запустить бота"),
         types.BotCommand("help", "Помощь"),
-        types.BotCommand("change", "Изменить основную информацию о себе")
+        types.BotCommand("change", "Изменить основную информацию о себе"),
+        types.BotCommand("set_meeting", "Выбрать дату интервью"),
+        types.BotCommand("get_meetings", "Назначенные интервью")
     ])
 
 
 class Shortcuts:
     class User:
+        @staticmethod
+        def getTGID(msg) -> str:
+            return str(msg.from_user.id)
+
         @staticmethod
         def getState(msg) -> aiogram.dispatcher.storage.FSMContext:
             return BotStuff.dp.current_state(user=msg.from_user.id)
@@ -107,14 +114,16 @@ class Shortcuts:
         async def initUser(msg) -> None:
             state = Shortcuts.User.getState(msg)
             candidate = Clienting.getCandidateInfo(msg.from_user.id)
-            if candidate.tg_id != msg.from_user.id:
-                candidate.first_time = True
-                candidate.tg_id = msg.from_user.id
-            else:
-                candidate.first_time = False
+            candidate.tg_id = msg.from_user.id
             await state.update_data(candidate=candidate)
             await state.update_data(vac_to_int=-1)
             await state.update_data(step=0)
+            key = candidate.tg_id
+            if key is not str:
+                key = str(key)
+            dates = GlobalStuff.CachedDB.dates
+            if key not in dates or (key in dates and len(dates[key]) == 0):
+                GlobalStuff.CachedDB.dates[key] = {}
 
         @staticmethod
         async def setVTI(msg, num: int = -1) -> None:
@@ -139,15 +148,21 @@ class Shortcuts:
             return candidate.first_time
 
         @staticmethod
+        async def privacyChecked(msg) -> None:
+            state = Shortcuts.User.getState(msg)
+            candidate = (await state.get_data())["candidate"]
+            candidate.first_time = False
+            await state.update_data(candidate=candidate)
+
+        @staticmethod
         async def send(msg) -> None:
             state = Shortcuts.User.getState(msg)
             candidate = (await state.get_data())["candidate"]
-            print(candidate)
             Clienting.sendCandidateInfo(candidate)
 
     class Messages:
         @staticmethod
-        async def send_msg_to_user(user, msg: str, kb=None) -> None:
+        async def send_msg_to_user(user: int, msg: str, kb=None) -> None:
             if kb is not None:
                 if kb != -1:
                     await BotStuff.bot.send_message(user, msg, reply_markup=kb)
@@ -159,6 +174,11 @@ class Shortcuts:
         @staticmethod
         async def send_msg(u_msg, msg: str, kb=None) -> None:
             await Shortcuts.Messages.send_msg_to_user(u_msg.from_user.id, msg, kb)
+
+        @staticmethod
+        def sendMessageByRequest(tg_id: str, text: str):
+            send_text = 'https://api.telegram.org/bot' + GlobalStuff.Conn.token + '/sendMessage?chat_id=' + tg_id + '&parse_mode=Markdown&text=' + text
+            requests.get(send_text)
 
         @staticmethod
         async def answer(call: types.CallbackQuery, text: str) -> None:
@@ -234,8 +254,8 @@ class Shortcuts:
                     await state.update_data(step=0)
                 candidate = (await state.get_data())["candidate"]
                 step = int((await state.get_data())["step"])
-                if len(CachedDB.form_to_vac[0]) > step:
-                    form = CachedDB.form_to_vac[0][step]
+                if len(CachedDB.general_forms) > step:
+                    form = CachedDB.general_forms[step]
                     await Shortcuts.Messages.send_msg(call, CachedDB.all_forms[form])
                     if form in candidate.forms:
                         await Shortcuts.Messages.send_msg(call, GlobalStuff.Phrases.talk_phrases["is_actual"] + candidate.forms[form], Keyboards.yesno_kb)
@@ -250,14 +270,14 @@ class Shortcuts:
                 state = Shortcuts.User.getState(call)
                 step = int((await state.get_data())["step"])
                 candidate = (await state.get_data())["candidate"]
-                form = CachedDB.form_to_vac[0][step]
-                case1: bool = form not in candidate.forms and Shortcuts.Messages.compare_message(call.text, GlobalStuff.Phrases.talk_commands["yes"])
-                case2: bool = form in candidate.forms and Shortcuts.Messages.compare_message(call.text, GlobalStuff.Phrases.talk_commands["no"])
-                if case1 or case2:
-                    if case2:
+                form = CachedDB.general_forms[step]
+                c1: bool = form not in candidate.forms and Shortcuts.Messages.compare_message(call.text, GlobalStuff.Phrases.talk_commands["yes"])
+                c2: bool = form in candidate.forms and Shortcuts.Messages.compare_message(call.text, GlobalStuff.Phrases.talk_commands["no"])
+                if c1 or c2:
+                    if c2:
                         candidate.forms.pop(form)
                         await Shortcuts.Messages.send_msg(call, GlobalStuff.Phrases.talk_phrases["make_actual"])
-                    else:
+                    elif c1:
                         await Shortcuts.Messages.send_msg(call, GlobalStuff.Phrases.talk_phrases["form_fill"])
                     return True
                 else:
@@ -271,12 +291,12 @@ class Shortcuts:
                 candidate = (await state.get_data())["candidate"]
                 step = int((await state.get_data())["step"])
                 if len(CachedDB.form_to_vac[0]) > step:
-                    form = CachedDB.form_to_vac[0][step]
+                    form = CachedDB.general_forms[step]
                     candidate.forms[form] = call.text
                     step += 1
                     await state.update_data(step=step)
                     await state.update_data(candidate=candidate)
-                return step >= len(CachedDB.form_to_vac[0])
+                return step >= len(CachedDB.general_forms)
 
         class ReqTalk:
             @staticmethod

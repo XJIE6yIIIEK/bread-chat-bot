@@ -26,7 +26,10 @@ class CachedDB:
     info_ab_us: dict = {}
     all_vacs: dict = {}
     all_forms: dict = {}
+    general_forms: list = []
     form_to_vac: dict = {}
+
+    dates: dict = {}
 
 
 class Keyboards:
