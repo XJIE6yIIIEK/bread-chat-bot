@@ -7,13 +7,13 @@ class ResumesController {
             vacancyId: req.params.n_vacancy
         };
         var resume = await ResumesService.get(data, next);
-        return res.status(200).json(resume);
+        return res.status(200).json(resume).end();
     }
 
     async getAll(req, res, next){
         var userId = req.params.n_candidate;
         var resumes = await ResumesService.getAll(userId, next);
-        return res.status(200).json(resumes);
+        return res.status(200).json(resumes).end();
     }
 }
 

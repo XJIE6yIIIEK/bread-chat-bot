@@ -19,7 +19,9 @@ module.exports = (req, res, next) => {
         null,
         {
             allClear: async (accessTokenData) => {
-                req.user.id = accessTokenData.id
+                req.user = {
+                    id: accessTokenData.id
+                };
 
                 next();
             },

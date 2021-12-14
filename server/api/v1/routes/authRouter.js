@@ -3,6 +3,9 @@ var router = new Router();
 
 const AuthController = require('../../../core/auth/authController');
 
+var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
+
 router.get('/', AuthController.authenticate);
+router.get('/check', AuthMiddleware, AuthController.check);
 
 module.exports = router;

@@ -1,3 +1,4 @@
+var MeetingStatuses = require('../objects/meetingStatuses/meetingStatusesModel');
 var CandidateStatuses = require('../objects/candidateStatuses/candidateStatusesModel');
 var Users = require('../objects/users/usersModel');
 var Candidates = require('../objects/candidates/candidatesModel');
@@ -11,6 +12,7 @@ var Favorites = require('../objects//favorites/favoritesModel');
 var WantedVacancies = require('../objects/wantedVacancy/wantedVacancyModel');
 
 module.exports = {
+    MeetingStatuses,
     CandidateStatuses,
     Users,
     Candidates,

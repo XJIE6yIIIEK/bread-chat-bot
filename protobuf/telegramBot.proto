@@ -56,7 +56,15 @@ message CompanyInfo {
 message CandidateRequest {
     Candidate candidateMainInfo = 1;
     repeated CandidateResume candidateResumes = 2;
-    int32 wantedVacancy = 3;
+    repeated CandidateMeetings candidateMeetings = 3;
+    int32 wantedVacancy = 4;
+}
+
+message CandidateMeetings {
+    int32 n_vacancy = 1;
+    int32 n_status = 2;
+    string s_status = 3;
+    string d_date = 4;
 }
 
 message CandidateResume {

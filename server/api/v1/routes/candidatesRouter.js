@@ -9,4 +9,6 @@ router.get('/', /*AuthMiddleware,*/ CandidatesController.getAll);
 router.delete('/:id', /*AuthMiddleware,*/ CandidatesController.delete);
 router.get('/:id', /*AuthMiddleware,*/ CandidatesController.get);
 
+router.post('/:id/setMeeting/:n_vacancy', CandidatesController.setMeeting);
+
 module.exports = router;

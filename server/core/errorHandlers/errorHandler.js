@@ -1,11 +1,13 @@
 class ErrorHandler extends Error {
     status;
     message;
+    options;
 
-    constructor(status, message) {
+    constructor(status, message, options) {
         super();
         this.status = status;
         this.message = message;
+        this.options = options;
     }
 
     static unauthorized(message, errors = []) {

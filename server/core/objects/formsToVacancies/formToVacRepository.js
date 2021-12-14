@@ -12,6 +12,11 @@ class FormToVacsRepository {
         return formToVacs;
     }
 
+    async get(conditions = {}){
+        var formToVac = await FormToVacs.findOne(conditions);
+        return formToVac;
+    }
+
     async delete(formToVac){
         formToVac.destroy();
     }

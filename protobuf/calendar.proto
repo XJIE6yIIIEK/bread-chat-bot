@@ -1,0 +1,43 @@
+syntax = "proto3";
+package calendar;
+
+service CalendarService {
+    rpc findMeetingTime (FindTimeRequest) returns (Suggestions);
+    rpc trySetMeetingTime (SetMeetingRequest) returns (Empty);
+}
+
+message Empty {}
+
+message FindTimeRequest {
+    string startDate = 1;
+    string endDate = 2;
+    Duration duration = 3;
+    int32 userId = 4;
+}
+
+message Duration {
+    int32 hours = 1;
+    int32 minutes = 2;
+}
+
+message Suggestions {
+    string err = 1;
+    repeated Day dates = 2;
+}
+
+message Day {
+    string date = 1;
+    repeated Time times = 2;
+}
+
+message Time {
+    string beginISO = 1;
+    string endISO = 2;
+    string beginEnd = 3;
+}
+
+message SetMeetingRequest {
+    int32 n_user = 1;
+    string beginISO = 2;
+    string endISO = 3;
+}

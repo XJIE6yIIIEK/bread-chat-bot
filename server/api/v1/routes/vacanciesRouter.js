@@ -2,11 +2,13 @@ var Router = require('express');
 var router = new Router();
 const VacanciesController = require('../../../core/objects/vacancies/vacanciesController');
 
-router.post('/', VacanciesController.create);
-router.get('/', VacanciesController.getAll);
+var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
 
-router.patch('/:id', VacanciesController.patch);
-router.delete('/:id', VacanciesController.delete);
-router.get('/:id', VacanciesController.get);
+router.post('/', /*AuthMiddleware,*/ VacanciesController.create);
+router.get('/', /*AuthMiddleware,*/ VacanciesController.getAll);
+
+router.put('/:id', /*AuthMiddleware,*/ VacanciesController.patch);
+router.delete('/:id', /*AuthMiddleware,*/ VacanciesController.delete);
+router.get('/:id', /*AuthMiddleware,*/ VacanciesController.get);
 
 module.exports = router;

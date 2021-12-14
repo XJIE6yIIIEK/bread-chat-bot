@@ -9,6 +9,7 @@ var ResumesRouter = require('./resumesRouter');
 var VacanciesRouter = require('./vacanciesRouter');
 var FormToVacsRouter = require('./formToVacRouter');
 var AuthRouter = require('./authRouter');
+var BotSettingsRouter = require('./botSettingsRouter');
 
 router.use('/auth', AuthRouter);
 router.use('/users', UsersRouter);
@@ -18,5 +19,6 @@ router.use('/forms', FormsRouter);
 router.use('/resumes', ResumesRouter);
 router.use('/vacancies', VacanciesRouter);
 router.use('/formToVacs', FormToVacsRouter);
+router.use('/botSettings', BotSettingsRouter);
 
 module.exports = router;

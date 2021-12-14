@@ -3,6 +3,7 @@ const BotTransmitter = require('./botTransmitter');
 class BotTransmitterService {
     async infoUpdated(info){
         info = {
+            id: info.id,
             s_name: info.s_name,
             s_message: info.s_message
         };
@@ -13,7 +14,8 @@ class BotTransmitterService {
     async formUpdated(form){
         form = {
             id: form.id,
-            s_name: form.s_name
+            s_name: form.s_name,
+            b_general: form.b_general
         };
 
         BotTransmitter.formUpdated(form);

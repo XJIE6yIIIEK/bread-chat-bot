@@ -66,6 +66,38 @@ class FormsService {
 
         return forms;
     }
+
+    async setGeneral(formId){
+        var form = await FormsRepository.get({
+            where: {
+                id: formId
+            }
+        });
+
+        form.b_general = true;
+
+        await FormsRepository.patch(form);
+
+        BotTransmitterService.formUpdated(form);
+
+        return;
+    }
+
+    async deleteGeneral(formId){
+        var form = await FormsRepository.get({
+            where: {
+                id: formId
+            }
+        });
+
+        form.b_general = false;
+
+        await FormsRepository.patch(form);
+
+        BotTransmitterService.formUpdated(form);
+
+        return;
+    }
 }
 
 module.exports = new FormsService();
