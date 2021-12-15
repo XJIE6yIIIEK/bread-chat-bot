@@ -1,3 +1,6 @@
+
+
+
 function initializeInfo()
 {
     $.ajax({
@@ -21,6 +24,7 @@ function AddInfo (info_id, info_name, info_message){
     let input_name_button = document.createElement("input");
     input_name_button.classList.add("input-tabs-item");
     input_name_button.placeholder = "Наименование кнопки*";
+    input_name_button.setAttribute("timer_id", "0");
     if (info_name != null)
     input_name_button.value = info_name;
     div.appendChild(input_name_button);
@@ -28,15 +32,16 @@ function AddInfo (info_id, info_name, info_message){
     let input_info = document.createElement("input");
     input_info.classList.add("input-tabs-item");
     input_info.placeholder = "Информация о компании*";
+    input_info.setAttribute("timer_id","0");
     if (info_message != null)
     input_info.value = info_message;
     div.appendChild(input_info);
 
     input_name_button.addEventListener("input", function(evt){
-        renameInfo(evt.target);
+        renameInfoAfterTimeout(evt);
     });
     input_info.addEventListener("input", function(evt){
-        renameInfo(evt.target);
+        renameInfoAfterTimeout(evt);
     });
 
     let button = document.createElement("button");
@@ -74,8 +79,20 @@ function createInfo()
         }
     })
 }
+function renameInfoAfterTimeout(evt)
+{
+    let target = evt.target;
+    let last_timer = target.getAttribute("timer_id");
+    if (last_timer != "-1")
+    {
+        clearTimeout(last_timer);
+    }
+    target.setAttribute("timer_id", setTimeout(renameInfo, 1000, target));
+}
 function renameInfo(target)
 {
+    console.log("Saved");
+    target.setAttribute("time_id", "-1");
     let list_item = target.parentNode;
     let info_id = list_item.getAttribute("info_id");
     let info_name = list_item.childNodes[0].value;

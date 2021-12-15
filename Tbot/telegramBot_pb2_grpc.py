@@ -29,6 +29,11 @@ class BotServiceStub(object):
                 request_serializer=telegramBot__pb2.TgId.SerializeToString,
                 response_deserializer=telegramBot__pb2.CandidateRequest.FromString,
                 )
+        self.candidateRejectVacancy = channel.unary_unary(
+                '/telegramBot.BotService/candidateRejectVacancy',
+                request_serializer=telegramBot__pb2.Rejection.SerializeToString,
+                response_deserializer=telegramBot__pb2.Empty.FromString,
+                )
         self.infoUpdated = channel.unary_unary(
                 '/telegramBot.BotService/infoUpdated',
                 request_serializer=telegramBot__pb2.UpdatedCompanyInfo.SerializeToString,
@@ -67,6 +72,12 @@ class BotServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def getCandidateInfo(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def candidateRejectVacancy(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -113,6 +124,11 @@ def add_BotServiceServicer_to_server(servicer, server):
                     servicer.getCandidateInfo,
                     request_deserializer=telegramBot__pb2.TgId.FromString,
                     response_serializer=telegramBot__pb2.CandidateRequest.SerializeToString,
+            ),
+            'candidateRejectVacancy': grpc.unary_unary_rpc_method_handler(
+                    servicer.candidateRejectVacancy,
+                    request_deserializer=telegramBot__pb2.Rejection.FromString,
+                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
             'infoUpdated': grpc.unary_unary_rpc_method_handler(
                     servicer.infoUpdated,
@@ -196,6 +212,23 @@ class BotService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def candidateRejectVacancy(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotService/candidateRejectVacancy',
+            telegramBot__pb2.Rejection.SerializeToString,
+            telegramBot__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def infoUpdated(request,
             target,
             options=(),
@@ -273,11 +306,6 @@ class BotCalendarServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.interviewScheduled = channel.unary_unary(
-                '/telegramBot.BotCalendarService/interviewScheduled',
-                request_serializer=telegramBot__pb2.InterviewScheduledRequest.SerializeToString,
-                response_deserializer=telegramBot__pb2.Empty.FromString,
-                )
         self.systemHasTime = channel.unary_unary(
                 '/telegramBot.BotCalendarService/systemHasTime',
                 request_serializer=telegramBot__pb2.TimeRequest.SerializeToString,
@@ -286,18 +314,22 @@ class BotCalendarServiceStub(object):
         self.candidateChooseTime = channel.unary_unary(
                 '/telegramBot.BotCalendarService/candidateChooseTime',
                 request_serializer=telegramBot__pb2.TimeResponse.SerializeToString,
+                response_deserializer=telegramBot__pb2.Error.FromString,
+                )
+        self.rejectMeeting = channel.unary_unary(
+                '/telegramBot.BotCalendarService/rejectMeeting',
+                request_serializer=telegramBot__pb2.Rejection.SerializeToString,
+                response_deserializer=telegramBot__pb2.Empty.FromString,
+                )
+        self.rejectAll = channel.unary_unary(
+                '/telegramBot.BotCalendarService/rejectAll',
+                request_serializer=telegramBot__pb2.HardReject.SerializeToString,
                 response_deserializer=telegramBot__pb2.Empty.FromString,
                 )
 
 
 class BotCalendarServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
-
-    def interviewScheduled(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
 
     def systemHasTime(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -311,14 +343,21 @@ class BotCalendarServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def rejectMeeting(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def rejectAll(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_BotCalendarServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'interviewScheduled': grpc.unary_unary_rpc_method_handler(
-                    servicer.interviewScheduled,
-                    request_deserializer=telegramBot__pb2.InterviewScheduledRequest.FromString,
-                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
-            ),
             'systemHasTime': grpc.unary_unary_rpc_method_handler(
                     servicer.systemHasTime,
                     request_deserializer=telegramBot__pb2.TimeRequest.FromString,
@@ -327,6 +366,16 @@ def add_BotCalendarServiceServicer_to_server(servicer, server):
             'candidateChooseTime': grpc.unary_unary_rpc_method_handler(
                     servicer.candidateChooseTime,
                     request_deserializer=telegramBot__pb2.TimeResponse.FromString,
+                    response_serializer=telegramBot__pb2.Error.SerializeToString,
+            ),
+            'rejectMeeting': grpc.unary_unary_rpc_method_handler(
+                    servicer.rejectMeeting,
+                    request_deserializer=telegramBot__pb2.Rejection.FromString,
+                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
+            ),
+            'rejectAll': grpc.unary_unary_rpc_method_handler(
+                    servicer.rejectAll,
+                    request_deserializer=telegramBot__pb2.HardReject.FromString,
                     response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
     }
@@ -338,23 +387,6 @@ def add_BotCalendarServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class BotCalendarService(object):
     """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def interviewScheduled(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/interviewScheduled',
-            telegramBot__pb2.InterviewScheduledRequest.SerializeToString,
-            telegramBot__pb2.Empty.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def systemHasTime(request,
@@ -386,6 +418,40 @@ class BotCalendarService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/candidateChooseTime',
             telegramBot__pb2.TimeResponse.SerializeToString,
+            telegramBot__pb2.Error.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def rejectMeeting(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/rejectMeeting',
+            telegramBot__pb2.Rejection.SerializeToString,
+            telegramBot__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def rejectAll(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/rejectAll',
+            telegramBot__pb2.HardReject.SerializeToString,
             telegramBot__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

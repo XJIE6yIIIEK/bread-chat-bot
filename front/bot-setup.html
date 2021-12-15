@@ -29,35 +29,63 @@
     </header>
 
     <div class="body_head">
-        <button  class="button_vac active" 
+        <button  class="button_vac active" id="buttons_body_head"
             onclick="
-                document.querySelector('.tabs').classList.add('active'), 
+                document.querySelector('.vac_and_common').classList.add('active'), 
+                document.querySelector('.vac').classList.add('active'), 
+                document.querySelector('.common').classList.remove('active'),
                 document.querySelector('.comp_info').classList.remove('active'),
 
                 document.querySelector('.button_vac').classList.add('active'), 
-                document.querySelector('.button_info').classList.remove('active')
+                document.querySelector('.button_info').classList.remove('active'),
+                document.querySelector('.button_common').classList.remove('active')
             ">
-        Настройка вакансий
+        Требования вакансий
         </button>  
 
-        <button class="button_info" 
+        <button class="button_common" id="buttons_body_head"
+            onclick="
+                document.querySelector('.vac_and_common').classList.add('active'),
+                document.querySelector('.common').classList.add('active'),
+                document.querySelector('.vac').classList.remove('active'),
+                document.querySelector('.comp_info').classList.remove('active'), 
+
+                document.querySelector('.button_common').classList.add('active')
+                document.querySelector('.button_info').classList.remove('active'), 
+                document.querySelector('.button_vac').classList.remove('active')
+                 
+            ">
+        Общие требования
+        </button>  
+
+        <button class="button_info" id="buttons_body_head"
             onclick="
                 document.querySelector('.comp_info').classList.add('active'), 
-                document.querySelector('.tabs').classList.remove('active'),
+                document.querySelector('.vac_and_common').classList.remove('active'),
+                document.querySelector('.vac').classList.remove('active'),
+                document.querySelector('.common').classList.remove('active'), 
 
                 document.querySelector('.button_info').classList.add('active'), 
-                document.querySelector('.button_vac').classList.remove('active')
+                document.querySelector('.button_vac').classList.remove('active'),
+                document.querySelector('.button_common').classList.remove('active')
             ">
         Информация о компании
-        </button>  
+        </button>
     </div>
 
-    <div class="tabs active">
+    <div class="vac_and_common active">
         <div class="left_container_tabs">
-            <button class="add_vac_button">Добавить вакансию</button>  
-            <div class="tab_flex">
-                <div class="tabs_nav"></div>
-                <div class="tabs_content"></div>
+
+            <div class="vac active">
+                <button class="add_vac_button">Добавить вакансию</button>  
+                <div class="tab_flex">
+                    <div class="tabs_nav"></div>
+                    <div class="tabs_content"></div>
+                </div>
+            </div>
+
+            <div class="common">
+                <div class="list-group-common" id="simpleList_common"> </div>
             </div>
         </div>
         
@@ -80,5 +108,6 @@
   
     <script src="vacancy-setup-script.js"></script>
     <script src="company-info-setup-script.js"></script>
+    <script src="common-setup-script.js"></script>
 </body>
 </html>

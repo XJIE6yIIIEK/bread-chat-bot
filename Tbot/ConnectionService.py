@@ -6,6 +6,7 @@ import telegramBot_pb2 as pb2
 import telegramBot_pb2_grpc as pb2_g
 from threading import Thread
 from concurrent import futures
+import asyncio
 
 
 def freeFormsZero() -> None:
@@ -38,6 +39,8 @@ class Clienting:
 
         for ob in cache.forms:
             CachedDB.all_forms[ob.id] = ob.s_name
+            if ob.b_general:
+                CachedDB.general_forms.append(ob.id)
 
         for ob in cache.formToVacs:
             if ob.n_vacancy in CachedDB.form_to_vac:
@@ -57,15 +60,8 @@ class Clienting:
     def sendCandidateInfo(candidate: Candidate):
         if candidate.external_resumes == "<!>":
             candidate.external_resumes = ""
-        print("Sending candidate:")
-        print(candidate.name)
-        print(candidate.birth)
-        print(candidate.phone)
-        print(candidate.address)
-        print(candidate.mail)
-        print(candidate.tg_id)
-        print(candidate.external_resumes)
-        print(candidate.wantedVacancy)
+        # print("Sending candidate:")
+        # print(candidate.name, "\n", candidate.birth, "\n", candidate.phone, "\n", candidate.address, "\n", candidate.mail, "\n", candidate.tg_id, "\n", candidate.external_resumes, "\n", candidate.wantedVacancy)
         main_info = pb2.Candidate(s_name=candidate.name,
                                   d_birth_date=candidate.birth,
                                   s_phone_number=candidate.phone,
@@ -85,7 +81,7 @@ class Clienting:
 
     @staticmethod
     def getCandidateInfo(tg_id) -> Candidate:
-        candidate = GlobalStuff.Conn.stub.getCandidateInfo(pb2.TgId(s_tg_id=str(tg_id)))
+        candidate: pb2.CandidateRequest = GlobalStuff.Conn.stub.getCandidateInfo(pb2.TgId(s_tg_id=str(tg_id)))
         out = Candidate()
         out.name = candidate.candidateMainInfo.s_name
         out.birth = candidate.candidateMainInfo.d_birth_date
@@ -98,6 +94,12 @@ class Clienting:
             external_resumes = "<!>"
         out.external_resumes = external_resumes
         out.wantedVacancy = candidate.wantedVacancy
+
+        for meeting in candidate.candidateMeetings:
+            out.meetings[meeting.n_vacancy] = meeting.d_date
+
+        if out.name != "":
+            out.first_time = False
 
         for ob in candidate.candidateResumes:
             out.forms[ob.n_form] = ob.s_value
@@ -121,8 +123,16 @@ class Servering:
             if request.form.id in CachedDB.all_forms and \
                     CachedDB.all_forms[request.form.id] == request.form.s_name:
                 CachedDB.all_forms.pop(request.form.id)
+                if request.form.id in CachedDB.general_forms:
+                    CachedDB.general_forms.pop(request.form.id)
             else:
                 CachedDB.all_forms[request.form.id] = request.form.s_name
+                if request.form.b_general:
+                    if request.form.id not in CachedDB.general_forms:
+                        CachedDB.general_forms.append(request.form.id)
+                else:
+                    if request.form.id in CachedDB.general_forms:
+                        CachedDB.general_forms.pop(request.form.id)
             return pb2.Empty()
 
         def vacancyUpdated(self, request: pb2.UpdatedVacancy, context):
@@ -169,9 +179,19 @@ class CalendarClienting:
     @staticmethod
     def setupClient() -> None:
         GlobalStuff.Conn.calendar_channel = grpc.insecure_channel(GlobalStuff.Conn.calendar_server_ip)
-        GlobalStuff.Conn.calendar_stub = pb2_g.BotServiceStub(GlobalStuff.Conn.calendar_channel)
+        GlobalStuff.Conn.calendar_stub = pb2_g.BotCalendarServiceStub(GlobalStuff.Conn.calendar_channel)
         print("Calendar client setup is done.")
 
     @staticmethod
-    def candidateChooseItem():
-        pass
+    def candidateChooseTime(tg_id: str, vacancy: int, date: pb2.Time) -> int:
+        data = pb2.TimeResponse(s_tg_id=tg_id, n_vacancy=vacancy, date=date)
+        err: pb2.Error = GlobalStuff.Conn.calendar_stub.candidateChooseTime(data)
+        return {"": 0, "unavailable": 1, "unathorized": 2}[err.err]
+
+    @staticmethod
+    def rejectMeeting(tg_id: str, vacancy: int):
+        GlobalStuff.Conn.calendar_stub.rejectMeeting(pb2.Rejection(s_tg_id=tg_id, n_vacancy=vacancy))
+
+    @staticmethod
+    def rejectAll(tg_id: str):
+        GlobalStuff.Conn.calendar_stub.rejectAll(pb2.HardReject(s_tg_id=tg_id))
