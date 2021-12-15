@@ -59,6 +59,9 @@ function setGeneral(id)
     $.ajax({
         type: "POST",
         url: address()+endpoints.general.replace(":id", id),
+        xhrFields: {
+            withCredentials: true
+        }
     })
 }
 
@@ -67,5 +70,8 @@ function removeGeneral(id)
     $.ajax({
         type: "DELETE",
         url: address()+endpoints.general.replace(":id", id),
+        xhrFields: {
+            withCredentials: true
+        }
     })
 }

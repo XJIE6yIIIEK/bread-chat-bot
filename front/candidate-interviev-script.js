@@ -10,12 +10,16 @@ let select_vac = document.getElementById("select_vac");
 $("body").on("click", ".add_to_favorites", function(){
     let button = this;
     let fav = this.getAttribute("favorite") == "true";
+    console.log(fav);
     $.ajax({
         url: address()+endpoints.favorite+"/"+id_cand,
-        type: fav?"DELETE":"POST",
+        type: fav ? "DELETE" : "POST",
         success: function (){
-            button.innerHTML = fav?"Добавить в избранное":"Удалить из избранного";
+            button.innerHTML = fav ? "Добавить в избранное" : "Удалить из избранного";
             button.setAttribute("favorite", !fav);
+        },
+        xhrFields: {
+            withCredentials: true
         }
     });
 });

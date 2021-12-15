@@ -1,6 +1,3 @@
-
-
-
 function initializeInfo()
 {
     $.ajax({
@@ -10,6 +7,9 @@ function initializeInfo()
             {
                 AddInfo(data[info].id, data[info].s_name, data[info].s_message);
             }
+        },
+        xhrFields: {
+            withCredentials: true
         }
     })
 }
@@ -77,6 +77,9 @@ function createInfo()
         url:address()+endpoints.info,
         success: function (data){
             AddInfo(data.id, null, null);
+        },
+        xhrFields: {
+            withCredentials: true
         }
     })
 }
@@ -101,7 +104,10 @@ function renameInfo(target)
     $.ajax({
         type: "PUT",
         url: address()+endpoints.info+"/"+info_id,
-        data: {s_name:info_name, s_message:info_message}
+        data: {s_name:info_name, s_message:info_message},
+        xhrFields: {
+            withCredentials: true
+        }
     })
 }
 function deleteInfo(target)
@@ -112,6 +118,9 @@ function deleteInfo(target)
         url: address()+endpoints.info+"/"+info_id,
         success: function (){
             target.remove();
+        },
+        xhrFields: {
+            withCredentials: true
         }
     })
 }
