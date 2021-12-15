@@ -79,7 +79,13 @@ $("body").on("click", ".favorite_candidate_delete_button", function() {
     }
 });
 
+// изменение пароля
+$("body").on("click", ".button_new_password", function() {
+
+});
+
+// запоминаем id кандидата
 $("body").on("click", ".candidates", function()
 {
-    sessionStorage.setItem('id_cand', this.id); // запоминаем id кандидата
+    sessionStorage.setItem('id_cand', this.id);
 });
