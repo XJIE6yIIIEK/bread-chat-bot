@@ -1,9 +1,5 @@
 var graph = require('@microsoft/microsoft-graph-client');
 var iana = require('windows-iana');
-const startOfWeek = require('date-fns/startOfWeek');
-const formatISO = require('date-fns/formatISO');
-const addDays = require('date-fns/addDays');
-const {zonedTimeToUtc, utcToZonedTime} = require('date-fns-tz');
 require('isomorphic-fetch');
 require('dotenv').config();
 
@@ -47,15 +43,7 @@ class GraphService {
         return user;
     }
 
-    async getFreeTime(msalClient, userId, start, end, duration){
-        var client = await this.getAuthenticatedClient(msalClient, userId);
-        var user = await this.getUserDetails(msalClient, userId);
-
-        const timeZoneId = iana.findIana(user.mailboxSettings.timeZone)[0];
-
-        var startTime = zonedTimeToUtc(new Date(start), timeZoneId.valueOf());
-        var endTime = addDays(zonedTimeToUtc(new Date(end), timeZoneId.valueOf()), 1);
-
+    async getFreeTime(credentials, start, end, duration){
         var durationISO = 'PT' + (duration.hours && duration.hours > 0 ? duration.hours + 'H' : '') + (duration.minutes && duration.minutes > 0 ? duration.minutes + 'M' : '');
 
         var options = {
@@ -64,12 +52,12 @@ class GraphService {
                 "timeslots": [
                     {
                         "start": {
-                            "dateTime": startTime.toISOString(),
-                            "timeZone": user.mailboxSettings.timeZone
+                            "dateTime": start.toISOString(),
+                            "timeZone": credentials.timeZone
                         },
                         "end": {
-                            "dateTime": endTime.toISOString(),
-                            "timeZone": user.mailboxSettings.timeZone
+                            "dateTime": end.toISOString(),
+                            "timeZone": credentials.timeZone
                         }
                     }
                 ]
@@ -79,7 +67,7 @@ class GraphService {
             "maxCandidates": 1000
         };
 
-        var events = await client
+        var events = await credentials.client
                             .api('/me/findMeetingTimes')
                             .header("Prefer", `outlook.timezone="Russian Standard Time"`)
                             .post(options);
@@ -87,15 +75,69 @@ class GraphService {
         return events;
     }
 
-    async setMeetingTime(msalClient, userId, start, end){
+    async getClientAndUser(msalClient, userId){        
         var client = await this.getAuthenticatedClient(msalClient, userId);
         var user = await this.getUserDetails(msalClient, userId);
+        var timeZone = user.mailboxSettings.timeZone;
+        var timeZoneId = iana.findIana(user.mailboxSettings.timeZone)[0];
 
-        const timeZoneId = iana.findIana(user.mailboxSettings.timeZone)[0];
-
-        var startTime = zonedTimeToUtc(new Date(start), timeZoneId.valueOf());
-        var endTime = addDays(zonedTimeToUtc(new Date(end), timeZoneId.valueOf()), 1);
+        return {
+            client,
+            user,
+            timeZoneId,
+            timeZone
+        };
     }
+
+    async checkAviability(client, user, start, end){
+        var scheduledInformation = {
+            schedules: [
+                user.mail
+            ],
+            startTime: {
+                dateTime: start,
+                timeZone: 'Russian Standard Time'
+            },
+            endTime: {
+                dateTime: end,
+                timeZone: 'Russian Standard Time'
+            },
+            availabilityViewInterval: 5
+        };
+        
+        var schedule = await client
+                                .api('/me/calendar/getSchedule')
+                                .post(scheduledInformation);
+
+        return schedule.value[0].availabilityView;
+    }
+
+    async setMeetingTime(client, start, end, candidateName){
+        var options = {
+            subject: "Собеседование",
+            body: {
+                contentType: "HTML",
+                content: `Собеседование с кандидатом ${candidateName}`
+            },
+            start: {
+                dateTime: start,
+                timeZone: "Russian Standard Time"
+            },
+            end: {
+                dateTime: end,
+                timeZone: "Russian Standard Time"
+            },
+            showAs: "busy"
+        }
+
+        var result = await client
+                            .api('/me/events')
+                            .post(options);
+
+        return result;
+    }
+
+    
 }
 
 module.exports = new GraphService();

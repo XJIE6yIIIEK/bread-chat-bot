@@ -10,7 +10,7 @@ class AuthController {
 
     async authenticateResponse(req, res){
         await AuthService.handleMicrosoftRepsponse(req);
-        res.redirect(process.env.FRONTEND_IIS_ADDRESS + '/user/' + req.query.state);
+        res.redirect(process.env.FRONTEND_IIS_ADDRESS + '/users');
     }
 }
 

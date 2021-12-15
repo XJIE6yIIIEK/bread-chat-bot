@@ -4,14 +4,14 @@ const FormsController = require('../../../core/objects/forms/formsController');
 
 var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
 
-router.post('/', FormsController.create);
-router.get('/', FormsController.getAll);
+router.post('/', AuthMiddleware, FormsController.create);
+router.get('/', AuthMiddleware, FormsController.getAll);
 
-router.post('/:id/general', FormsController.setGeneral);
-router.delete('/:id/general', FormsController.deleteGeneral);
+router.post('/:id/general', AuthMiddleware, FormsController.setGeneral);
+router.delete('/:id/general', AuthMiddleware, FormsController.deleteGeneral);
 
-router.put('/:id', FormsController.patch);
-router.delete('/:id', FormsController.delete);
-router.get('/:id', FormsController.get);
+router.put('/:id', AuthMiddleware, FormsController.patch);
+router.delete('/:id', AuthMiddleware, FormsController.delete);
+router.get('/:id', AuthMiddleware, FormsController.get);
 
 module.exports = router;

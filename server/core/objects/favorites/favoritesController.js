@@ -2,9 +2,6 @@ const FavoritesService = require('./favoritesService');
 
 class FavoritesController {
     async create(req, res, next){
-        req.user = {
-            id: 1
-        };
         var userId = req.user.id;
         var candidateId = req.params.n_candidate;
 
@@ -13,9 +10,6 @@ class FavoritesController {
     }
 
     async delete(req, res, next){
-        req.user = {
-            id: 1
-        };
         var userId = req.user.id;
         var candidateId = req.params.n_candidate;
 

@@ -39,13 +39,14 @@ class CalendarTransmitter {
 
     async trySetMeetingTime(data, candidateServiceCallback, rpcCallback){
         this.client.trySetMeetingTime({
+                candidateName: data.candidateName,
                 n_user: data.n_user,
-                beginISO: data.date.times[0].beginISO,
-                endISO: data.date.times[0].endISO
+                beginISO: data.date.beginISO,
+                endISO: data.date.endISO
             },
             (error, response) => {
-                if(error){
-                    rpcCallback({err: 'wrongTime'});
+                if(response && response.err){
+                    rpcCallback(response);
                     return;
                 }
                 

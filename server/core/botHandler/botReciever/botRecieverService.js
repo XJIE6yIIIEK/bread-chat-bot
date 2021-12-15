@@ -188,10 +188,10 @@ class BotRecieverService {
         });
 
         const meetings = await DBRepository.rawQuery(
-            'SELECT t_meetings.n_vacancy, t_meetings.n_status, t_meeting_statuses.s_name AS s_status, to_char(t_meetings.d_date, "DD.MM.YYYY HH:mm") AS d_date FROM t_meetings ' +
-            `WHERE n_candidate = ${candidate.id} ` +
+            'SELECT t_meetings.n_vacancy, t_meetings.n_status, t_meeting_statuses.s_name AS s_status, to_char(t_meetings.d_date, \'DD.MM.YYYY HH24:MI МСК\') AS d_date FROM t_meetings ' +
             'JOIN t_meeting_statuses ' +
-            'ON t_meeting_statuses.id = t_meetings.n_status',
+            'ON t_meeting_statuses.id = t_meetings.n_status ' +
+            `WHERE n_candidate = ${candidate.id}`,
             'SELECT'
         );
 

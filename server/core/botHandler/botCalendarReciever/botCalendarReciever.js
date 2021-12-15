@@ -24,7 +24,9 @@ class BotCalendarReciever {
         this.server = new grpc.Server();
 
         this.server.addService(bot_reciever_proto.BotCalendarService.service, {
-            candidateChooseTime: this.candidateChooseTime
+            candidateChooseTime: this.candidateChooseTime,
+            rejectMeeting: this.rejectMeeting,
+            rejectAll: this.rejectAll
         });
 
         this.server.bindAsync(process.env.BOT_RECIEVER_ADDRESS + ':' + process.env.BOT_CALENDAR_RECIEVER_PORT, grpc.ServerCredentials.createInsecure(), () => {
@@ -34,18 +36,26 @@ class BotCalendarReciever {
     }
 
     async candidateChooseTime(call, callback){
-        var a = 1;
-        console.log('ы');
         BotCalendarRecieverService.candidateChooseTime(
             call.request,
             (data) => {
-                if(data.err){
-                    callback(data.err, {});
+                if(data && data.err){
+                    callback(null, {
+                        err: data.err
+                    });
                 } else {
                     callback(null, {});
                 }
             }
         );
+    }
+
+    async rejectMeeting(call, callback){
+
+    }
+
+    async rejectAll(call, callback){
+
     }
 }
 

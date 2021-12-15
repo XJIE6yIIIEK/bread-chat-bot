@@ -3,10 +3,16 @@ package calendar;
 
 service CalendarService {
     rpc findMeetingTime (FindTimeRequest) returns (Suggestions);
-    rpc trySetMeetingTime (SetMeetingRequest) returns (Empty);
+    rpc trySetMeetingTime (SetMeetingRequest) returns (Error);
+    rpc deleteMeeting (DeleteMeetingRequest) returns (Error);
 }
 
 message Empty {}
+
+message DeleteMeetingRequest {
+    int32 n_user = 1;
+    string d_date = 2;
+}
 
 message FindTimeRequest {
     string startDate = 1;
@@ -18,6 +24,10 @@ message FindTimeRequest {
 message Duration {
     int32 hours = 1;
     int32 minutes = 2;
+}
+
+message Error {
+    string err = 1;
 }
 
 message Suggestions {
@@ -38,6 +48,7 @@ message Time {
 
 message SetMeetingRequest {
     int32 n_user = 1;
-    string beginISO = 2;
-    string endISO = 3;
+    string candidateName = 2;
+    string beginISO = 3;
+    string endISO = 4;
 }

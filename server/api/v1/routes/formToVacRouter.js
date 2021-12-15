@@ -4,8 +4,8 @@ const FormToVacsController = require('../../../core/objects/formsToVacancies/for
 
 var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
 
-router.post('/:n_vacancy/:n_form', FormToVacsController.create);
-router.get('/:n_vacancy', FormToVacsController.getAll);
-router.delete('/:n_vacancy/:n_form', FormToVacsController.delete);
+router.post('/:n_vacancy/:n_form', AuthMiddleware, FormToVacsController.create);
+router.get('/:n_vacancy', AuthMiddleware, FormToVacsController.getAll);
+router.delete('/:n_vacancy/:n_form', AuthMiddleware, FormToVacsController.delete);
 
 module.exports = router;

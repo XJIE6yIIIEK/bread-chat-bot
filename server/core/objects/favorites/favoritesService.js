@@ -23,7 +23,7 @@ class FavoritesService {
             return;
         }
 
-        await FavoritesRepository.destroy(favorite);
+        await FavoritesRepository.delete(favorite);
         return;
     }
 }

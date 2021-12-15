@@ -4,7 +4,7 @@ const ResumesController = require('../../../core/objects/resumes/resumesControll
 
 var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
 
-router.get('/:n_candidate', ResumesController.getAll);
-router.get('/:n_candidate/:n_vacancy', ResumesController.get);
+router.get('/:n_candidate', AuthMiddleware, ResumesController.getAll);
+router.get('/:n_candidate/:n_vacancy', AuthMiddleware, ResumesController.get);
 
 module.exports = router;

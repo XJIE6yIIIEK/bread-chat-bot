@@ -4,6 +4,6 @@ const BotSettingsController = require('../../../core/objects/botSettings/botSett
 
 var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
 
-router.get('/', /*AuthMiddleware,*/ BotSettingsController.get);
+router.get('/', AuthMiddleware, BotSettingsController.get);
 
 module.exports = router;

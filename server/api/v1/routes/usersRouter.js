@@ -8,11 +8,11 @@ var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
 
 router.post('/', UserController.registration);
 
-router.get('/user', UserController.get);
+router.get('/user', AuthMiddleware, UserController.get);
 
-router.put('/:id/changePassword', UserController.changePassword);
+router.put('/:id/changePassword', AuthMiddleware, UserController.changePassword);
 
-router.post('/favorites/:n_candidate', FavoritesController.create);
-router.delete('/favorites/:n_candidate', FavoritesController.delete);
+router.post('/favorites/:n_candidate', AuthMiddleware, FavoritesController.create);
+router.delete('/favorites/:n_candidate', AuthMiddleware, FavoritesController.delete);
 
 module.exports = router;

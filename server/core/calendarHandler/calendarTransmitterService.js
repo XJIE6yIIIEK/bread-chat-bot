@@ -1,5 +1,4 @@
 const CalendarTransmitter = require('./calendarTransmitter');
-const CandidateService = require('../objects/candidates/candidatesService');
 const CalendarRepository = require('../objects/calendar/calendarRepository');
 const CandidateRepository = require('../objects/candidates/candidatesRepository');
 
@@ -15,7 +14,7 @@ class CalendarTransmitterService {
         await CalendarTransmitter.findMeetingTime(meetingPayload, callback);
     }
 
-    async candidateChooseTime(data, rpcCallback){
+    async candidateChooseTime(data, rpcCallback, updateDelegate){
         var candidate = await CandidateRepository.get({
             where: {
                 s_tg_id: data.s_tg_id
@@ -32,11 +31,12 @@ class CalendarTransmitterService {
         });
 
         data.n_user = meeting.n_user;
+        data.candidateName = candidate.s_name;
 
         CalendarTransmitter.trySetMeetingTime(
             data,
-            () => {
-                CandidateService.setMeetingTime(data, meeting);
+            async () => {
+                updateDelegate(data, meeting);
             },
             rpcCallback
         );

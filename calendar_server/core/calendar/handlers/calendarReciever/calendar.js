@@ -46,12 +46,20 @@ class CalendarReciever {
 
     async trySetMeetingTime(call, callback){
         var meetingData = {
+            candidateName: call.request.candidateName,
             n_user: call.request.n_user,
             beginISO: call.request.beginISO,
             endISO: call.request.endISO
         }
 
-        
+        var result = await CalendarService.trySetMeetingTime(meetingData);
+        if(result){
+            callback(null, {
+                err: result.err
+            });
+        } else {
+            callback(null, {});
+        }
     }
 }
 

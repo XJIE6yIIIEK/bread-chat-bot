@@ -2,7 +2,7 @@ const CandidatesRepository = require('./candidatesRepository');
 const DBRepository = require('../../db/dbRepository');
 const CandidateStatusesRepository = require('../candidateStatuses/candidateStatusesRepository');
 const Sequelize = require('../../db/db');
-const CalendarReposiotry = require('../calendar/calendarRepository');
+const CalendarRepository = require('../calendar/calendarRepository');
 const CalendarService = require('../calendar/calendarService');
 const CalendarTransmitterService = require('../../calendarHandler/calendarTransmitterService');
 const BotCalendarTransmitterService = require('../../botHandler/botCalendarTransmitter/botCalendarTransmitterService');
@@ -159,7 +159,7 @@ class CandidatesService {
     }
 
     async setMeeting(userId, candidateId, vacancyId, meetingData, responseCallback){        
-        var meeting = await CalendarReposiotry.get({
+        var meeting = await CalendarRepository.get({
             where: {
                 n_vacancy: vacancyId,
                 n_candidate: candidateId
@@ -204,9 +204,9 @@ class CandidatesService {
         }
     }
 
-    async setMeetingTime(data, meeting){
+    async updateMeeting(data, meeting){
         meeting.n_status = 2;
-        meeting.d_date = data.date.times[0].beginISO;
+        meeting.d_date = data.date.beginISO;
 
         CalendarRepository.patch(meeting);
     }

@@ -4,11 +4,11 @@ const CommandsController = require('../../../core/objects/commands/botCommands/c
 
 var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
 
-router.post('/', CommandsController.create);
-router.get('/', CommandsController.getAll);
+router.post('/', AuthMiddleware, CommandsController.create);
+router.get('/', AuthMiddleware,  CommandsController.getAll);
 
-router.put('/:id', CommandsController.patch);
-router.delete('/:id', CommandsController.delete);
-router.get('/:id', CommandsController.get);
+router.put('/:id', AuthMiddleware, CommandsController.patch);
+router.delete('/:id', AuthMiddleware, CommandsController.delete);
+router.get('/:id', AuthMiddleware, CommandsController.get);
 
 module.exports = router;

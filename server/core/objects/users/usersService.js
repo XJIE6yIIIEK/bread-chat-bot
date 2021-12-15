@@ -38,16 +38,27 @@ class UserService {
 
         var favorites = await DBRepository.rawQuery(
             'SELECT t_candidates.id, t_candidates.s_name FROM t_favorites ' +
-            'JOIN t_favorites ' +
+            'JOIN t_candidates ' +
             'ON t_favorites.n_candidate = t_candidates.id ' +
-            'WHERE t_favorites.n_user = ' + userId + ' ' +
+            `WHERE t_favorites.n_user = ${userId} ` +
             'ORDER BY t_candidates.id ASC',
             'SELECT'
         );
 
+        var meetings = await DBRepository.rawQuery(
+            'SELECT t_candidates.s_name, t_meeting_statuses.s_name, t_meetings.d_date FROM t_meetings ' +
+            'JOIN t_meeting_statuses ' +
+            'ON t_meeting_statuses.id = t_meetings.n_status ' +
+            'JOIN t_candidates ' +
+            'ON t_candidates.id = t_meetings.n_candidate ' +
+            `WHERE t_meetings.n_user = ${userId}`,
+            'SELECT'
+        );
+
         return {
-            user: user,
-            favorites: favorites
+            user,
+            favorites,
+            meetings
         };
     }
 }

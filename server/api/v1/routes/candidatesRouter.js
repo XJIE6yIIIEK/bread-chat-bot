@@ -4,11 +4,11 @@ const CandidatesController = require('../../../core/objects/candidates/candidate
 
 var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
 
-router.get('/', /*AuthMiddleware,*/ CandidatesController.getAll);
+router.get('/', AuthMiddleware, CandidatesController.getAll);
 
-router.delete('/:id', /*AuthMiddleware,*/ CandidatesController.delete);
-router.get('/:id', /*AuthMiddleware,*/ CandidatesController.get);
+router.delete('/:id', AuthMiddleware, CandidatesController.delete);
+router.get('/:id', AuthMiddleware, CandidatesController.get);
 
-router.post('/:id/setMeeting/:n_vacancy', CandidatesController.setMeeting);
+router.post('/:id/setMeeting/:n_vacancy', AuthMiddleware, CandidatesController.setMeeting);
 
 module.exports = router;
