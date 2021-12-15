@@ -90,11 +90,19 @@ async def choose_interview_date(call: types.CallbackQuery):
         vac = int(guide[2])
         date = int(guide[3])
         time = GlobalStuff.CachedDB.dates[tg_id][vac][date].times[int(guide[4])]
+        success: int = ConnectionService.CalendarClienting.candidateChooseTime(tg_id, vac, time)
         await call.answer()
-        await call.message.edit_text("Собеседование назначено! Посмотреть даты назначенных вакансий вы можете используя команду /get_meetings", reply_markup=None)
-        await Shortcuts.User.setMeeting(call, vac, time)
-        GlobalStuff.CachedDB.dates[tg_id].pop(vac)
-        ConnectionService.CalendarClienting.candidateChooseTime(tg_id, vac, time)
+        if success == 0:
+            GlobalStuff.CachedDB.dates[tg_id].pop(vac)
+            await call.message.edit_text("Собеседование назначено! Посмотреть даты назначенных вакансий вы можете используя команду /get_meetings", reply_markup=None)
+            await Shortcuts.User.setMeeting(call, vac, time)
+        elif success == 1:
+            await call.message.edit_text("Извините, это время уже заняли. Попробуйте выбрать другое время.", reply_markup=None)
+            GlobalStuff.CachedDB.dates[tg_id][vac][date].times.pop(int(guide[4]))
+        elif success == 3:
+            await call.message.edit_text(
+                "Сервис сейчас недоступен,приносим свои извинения. Пожалуйста, повторите попытку позже.",
+                reply_markup=None)
 
 
 @BotStuff.dp.message_handler(state='*', commands=['get_meetings'])

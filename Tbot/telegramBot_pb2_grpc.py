@@ -311,15 +311,10 @@ class BotCalendarServiceStub(object):
                 request_serializer=telegramBot__pb2.TimeRequest.SerializeToString,
                 response_deserializer=telegramBot__pb2.Empty.FromString,
                 )
-        self.interviewScheduled = channel.unary_unary(
-                '/telegramBot.BotCalendarService/interviewScheduled',
-                request_serializer=telegramBot__pb2.InterviewScheduledRequest.SerializeToString,
-                response_deserializer=telegramBot__pb2.Empty.FromString,
-                )
         self.candidateChooseTime = channel.unary_unary(
                 '/telegramBot.BotCalendarService/candidateChooseTime',
                 request_serializer=telegramBot__pb2.TimeResponse.SerializeToString,
-                response_deserializer=telegramBot__pb2.Empty.FromString,
+                response_deserializer=telegramBot__pb2.Error.FromString,
                 )
         self.rejectMeeting = channel.unary_unary(
                 '/telegramBot.BotCalendarService/rejectMeeting',
@@ -337,12 +332,6 @@ class BotCalendarServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def systemHasTime(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def interviewScheduled(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -374,15 +363,10 @@ def add_BotCalendarServiceServicer_to_server(servicer, server):
                     request_deserializer=telegramBot__pb2.TimeRequest.FromString,
                     response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
-            'interviewScheduled': grpc.unary_unary_rpc_method_handler(
-                    servicer.interviewScheduled,
-                    request_deserializer=telegramBot__pb2.InterviewScheduledRequest.FromString,
-                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
-            ),
             'candidateChooseTime': grpc.unary_unary_rpc_method_handler(
                     servicer.candidateChooseTime,
                     request_deserializer=telegramBot__pb2.TimeResponse.FromString,
-                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
+                    response_serializer=telegramBot__pb2.Error.SerializeToString,
             ),
             'rejectMeeting': grpc.unary_unary_rpc_method_handler(
                     servicer.rejectMeeting,
@@ -422,23 +406,6 @@ class BotCalendarService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def interviewScheduled(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/interviewScheduled',
-            telegramBot__pb2.InterviewScheduledRequest.SerializeToString,
-            telegramBot__pb2.Empty.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
     def candidateChooseTime(request,
             target,
             options=(),
@@ -451,7 +418,7 @@ class BotCalendarService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/candidateChooseTime',
             telegramBot__pb2.TimeResponse.SerializeToString,
-            telegramBot__pb2.Empty.FromString,
+            telegramBot__pb2.Error.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

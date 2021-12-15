@@ -6,6 +6,7 @@ import telegramBot_pb2 as pb2
 import telegramBot_pb2_grpc as pb2_g
 from threading import Thread
 from concurrent import futures
+import asyncio
 
 
 def freeFormsZero() -> None:
@@ -182,10 +183,10 @@ class CalendarClienting:
         print("Calendar client setup is done.")
 
     @staticmethod
-    def candidateChooseTime(tg_id: str, vacancy: int, date: pb2.Time) -> None:
+    def candidateChooseTime(tg_id: str, vacancy: int, date: pb2.Time) -> int:
         data = pb2.TimeResponse(s_tg_id=tg_id, n_vacancy=vacancy, date=date)
-        cb = GlobalStuff.Conn.calendar_stub.candidateChooseTime(data)
-        print(cb)
+        err: pb2.Error = GlobalStuff.Conn.calendar_stub.candidateChooseTime(data)
+        return {"": 0, "unavailable": 1, "unathorized": 2}[err.err]
 
     @staticmethod
     def rejectMeeting(tg_id: str, vacancy: int):
