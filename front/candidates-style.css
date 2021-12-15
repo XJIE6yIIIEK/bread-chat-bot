@@ -128,14 +128,6 @@ a{
 }
 
 /* Modal Window */
-.body_fade_head{
-    max-width: 300px;
-
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-}
-
 .body_fade {
 	/*display: none;*/
 }
