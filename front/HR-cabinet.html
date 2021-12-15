@@ -28,8 +28,28 @@
     </header>
     
     <div class="body_fade">
+        <div class="modal_wind">
+            <button  class="close_modal_wind_button"
+                onclick="
+                    document.querySelector('.body_fade').classList.remove('active'), 
+                    document.querySelector('.modal_wind').classList.remove('active')
+                ">
+            X
+            </button>
+
+                <h3>Смена пароля</h3>
+                <label for="new_password">Новый пароль:</label>
+                <input type="password" id="new_password">
+                <label for="verification_new_password">Подтверждеие пароля:</label>
+                <input type="password" id="verification_new_password">
+                <button class="save_button" id="save">Сохранить</button>
+                <br>
+                <label class="e" id="error_label"></label>
+                </br>                
+        </div>
+
         <div class="body_head">
-            <div class="HR_name"> Иванов Иван Иванович </div>
+            <div class="HR_name"></div>
             
             <div class="body_head_buttons">
                 <button  class="button_interviews active" id="buttons_body_head"
@@ -77,14 +97,14 @@
         <div class="body_main">
             <div class="interviews active">
                 <div class="interview_candidate">
-                    <div class="name_interview_candidate"><a href="#">ФИО кандидата</a></div>
+                    <div class="name_interview_candidate"><a href="#"></a></div>
                     <div class="date_interview_candidate">Дата</div>
                 </div>
             </div>
     
             <div class="favorites">
                 <div class="favorite_candidate">
-                    <div class="name_favorite_candidate"><a href="#">ФИО кандидата</a></div>
+                    <div class="name_favorite_candidate"><a href="#"></a></div>
                     <button class="favorite_candidate_delete_button">X</button>
                 </div>
             </div>
@@ -100,28 +120,6 @@
                     ">
                     Сменить пароль
                 </button>
-            
-                    <div class="modal_wind">
-                        <button  class="close_modal_wind_button"
-                            onclick="
-                                document.querySelector('.body_fade').classList.remove('active'), 
-                                document.querySelector('.modal_wind').classList.remove('active')
-                            ">
-                        X
-                        </button>
-
-                        <div class="container">
-                            <h3>Вход в инструментарий</h3>
-                            <label for="new_password">Новый пароль:</label>
-                            <input type="password" id="new_password">
-                            <label for="verification_new_password">Подтверждеие пароля:</label>
-                            <input type="password" id="verification_new_password">
-                            <button class="enter_button" id="enter">Сменить пароль</button>
-                            <br>
-                            <label class="e" id="error_label"></label>
-                            </br>
-                        </div>
-                    </div>
             </div>
         </div>
     </div>

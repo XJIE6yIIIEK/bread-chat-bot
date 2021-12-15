@@ -9,7 +9,9 @@ body
 
 h1, h2, h3, h4, h5, h6
 {
-    margin: 0;
+    text-align: center;
+    margin: 15px;
+    font-size: 20px;
 }
 
 a{
@@ -157,14 +159,14 @@ a{
 	padding: 20px;
 	min-width: 380px;
     width: auto;
-    height: 300px;
-	margin-left: -200px;	
+    height: 340px;
+	margin-left: -210px;	
 	background: #e2e2e2;
-	border: 1px solid #153949;
+	border: none;
 	border-radius: 10px; 
 	z-index: 99999;
 	opacity: 1;	
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .close_modal_wind_button {
@@ -189,7 +191,6 @@ a{
 }
 
 input[type=text], input[type=password] {
-    width: 100%;
     padding: 15px;
     margin: 5px 0 22px 0;
     display: inline-block;
@@ -204,7 +205,7 @@ input[type=text]:focus, input[type=password]:focus {
     border-radius: 10px;
 }
 
-.enter_button{
+.save_button{
     width: 170px;
     height: 30px;
     margin:0 25% 0 25%;
@@ -219,13 +220,13 @@ input[type=text]:focus, input[type=password]:focus {
     transition: 0.1s linear;
 }
 
-.enter_button:hover
+.save_button:hover
 {
     background: #0d2530;
     transition: background-color 0.3s;
 }
 
-.enter_button:active
+.save_button:active
 {
     background: black;
     transition: background-color 0.3s;
