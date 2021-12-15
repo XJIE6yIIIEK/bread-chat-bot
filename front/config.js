@@ -20,5 +20,5 @@ class endpoints
     static user = "api/v1/users/user"; // GET
     static info = "api/v1/commands";
     static general = "api/v1/forms/:id/general" // POST / DELETE
-    //static favorite = "api/v1/users/favorites/:n_candidate"; // POST / DELETE
+    static favorite = "api/v1/users/favorites"; // POST / DELETE
 }

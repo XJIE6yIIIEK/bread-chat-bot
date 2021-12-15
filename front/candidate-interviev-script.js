@@ -1,6 +1,5 @@
 // id данного кандидата
 id_cand = sessionStorage.getItem('id_cand');
-console.log(id_cand);
 
 let date_start = document.getElementById("date_start");
 let date_end = document.getElementById("date_end");
@@ -9,9 +8,16 @@ let select_vac = document.getElementById("select_vac");
 
 // добавить в избранное
 $("body").on("click", ".add_to_favorites", function(){
-    if (confirm("Добавить " + "data.s_name" + " в избранное ?")) {
-        // пихнуть данные на сервак
-    }
+    let button = this;
+    let fav = this.getAttribute("favorite") == "true";
+    $.ajax({
+        url: address()+endpoints.favorite+"/"+id_cand,
+        type: fav?"DELETE":"POST",
+        success: function (){
+            button.innerHTML = fav?"Добавить в избранное":"Удалить из избранного";
+            button.setAttribute("favorite", !fav);
+        }
+    });
 });
 
 // назначить собеседование
@@ -34,8 +40,4 @@ function fillInterview(data)
     //date_start.value = ;
     //date_end.value = ;
     //date_time.value = ;
-
-    let option = document.createElement('option');
-    //option.text = ;
-    document.getElementById("select_vac").add(option);
 }
