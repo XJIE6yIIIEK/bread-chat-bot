@@ -12,6 +12,11 @@ h1, h2, h3, h4, h5, h6
     margin: 0;
 }
 
+textarea {
+    resize: none;
+    text-align: center;
+}
+
 /* Header*/
 .header
 {
@@ -26,14 +31,6 @@ h1, h2, h3, h4, h5, h6
     left: 0;
     right: 0;
     z-index: 1000;
-}
-
-.container
-{
-    width: 100%;
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 10px;
 }
 
 .header_inner
@@ -197,17 +194,21 @@ h1, h2, h3, h4, h5, h6
     border: 1px solid rgba(0,0,0,.125);
 }
 
+#info_company{
+    width: 500px;
+}
+
 .add_info_button{
     display: block;
     margin-left: auto;
     margin-right: auto; 
     margin-bottom: 10px;
     
-    border: none;
+    border-color: #153949;
     border-radius: 5px;
 
     height: 30px;
-    width: 150px;
+    width: 160px;
 
     cursor: pointer;
 
@@ -260,6 +261,8 @@ h1, h2, h3, h4, h5, h6
     width: 300px;
     height: 500px;
 
+    margin-top: 40px;
+
     background-color: #e2e2e2;
 }
 
@@ -280,7 +283,7 @@ h1, h2, h3, h4, h5, h6
     margin-right: auto;
     margin-bottom: 10px; 
 
-    border: none;
+    border-color: #153949;
     border-radius: 5px;
 
     height: 30px;
@@ -303,7 +306,7 @@ h1, h2, h3, h4, h5, h6
     margin-right: auto; 
     margin-bottom: 10px;
 
-    border: none;
+    border-color: #153949;
     border-radius: 5px;
 
     height: 30px;
@@ -402,9 +405,11 @@ h1, h2, h3, h4, h5, h6
 
     cursor: pointer;
 
-    color: red;
+    color: rgb(218, 6, 6);
     font-size: 20px;
     font-weight: bold;
+
+    padding-top: 6px;
 }
 
 .remove_req_button{
@@ -413,7 +418,7 @@ h1, h2, h3, h4, h5, h6
 
     cursor: pointer;
 
-    color: red;
+    color: rgb(218, 6, 6);
     font-size: 20px;
     font-weight: bold;
 }
@@ -424,7 +429,7 @@ h1, h2, h3, h4, h5, h6
 
     cursor: pointer;
 
-    color: red;
+    color: rgb(218, 6, 6);
     font-size: 20px;
     font-weight: bold;
 }

@@ -105,7 +105,7 @@ function AddTab(vac_name, vac_id) {
     let number_tab = $('.tabs_nav-btn').length + 1;
     tab_button.setAttribute("data-tab", "tab_" + number_tab);
     
-    let input = document.createElement("input");
+    let input = document.createElement("textarea");
     input.setAttribute("timer_id","-1");
     input.addEventListener("input", function(evt){
         let target = evt.target;
@@ -175,7 +175,7 @@ function AddForm (frm_name, form_id, list= document.getElementById("simpleList")
     div.classList.add("form_id:"+form_id);
     div.setAttribute("form_id", form_id);
 
-    let input = document.createElement("input");
+    let input = document.createElement("textarea");
     input.classList.add("input-tabs-item");
     input.placeholder = "Вопрос*";
     input.setAttribute("timer_id","-1");
