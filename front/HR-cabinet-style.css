@@ -304,7 +304,7 @@ input[type=text]:focus, input[type=password]:focus {
     display: none;
 
     height: 400px;
-    width: 500px;
+    width: 1000px;
 
     margin-left: auto;
     margin-right: auto;
@@ -340,6 +340,30 @@ input[type=text]:focus, input[type=password]:focus {
     min-height: 40px;
     height: auto;
 }
+.status_interview_candidate{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid black;
+    border-left: none;
+    background-color: white;
+    width: 300px;
+    min-height: 40px;
+    height: auto;
+}
+.vacans_interview_candidate{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid black;
+    border-left: none;
+    background-color: white;
+    width: 150px;
+    min-height: 40px;
+    height: auto;
+}
 .date_interview_candidate{
     display: flex;
     align-items: center;
@@ -348,9 +372,20 @@ input[type=text]:focus, input[type=password]:focus {
     border: 1px solid black;
     border-left: none;
     background-color: white;
-    width: 120px;
+    width: 100px;
     min-height: 40px;
     height: auto;
+}
+
+.interview_candidate_delete_button{
+    background: none;
+    border: none;
+
+    cursor: pointer;
+
+    color: rgb(218, 6, 6);
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .favorites{
