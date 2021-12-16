@@ -13,7 +13,6 @@ function fillAllInterviews(data)
         let interview_candidate = document.createElement("div");
         interview_candidate.classList.add("interview_candidate");
         interview_candidate.setAttribute("candidate_id", data[key].n_candidate);
-        interview_candidate.setAttribute("vacancy_id", data[key].n_vacancy);
         frame.appendChild(interview_candidate);
 
         let name_interview = document.createElement("div");
@@ -37,6 +36,9 @@ function fillAllInterviews(data)
 
         let date_interview = document.createElement("div");
         date_interview.classList.add("date_interview_candidate");
+        //let date = new Date(data[key].d_date);
+        //console.log(data[key].d_date);
+        //date_interview.innerHTML = date.getDay()+"-"+date.getMonth()+"-"+date.getFullYear()+"\n"+date.getHours()+":"+date.getMinutes();
         date_interview.innerHTML = data[key].d_date;
         interview_candidate.appendChild(date_interview);
 
@@ -50,6 +52,8 @@ function fillAllFavorites(data)
 {
     for ( key in data )
     {
+        console.log(data[key]);
+
         let name_favorite = document.createElement("div");
         name_favorite.classList.add("name_favorite_candidate");
         let a = document.createElement("a");
@@ -106,14 +110,11 @@ $("body").on("click", ".favorite_candidate_delete_button", function() {
 $("body").on("click", ".interview_candidate_delete_button", function (){
     if (confirm("Вы точно хотите отменить сосбеседование?"))
     {
-        let candidate_item = this.parentNode;
-        let candidate_id = candidate_item.getAttribute("candidate_id");
-        let vacancy_id = candidate_item.getAttribute("vacancy_id");
         $.ajax({
-            url: address()+endpoints.deleteMeeting.replace(":n_candidate", candidate_id).replace(":n_vacancy",vacancy_id),
-            type:"DELETE",
+            url: address()+endpoints.favorite+"/"+this.parentNode.getAttribute("candidate_id"),
+            type:"POST",
             success: function (){
-                candidate_item.remove();
+                this.parentNode.remove();
             },
             xhrFields:{
                 withCredentials: true

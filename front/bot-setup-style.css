@@ -138,7 +138,7 @@ textarea {
     margin: 30px auto;
 }
 
-#buttons_body_head {
+.buttons_body_head {
     border-radius: 5px;
     border: none;
 
@@ -153,11 +153,11 @@ textarea {
 
     font-size: 20px;
 }
-#buttons_body_head:hover{
+.buttons_body_head:hover{
     background: #e2e2e2;
     transition: background-color 0.3s;
 }
-#buttons_body_head.active {
+.buttons_body_head.active {
     background-color: #153949;
     color: #f1f1f1;
 }
