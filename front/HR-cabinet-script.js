@@ -13,6 +13,7 @@ function fillAllInterviews(data)
         let interview_candidate = document.createElement("div");
         interview_candidate.classList.add("interview_candidate");
         interview_candidate.setAttribute("candidate_id", data[key].n_candidate);
+        interview_candidate.setAttribute("vacancy_id", data[key].n_vacancy);
         frame.appendChild(interview_candidate);
 
         let name_interview = document.createElement("div");
@@ -109,11 +110,16 @@ $("body").on("click", ".favorite_candidate_delete_button", function() {
 
 $("body").on("click", ".interview_candidate_delete_button", function (){
     if (confirm("Вы точно хотите отменить сосбеседование?"))
-    {
+    {   let candidate_item = this.parentNode;
+        let candidate_id = candidate_item.getAttribute("candidate_id");
+        let vacancy_id = candidate_item.getAttribute("vacancy_id");
         $.ajax({
+            url: address()+endpoints.deleteMeeting.replace(":n_candidate", candidate_id).replace(":n_vacancy",vacancy_id),
+            type:"DELETE",
             url: address()+endpoints.favorite+"/"+this.parentNode.getAttribute("candidate_id"),
             type:"POST",
             success: function (){
+                candidate_item.remove();
                 this.parentNode.remove();
             },
             xhrFields:{
