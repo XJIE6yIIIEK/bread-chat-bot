@@ -62,7 +62,7 @@ function fillCandidate(data)
         let option = document.createElement('option');
         let vac_name = data.appropriateVacancies[i].s_name;
         option.innerHTML = vac_name;
-        option.value = data.appropriateVacancies[i].id;
+        option.setAttribute("vac_id",data.appropriateVacancies[i].id);
         document.getElementById("select_vac").appendChild(option);
 
         approp_vacans_data += '<tr>';
