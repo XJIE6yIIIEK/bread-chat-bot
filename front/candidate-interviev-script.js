@@ -31,7 +31,7 @@ function sendMeeting()
         type: "POST",
         data: {
             startDate: date_start.value,
-            endDate: date_start.value,
+            endDate: date_end.value,
             duration: {hours: duration[0], minutes: duration[1]}
         },
         success: function (data) {

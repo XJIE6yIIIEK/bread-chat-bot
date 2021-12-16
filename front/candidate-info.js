@@ -32,9 +32,10 @@ function fillCandidate(data)
 
     candidate_data += '<tr>';
     candidate_data += '<th class = "table_body_style">' + "Ссылка на резюме:" + '</th>';
-    if (data.s_external_resumes)
+    console.log(data.candidate.s_external_resumes);
+    if (data.candidate.s_external_resumes)
     {
-        candidate_data += '<th class = "table_body_style">' + '<a href=data.s_external_resumes>'+ data.s_external_resumes +'</a>'+ '</th>';
+        candidate_data += '<th class = "table_body_style">' + '<a href="' + data.candidate.s_external_resumes + '" target = "_blank">'+ data.candidate.s_external_resumes +'</a>'+ '</th>';
     }
     else
         candidate_data += '<th class = "table_body_style">' + "Отсутствует" + '</th>';

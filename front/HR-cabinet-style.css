@@ -360,7 +360,7 @@ input[type=text]:focus, input[type=password]:focus {
     border: 1px solid black;
     border-left: none;
     background-color: white;
-    width: 150px;
+    width: 180px;
     min-height: 40px;
     height: auto;
 }
@@ -372,7 +372,7 @@ input[type=text]:focus, input[type=password]:focus {
     border: 1px solid black;
     border-left: none;
     background-color: white;
-    width: 100px;
+    width: 110px;
     min-height: 40px;
     height: auto;
 }

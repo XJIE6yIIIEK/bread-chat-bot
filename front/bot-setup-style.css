@@ -342,11 +342,7 @@ textarea {
     cursor: pointer;
     transition: 0.3s;
 }
-.tabs_nav-btn:last-child {
-    /*
-    border-right: none;
-    */
-}
+
 .tabs_nav-btn:hover {
     background-color: #ddd;
 }

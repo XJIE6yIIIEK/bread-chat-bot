@@ -2,8 +2,8 @@ function fillAllCandidates(data)
 {
     for ( key in data )
     {
-        console.log(key);
-        console.log(data[key]);
+        //console.log(key);
+        //console.log(data[key]);
 
         // создаём ячейку для кандидата
         let tr = document.createElement('tr');

@@ -53,7 +53,7 @@ function fillAllFavorites(data)
 {
     for ( key in data )
     {
-        console.log(data[key]);
+        //console.log(data[key]);
 
         let name_favorite = document.createElement("div");
         name_favorite.classList.add("name_favorite_candidate");
@@ -95,11 +95,12 @@ $.ajax({
 $("body").on("click", ".favorite_candidate_delete_button", function() {
     if (confirm("Удалить кандидата из избранных ?"))
     {
+        let candidate_item = this.parentNode;
         $.ajax({
-            url: address()+endpoints.favorite+"/"+this.parentNode.getAttribute("candidate_id"),
-            type:"POST",
+            url: address()+endpoints.favorite+"/"+candidate_item.getAttribute("candidate_id"),
+            type:"DELETE",
             success: function (){
-                this.parentNode.remove();
+                candidate_item.remove();
             },
             xhrFields:{
                 withCredentials: true
@@ -116,11 +117,8 @@ $("body").on("click", ".interview_candidate_delete_button", function (){
         $.ajax({
             url: address()+endpoints.deleteMeeting.replace(":n_candidate", candidate_id).replace(":n_vacancy",vacancy_id),
             type:"DELETE",
-            url: address()+endpoints.favorite+"/"+this.parentNode.getAttribute("candidate_id"),
-            type:"POST",
             success: function (){
                 candidate_item.remove();
-                this.parentNode.remove();
             },
             xhrFields:{
                 withCredentials: true
@@ -135,13 +133,18 @@ $("body").on("click", ".save_button", function() {
     let password_verification = document.getElementById("verification_new_password").value;
     if (password != password_verification)
     {
-        document.getElementById("error_label").innerHTML = "Пароли не совпадают.";
+        document.getElementById("error_label").innerHTML = "Пароли не совпадают";
         return;
     }
     $.ajax({
         url: address()+endpoints.changePassword,
         type: "PUT",
         data: {s_password: password},
+        success: function (){
+            if (alert("Пароль изменён"))
+            {
+            }
+        },
         xhrFields: {
             withCredentials: true
         }
