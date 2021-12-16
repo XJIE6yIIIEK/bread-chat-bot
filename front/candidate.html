@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel = "stylesheet" href="style.css">
+    <link rel = "stylesheet" href="candidates-style.css">
     <title>Сайт с настройкой бота</title>
 </head>
 <body>
@@ -18,8 +18,8 @@
                 <div class="dropdown">
                     <div class="dropbtn"></div>
                     <div class="dropdown-content">
-                      <a href="#">Личный кабинет</a>
-                      <a href="auth-page.html">Выход</a>
+                      <a href="HR-cabinet.html">Личный кабинет</a>
+                      <a href="auth-page.html" class="logout">Выход</a>
                     </div>
                   </div>
             </div>
@@ -27,40 +27,95 @@
         </div>
     </header>
 
-    <div class="body"> 
-     <div class="container">
-         <div class="body_main">      
-            <table class="table_candidate" id="table_candidate">
-                <tbody>
-                    <tr>
-                        <th colspan="2" class="table_head_style">Информация о кандидате</th>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table_resume" id="table_resume">
-                <tbody>
-                    <tr>
-                        <th colspan="2" class="table_head_style">Резюме</th>
-                    </tr>
-                    <tr>
-                        <th>Вопрос бота</th>
-                        <th>ответ кандидата</th>
-                    </tr>
-                </tbody>
-            </table>
-         </div>
-       </div>
-       <table class="table_approp_vacans" id="table_approp_vacans">
-        <tbody>
-            <tr>
-                <th class="table_head_style">Подходящие вакансии</th>
-            </tr>
-        </tbody>
-    </table>
+    <div class="body_fade">
+        <div class="body_head">
+            <button class="add_to_favorites">Добавить в избранное</button>
+
+            <button  class="open_modal_wind_button"
+                onclick="
+                    document.querySelector('.body_fade').classList.add('active'), 
+                    document.querySelector('.modal_wind').classList.add('active')
+                ">
+            Назначить собеседование
+            </button> 
+        </div>
+
+        <div class="modal_wind">
+
+            <button  class="close_modal_wind_button"
+                onclick="
+                    document.querySelector('.body_fade').classList.remove('active'), 
+                    document.querySelector('.modal_wind').classList.remove('active')
+                ">
+            X
+            </button>
+
+            <div class="modal_wind_item" id="start_date"> 
+                <label for="date_start">Дата начала: </label>
+                <input type="date" id="date_start" name="date"/>
+            </div>
+
+            <div class="modal_wind_item" id="end_date"> 
+                <label for="date_end">Дата окончания: </label>
+                <input type="date" id="date_end" name="date"/>
+            </div>
+
+            <div class="modal_wind_item" id="time">
+                <label for="date_time">Длительность собеседования: </label>
+                <input type="time" id="date_time" name="time"/>
+            </div>
+
+            <div class="modal_wind_item">
+                <label class="date" id="date">Вакансия </label>
+                <select id="select_vac"></select>
+            </div>
+
+            <button class="set_interview">Назначить собеседование</button>
+
+        </div>	
+
+        <div class="body"> 
+                <div class="body_top">      
+                   <table class="table_candidate" id="table_candidate">
+                       <tbody>
+                           <tr>
+                               <th colspan="2" class="table_head_style">Информация о кандидате</th>
+                           </tr>
+                       </tbody>
+                   </table>
+                   <div class="body_top_right">
+                    <table class="table_approp_vacans" id="table_approp_vacans">
+                        <tbody>
+                            <tr>
+                                <th class="table_head_style">Подходящие вакансии</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                   </div>
+                   
+                </div>
+
+                <div class="body_bottom">  
+                    <table class="table_resume" id="table_resume">
+                        <tbody>
+                            <tr>
+                                <th colspan="2" class="table_head_style">Резюме</th>
+                            </tr>
+                            <tr>
+                                <th>Вопрос бота</th>
+                                <th>Ответ кандидата</th>
+                            </tr>
+                        </tbody>
+                    </table> 
+                </div>
+        </div>
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="config.js"></script>
+    <script src="auth.js"></script>
     <script src="candidate-info.js"></script>
+    <script src="candidate-interviev-script.js"></script>
+    <script src="logout.js"></script>
 </body>
 </html>

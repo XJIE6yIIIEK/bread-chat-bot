@@ -1,5 +1,4 @@
 let id_cand_on_second_page = sessionStorage.getItem('id_cand');
-console.log(id_cand_on_second_page);
 
 function fillCandidate(data)
 {
@@ -35,7 +34,7 @@ function fillCandidate(data)
     candidate_data += '<th class = "table_body_style">' + "Ссылка на резюме:" + '</th>';
     if (data.s_external_resumes)
     {
-        candidate_data += '<th class = "table_body_style">' + '<a href="#">'+ data.s_external_resumes +'</a>'+ '</th>';
+        candidate_data += '<th class = "table_body_style">' + '<a href=data.s_external_resumes>'+ data.s_external_resumes +'</a>'+ '</th>';
     }
     else
         candidate_data += '<th class = "table_body_style">' + "Отсутствует" + '</th>';
@@ -60,11 +59,24 @@ function fillCandidate(data)
 
     for (let i = 0; i < data.appropriateVacancies.length; i++)
     {
+        let option = document.createElement('option');
+        let vac_name = data.appropriateVacancies[i].s_name;
+        option.innerHTML = vac_name;
+        option.value = data.appropriateVacancies[i].id;
+        document.getElementById("select_vac").appendChild(option);
+
         approp_vacans_data += '<tr>';
-        approp_vacans_data += '<th class = "table_body_style">' + data.appropriateVacancies[i].s_name + '</th>';
+        approp_vacans_data += '<th class = "table_body_style">' + vac_name + '</th>';
         approp_vacans_data += '</tr>';
     }
     $("#table_approp_vacans").append(approp_vacans_data);
+
+    let favorite_button = document.querySelector(".add_to_favorites");
+    favorite_button.setAttribute("favorite", data.favorite);
+    if (data.favorite)
+    {
+        favorite_button.innerHTML = "Удалить из избранного";
+    }
 
 }
 
@@ -74,7 +86,8 @@ $.ajax({
     {
         fillCandidate(data);
     },
-    error: function(request, textStatus, errorThrown){
+    error: function(request, textStatus, errorThrown)
+    {
         authCheck(request);
     },
     xhrFields: {

@@ -39,5 +39,5 @@ $.ajax({
 
 $("body").on("click", ".candidates", function()
 {
-    sessionStorage.setItem('id_cand', this.id);
+    sessionStorage.setItem('id_cand', this.id); // запоминаем id кандидата
 });

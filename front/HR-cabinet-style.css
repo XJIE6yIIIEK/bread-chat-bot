@@ -1,0 +1,497 @@
+body
+{
+    margin: 0;
+
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+    text-align: center;
+    margin: 15px;
+    font-size: 20px;
+}
+
+a{
+    text-decoration: none;
+}
+
+/* Header*/
+.header
+{
+    background-color: #153949;
+
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    /*position: absolute;*/
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.header_inner
+{
+   
+   display: flex;
+   justify-content: space-between; 
+   align-items: center;
+
+   font-size: 14px;
+   text-transform: uppercase;
+   
+}
+
+/* Nav */
+.nav
+{
+    
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.nav_link
+{
+    display:  inline-block;
+    vertical-align: top;
+    margin: 0 15px;
+    position: relative;
+
+    color: #e9e9e9;
+    text-decoration: none;
+    transition: color 0.1s linear;
+}
+
+.nav_link:hover
+{
+    color: #aaaaaa;
+}
+
+.left_container_nav{
+    padding-left: 10px;
+}
+
+.right_container_nav{
+    padding-right: 10px;
+}
+
+.dropdown {
+    cursor: pointer;   
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    margin: 0 15px;
+    
+    border-bottom: 15px double #f1f1f1;; 
+    border-top: 5px solid #f1f1f1;; 
+    height: 4px; 
+    width:30px;
+
+    transition: color 0.1s linear;
+}
+
+.dropdown:hover .dropbtn {
+    border-bottom: 15px double #aaaaaa;; 
+    border-top: 5px solid #aaaaaa;; 
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    left: -116px;
+
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+    z-index: 1;
+    
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #aaaaaa;
+}
+
+.dropdown:hover .dropdown-content{
+    display: block;
+}
+
+/* Modal Window */
+.body_fade {
+	/*display: none;*/
+}
+
+.body_fade.active:before {
+	content: '';
+	background: #000;
+	position: fixed; 
+	left: 0;
+	top: 0;
+	width: 100%; 
+	height: 100%;
+	opacity: 0.7;
+	z-index: 9999;
+}
+
+.modal_wind {
+    display: none;
+}
+
+.modal_wind.active{ 
+    display: flex;
+    flex-direction: column;
+	position: fixed;
+	top: 20%;
+	left: 50%;
+	padding: 20px;
+	min-width: 380px;
+    width: auto;
+    height: 340px;
+	margin-left: -210px;	
+	background: #e2e2e2;
+	border: none;
+	border-radius: 10px; 
+	z-index: 99999;
+	opacity: 1;	
+    font-size: 16px;
+}
+
+.close_modal_wind_button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgb(218, 6, 6);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Container in Modal Window */
+.container {
+    padding: 16px;margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+    max-height: 400px;
+    /*text-align: center;*/
+}
+
+input[type=text], input[type=password] {
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: white;
+    border-radius: 10px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    background-color: white;
+    outline: none;
+    border-radius: 10px;
+}
+
+.save_button{
+    width: 170px;
+    height: 30px;
+    margin:0 25% 0 25%;
+    width:50%;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+    border: none;
+    background: #153949;
+    color: #f1f1f1;
+    transition: 0.1s linear;
+}
+
+.save_button:hover
+{
+    background: #0d2530;
+    transition: background-color 0.3s;
+}
+
+.save_button:active
+{
+    background: black;
+    transition: background-color 0.3s;
+}
+
+.e{
+    color: red;
+}
+
+/* Body Head */
+.body_head{
+    width: 100%;
+    max-width: 1000px;
+    margin: 30px auto;
+}
+
+.HR_name{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 60px;
+    width: 500px;
+    margin-bottom: 30px;
+    margin-left: auto;
+    margin-right: auto;
+
+    border: 2px solid #153949;
+    border-radius: 5px;
+
+    font-size: 25px;
+}
+
+.body_head_buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+#buttons_body_head {
+    border-radius: 5px;
+    border: none;
+
+    height: 50px;
+    width: 250px;
+
+    margin: 0 20px 0 20px;
+
+    background: none;
+
+    cursor: pointer;
+
+    font-size: 20px;
+}
+#buttons_body_head:hover{
+    background: #e2e2e2;
+    transition: background-color 0.3s;
+}
+#buttons_body_head.active {
+    background-color: #153949;
+    color: #f1f1f1;
+}
+
+/* Body Main */
+.body_main{
+    display: block;
+
+    width: 100%;
+    max-width: 1000px;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.interviews{
+    display: none;
+
+    height: 400px;
+    width: 1000px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    overflow-y: scroll;
+    
+    font-size: 17px;
+
+    border: 2px solid #153949;
+    border-radius: 5px;
+
+    background-color: #e2e2e2;
+}
+.interviews.active{
+    display: block;
+}
+
+.interview_candidate{
+    display: flex;
+    justify-content: center;
+
+    padding: 10px;
+}
+
+.name_interview_candidate{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid black;
+    background-color: white;
+    width: 300px;
+    min-height: 40px;
+    height: auto;
+}
+.status_interview_candidate{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid black;
+    border-left: none;
+    background-color: white;
+    width: 300px;
+    min-height: 40px;
+    height: auto;
+}
+.vacans_interview_candidate{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid black;
+    border-left: none;
+    background-color: white;
+    width: 150px;
+    min-height: 40px;
+    height: auto;
+}
+.date_interview_candidate{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid black;
+    border-left: none;
+    background-color: white;
+    width: 100px;
+    min-height: 40px;
+    height: auto;
+}
+
+.interview_candidate_delete_button{
+    background: none;
+    border: none;
+
+    cursor: pointer;
+
+    color: rgb(218, 6, 6);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.favorites{
+    display: none;
+
+    height: 400px;
+    width: 500px;
+
+    overflow-y: scroll;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    font-size: 17px;
+    
+    border: 2px solid #153949;
+    border-radius: 5px;
+
+    background-color: #e2e2e2;
+}
+.favorites.active{
+    display: block;
+}
+
+.favorite_candidate{
+    display: flex;
+    justify-content: center;
+
+    padding: 10px;
+}
+
+.name_favorite_candidate{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid black;
+    background-color: white;
+    width: 396px;
+    min-height: 40px;
+    height: auto;
+}
+
+.favorite_candidate_delete_button{
+    background: none;
+    border: none;
+
+    cursor: pointer;
+
+    color: rgb(218, 6, 6);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.settings{
+    display: none;
+
+    height: 300px;
+    width: 300px;
+
+    padding: 20px;
+
+    margin-left: auto;
+    margin-right: auto;
+    
+    border: 2px solid #153949;
+    border-radius: 5px
+}
+.settings.active{
+    display: flex;
+    flex-direction: column;
+}
+
+.button_entry_microsoft{
+    margin-left: auto;
+    margin-right: auto;
+
+    border: none;
+    border-radius: 5px;
+    height: 60px;
+    width: 220px;
+    cursor: pointer;
+    background-color: #e2e2e2;
+    color: #153949;
+    font-weight: bold;
+    font-size: 16px;
+}
+.button_entry_microsoft:active{
+    background-color: #bdbdbd;
+}
+.button_new_password{
+    margin: 15px;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+
+    border-color: #153949;
+    border-radius: 5px;
+    height: 30px;
+    width: 180px;
+    cursor: pointer;
+    background-color: #e2e2e2;
+    color: #153949;
+    font-weight: bold;
+    font-size: 12px;
+}
+.button_new_password:active{
+    background-color: #bdbdbd;
+}

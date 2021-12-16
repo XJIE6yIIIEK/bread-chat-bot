@@ -105,7 +105,7 @@ function AddTab(vac_name, vac_id) {
     let number_tab = $('.tabs_nav-btn').length + 1;
     tab_button.setAttribute("data-tab", "tab_" + number_tab);
     
-    let input = document.createElement("input");
+    let input = document.createElement("textarea");
     input.setAttribute("timer_id","-1");
     input.addEventListener("input", function(evt){
         let target = evt.target;
@@ -175,7 +175,7 @@ function AddForm (frm_name, form_id, list= document.getElementById("simpleList")
     div.classList.add("form_id:"+form_id);
     div.setAttribute("form_id", form_id);
 
-    let input = document.createElement("input");
+    let input = document.createElement("textarea");
     input.classList.add("input-tabs-item");
     input.placeholder = "Вопрос*";
     input.setAttribute("timer_id","-1");
@@ -300,6 +300,9 @@ function createForm()
         url: address()+endpoints.forms,
         success: function (data) {
             AddForm(null, data.id);
+        },
+        xhrFields: {
+            withCredentials: true
         }
     })
 }
@@ -308,14 +311,20 @@ function renameForm(form_id, text)
     $.ajax({
         type: "PUT",
         url: address() + endpoints.forms + "/" + form_id,
-        data: {s_name:text}
+        data: {s_name:text},
+        xhrFields: {
+            withCredentials: true
+        }
     })
 }
 function deleteForm(form_id)
 {
     $.ajax({
         type:"DELETE",
-        url: address() + endpoints.forms + "/" + form_id
+        url: address() + endpoints.forms + "/" + form_id,
+        xhrFields: {
+            withCredentials: true
+        }
     })
 }
 function createVacancy()
@@ -325,6 +334,9 @@ function createVacancy()
         url:address()+endpoints.vacancies,
         success: function (data){
             AddTab(null, data.id)
+        },
+        xhrFields: {
+            withCredentials: true
         }
     })
 }
@@ -333,27 +345,39 @@ function renameVacancy(vac_id, text)
     $.ajax({
         type: "PUT",
         url: address() + endpoints.vacancies + "/" + vac_id,
-        data: {s_name:text}
+        data: {s_name:text},
+        xhrFields: {
+            withCredentials: true
+        }
     })
 }
 function deleteVacancy(vac_id)
 {
     $.ajax({
         type:"DELETE",
-        url: address() + endpoints.vacancies + "/" + vac_id
+        url: address() + endpoints.vacancies + "/" + vac_id,
+        xhrFields: {
+            withCredentials: true
+        }
     })
 }
 function createFTV(vac_id, form_id)
 {
     $.ajax({
         type:"POST",
-        url:address()+endpoints.formsToVacs + "/" + vac_id + "/" + form_id
+        url:address()+endpoints.formsToVacs + "/" + vac_id + "/" + form_id,
+        xhrFields: {
+            withCredentials: true
+        }
     })
 }
 function deleteFTV(vac_id, form_id)
 {
     $.ajax({
         type:"DELETE",
-        url: address() + endpoints.formsToVacs + "/" + vac_id + "/" + form_id
+        url: address() + endpoints.formsToVacs + "/" + vac_id + "/" + form_id,
+        xhrFields: {
+            withCredentials: true
+        }
     })
 }
