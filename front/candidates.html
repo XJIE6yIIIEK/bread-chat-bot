@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel = "stylesheet" href="style.css">
+    <link rel = "stylesheet" href="candidates-style.css">
     <title>Сайт с настройкой бота</title>
 </head>
 <body>
@@ -18,8 +18,8 @@
                 <div class="dropdown">
                     <div class="dropbtn"></div>
                     <div class="dropdown-content">
-                      <a href="#">Личный кабинет</a>
-                      <a href="auth-page.html">Выход</a>
+                      <a href="HR-cabinet.html">Личный кабинет</a>
+                      <a href="auth-page.html" class="logout">Выход</a>
                     </div>
                   </div>
             </div>
@@ -28,21 +28,21 @@
     </header>
 
     <div class="body"> 
-     <div class="container">
-         <div class="body_main">
-            <table class="table" id="table_cand">
+         <div class="body_candidates">
+            <table class="table_candidates" id="table_cand">
                 <tbody >
                     <tr>
-                        <th class="table_head_style">кандидат</th>
+                        <th colspan="2" class="table_head_style">Кандидаты</th>
                     </tr>
                 </tbody>
             </table>
-         </div>
        </div>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="config.js"></script>
+    <script src="auth.js"></script>
     <script src="candidates-script.js"></script>
+    <script src="logout.js"></script>
 </body>
 </html>

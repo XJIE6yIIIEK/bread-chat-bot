@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel = "stylesheet" href="HR-cabinet-style.css">
+    <title>Сайт с настройкой бота</title>
+</head>
+<body>
+    <header class = "header">
+            <div class = "header_inner">   
+                <div class="left_container_nav">
+                    <a class = "nav_link" href = "index.html">Главная</a>
+                    <a class = "nav_link" href = "candidates.html">Кандидаты</a>
+                    <a class = "nav_link" href = "bot-setup.html">Настройка бота</a>
+                </div>
+
+                <div class="right_container_nav">
+                    <div class="dropdown">
+                        <div class="dropbtn"></div>
+                        <div class="dropdown-content">
+                          <a href="HR-cabinet.html">Личный кабинет</a>
+                          <a href="auth-page.html" class="logout">Выход</a>
+                        </div>
+                      </div>
+                </div>
+                </div>
+            </div>
+    </header>
+    
+    <div class="body_fade">
+        <div class="modal_wind">
+            <button  class="close_modal_wind_button"
+                onclick="
+                    document.querySelector('.body_fade').classList.remove('active'), 
+                    document.querySelector('.modal_wind').classList.remove('active')
+                ">
+            X
+            </button>
+
+                <h3>Смена пароля</h3>
+                <label for="new_password">Новый пароль:</label>
+                <input type="password" id="new_password">
+                <label for="verification_new_password">Подтверждеие пароля:</label>
+                <input type="password" id="verification_new_password">
+                <button class="save_button" id="save">Сохранить</button>
+                <br>
+                <label class="e" id="error_label"></label>
+                </br>                
+        </div>
+
+        <div class="body_head">
+            <div class="HR_name"></div>
+            
+            <div class="body_head_buttons">
+                <button  class="button_interviews active" id="buttons_body_head"
+                    onclick="
+                        document.querySelector('.interviews').classList.add('active'), 
+                        document.querySelector('.favorites').classList.remove('active'),
+                        document.querySelector('.settings').classList.remove('active'),
+    
+                        document.querySelector('.button_interviews').classList.add('active'), 
+                        document.querySelector('.button_favorites').classList.remove('active'),
+                        document.querySelector('.button_settings').classList.remove('active')
+                    ">
+                Собеседования
+                </button>  
+    
+                <button class="button_favorites" id="buttons_body_head"
+                    onclick="
+                        document.querySelector('.favorites').classList.add('active'),
+                        document.querySelector('.interviews').classList.remove('active'),
+                        document.querySelector('.settings').classList.remove('active'), 
+    
+                        document.querySelector('.button_favorites').classList.add('active')
+                        document.querySelector('.button_interviews').classList.remove('active'), 
+                        document.querySelector('.button_settings').classList.remove('active')
+                        
+                    ">
+                Избранное
+                </button>  
+    
+                <button class="button_settings" id="buttons_body_head"
+                    onclick="
+                        document.querySelector('.settings').classList.add('active'), 
+                        document.querySelector('.favorites').classList.remove('active'),
+                        document.querySelector('.interviews').classList.remove('active'), 
+    
+                        document.querySelector('.button_settings').classList.add('active'), 
+                        document.querySelector('.button_interviews').classList.remove('active'),
+                        document.querySelector('.button_favorites').classList.remove('active')
+                    ">
+                Настройки
+                </button>
+            </div>
+        </div>
+    
+        <div class="body_main">
+            <div class="interviews active">
+                <div class="interview_candidate">
+                </div>
+            </div>
+    
+            <div class="favorites">
+            </div>
+    
+            <div class="settings">
+                <form class="button_entry_microsoft" action="https://46.146.165.142:60549/auth/signin" target="_blank">
+                    <button class="button_entry_microsoft">Вход в аккаунт Microsoft</button>
+                </form>
+                <button  class="button_new_password"
+                    onclick="
+                        document.querySelector('.body_fade').classList.add('active'), 
+                        document.querySelector('.modal_wind').classList.add('active')
+                    ">
+                    Сменить пароль
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="HR-cabinet-script.js"></script>
+    <script src="logout.js"></script>
+</body>
+
+</html>

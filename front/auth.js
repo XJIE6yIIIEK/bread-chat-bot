@@ -2,7 +2,6 @@ function authCheck(request)
 {
     if (request.getResponseHeader("Location"))
     {
-        alert("SUCC");
         window.location.href = request.getResponseHeader("Location")
         return true;
     }
@@ -13,7 +12,7 @@ function auth(login, password)
 {$.ajax
     ({
         url: address()+endpoints.auth,
-        data: {"e_mail":login, "s_password":password},
+        data: {"s_login":login, "s_password":password},
         dataType: "json",
         success: function (data, textStatus, request) {alert("WTF SUCC");},
         error: function(data) {
