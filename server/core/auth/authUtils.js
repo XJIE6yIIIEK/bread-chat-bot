@@ -1,6 +1,7 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwttoken = require('jsonwebtoken');
+const Users = require('../objects/users/usersModel');
 const UserRepository = require('../objects/users/usersRepository');
 
 class AuthService {
@@ -8,42 +9,61 @@ class AuthService {
         return bcrypt.compareSync(pass, hashedPass);
     }
 
-    async verifyToken(token, tokenType, id, callbacks){
+    async verifyAccessToken(token, callbacks){
         jwttoken.verify(
             token,
-            (tokenType == 's_access_token' ? process.env.JWT_ACCESS_SECRET_WORD : process.env.JWT_REFRESH_SECRET_WORD),
-            async function(err, data) {
-                //Токен не валиден
-                if(err && err.name != 'TokenExpiredError'){
+            process.env.JWT_ACCESS_SECRET_WORD,
+            async (err, data) => {
+                if(err && err.name == 'TokenExpiredError'){
+                    return callbacks.timeExpired();
+                } else if (err) {
                     return callbacks.tokenError();
                 }
-                
-                var userId = (tokenType == 's_access_token') ? data.id : id;
 
-                //Нет принадлежности токена к юзеру
+                var userId = data.id;
+
                 if(userId == null){
                     return callbacks.tokenError();
                 }
 
-                var writenToken = await UserRepository.get({
+                var writtenToken = await UserRepository.get({
                     attributes: [
-                        tokenType
+                        's_access_token'
                     ],
                     where: {
                         id: data.id
                     }
                 });
 
-                //Нет такого пользователя в базе или токен пользователя отозван
-                if(!writenToken || writenToken[tokenType] != token){
+                if(!writtenToken || writtenToken.s_access_token != token){
+                    return callbacks.tokenError();
+                }
+                
+                return callbacks.allClear(data);
+            }
+        );
+    }
+
+    async verifyRefreshToken(token, callbacks){
+        jwttoken.verify(
+            token,
+            process.env.JWT_REFRESH_SECRET_WORD,
+            async (err, data) => {
+                if(err){
                     return callbacks.tokenError();
                 }
 
-                if(err){
-                    return callbacks.timeExpired(data);
-                } else {
-                    return callbacks.allClear(data);
+                var user = await UserRepository.get({
+                    where: {
+                        s_refresh_token: token
+                    }
+                });
+
+                if(!user){
+                    return callbacks.tokenError();
                 }
+
+                return callbacks.allClear(user.id);
             }
         );
     }

@@ -24,11 +24,17 @@ class BotCalendarTransmitter {
         this.client = new bot_reciever_proto.BotCalendarService(process.env.BOT_TRANSMITTER_ADDRESS + ':' + process.env.BOT_CALENDAR_TRANSMITTER_PORT, grpc.credentials.createInsecure());
     }
 
-    async sendSuggestions(data){
+    async sendSuggestions(data, callbacks){
         this.client.systemHasTime(
             data,
             (error, response) => {
                 console.log(error);
+                if(error && error.code == 14){
+                    callbacks.notResponding();
+                    return;
+                }
+
+                callbacks.success();
             }
         );
     }

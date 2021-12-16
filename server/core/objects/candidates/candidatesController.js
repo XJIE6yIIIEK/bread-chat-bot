@@ -25,7 +25,7 @@ class CandidatesController {
 
     async setMeeting(req, res, next){
         var userId = req.user.id;
-        var candidateId = req.params.id;
+        var candidateId = req.params.n_candidate;
         var vacancyId = req.params.n_vacancy;
         var meetingData = req.body;
 
@@ -53,6 +53,7 @@ class CandidatesController {
 
         CalendarService.rejectMeeting(
             data,
+            [],
             () => {
                 return res.status(204).end();
             }

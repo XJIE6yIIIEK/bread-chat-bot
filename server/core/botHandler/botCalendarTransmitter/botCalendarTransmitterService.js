@@ -2,7 +2,7 @@ var BotCalendarTransmitter = require('./botCalendarTransmitter');
 var CandidatesRepository = require('../../objects/candidates/candidatesRepository');
 
 class BotCalendarTransmitterService {
-    async sendSuggestions(suggestions, n_vacancy, n_candidate){
+    async sendSuggestions(suggestions, n_vacancy, n_candidate, callbacks){
         var candidate = await CandidatesRepository.get({
             where: {
                 id: n_candidate
@@ -16,7 +16,7 @@ class BotCalendarTransmitterService {
             n_vacancy: n_vacancy,
             dates: suggestions.dates
         };
-        BotCalendarTransmitter.sendSuggestions(data);
+        BotCalendarTransmitter.sendSuggestions(data, callbacks);
     }
 }
 

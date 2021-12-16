@@ -14,10 +14,8 @@ module.exports = (req, res, next) => {
         return tokenErr();
     }
 
-    AuthUtils.verifyToken(
+    AuthUtils.verifyAccessToken(
         accessToken,
-        's_access_token',
-        null,
         {
             allClear: async (accessTokenData) => {
                 req.user = {
@@ -26,27 +24,25 @@ module.exports = (req, res, next) => {
 
                 next();
             },
-            timeExpired: async (accessTokenData) => {
+            timeExpired: async () => {
                 if(!refreshToken){
                     return tokenErr();
-                }
+                }                
 
-                AuthUtils.verifyToken(
+                AuthUtils.verifyRefreshToken(
                     refreshToken,
-                    's_refresh_token',
-                    accessTokenData.id,
                     {
                         allClear: async (data) => {
                             var newAccessToken = AuthUtils.generateToken({
                                     id: accessTokenData.id
                                 },
                                 'access',
-                                accessTokenData.id
+                                data.id
                             );
                             var newRefreshToken = AuthUtils.generateToken(
                                 {},
                                 'refresh',
-                                accessTokenData.id
+                                data.id
                             );
                     
                             res.cookie(
@@ -63,7 +59,7 @@ module.exports = (req, res, next) => {
                                 }
                             );
             
-                            req.user.id = accessTokenData.id
+                            req.user.id = dData.id
             
                             next();
                         },

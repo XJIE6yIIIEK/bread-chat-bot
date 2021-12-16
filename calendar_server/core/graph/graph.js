@@ -52,11 +52,11 @@ class GraphService {
                 "timeslots": [
                     {
                         "start": {
-                            "dateTime": start.toISOString(),
+                            "dateTime": start,
                             "timeZone": credentials.timeZone
                         },
                         "end": {
-                            "dateTime": end.toISOString(),
+                            "dateTime": end,
                             "timeZone": credentials.timeZone
                         }
                     }
@@ -132,6 +132,7 @@ class GraphService {
 
         var result = await client
                             .api('/me/events')
+                            .header("Prefer", `outlook.timezone="Ekaterinburg Standard Time"`)
                             .post(options);
 
         return result;
@@ -139,16 +140,17 @@ class GraphService {
 
     async deleteMeeting(client, begin){
         var event = await client
-                            .api(`/me/events?$filter=start/dateTime ge \'${begin}\'`)
+                            .api(`/me/events?$filter=start/dateTime eq \'${begin}\'`)
+                            .header('Prefer', `outlook.timezone="Russian Standard Time"`)
                             .get();
         
-        if(!event){
+        if(event.value.length == 0){
             return;
         }
 
         var result = await client
-                            .api(`https://graph.microsoft.com/v1.0/me/events/${event[0].id}`)
-                            .post();
+                            .api(`https://graph.microsoft.com/v1.0/me/events/${event.value[0].id}`)
+                            .delete();
     }
 }
 

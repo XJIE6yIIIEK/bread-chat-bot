@@ -1,10 +1,9 @@
-const MSAL = require('./auth');
 const AuthService = require('./authService');
 
 class AuthController {
     async authenticateRequest(req, res){
-        //req.cookies.hr_id
-        const authUrl = await AuthService.createRedirectUrl(req.query.id);
+        var userId = req.cookies.hr_id ? req.cookies.hr_id : req.query.id;
+        const authUrl = await AuthService.createRedirectUrl(userId);
         res.redirect(authUrl);
     }
 

@@ -1,6 +1,7 @@
 const CalendarRepository = require('./calendarRepository');
 const CalendarTransmitterService = require('../../calendarHandler/calendarTransmitterService');
 const BotCalendarTransmitterService = require('../../botHandler/botCalendarTransmitter/botCalendarTransmitterService');
+const DBRepository = require('../../db/dbRepository');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
 var {format} = require('date-fns');
@@ -46,12 +47,21 @@ class CalendarService {
             return;
         }
 
+        BotCalendarTransmitterService.sendSuggestions(
+            suggestionsData,
+            n_vacancy,
+            n_candidate,
+            {
+                success: async () => {
+                    this.setMeetingAvailability(n_user, n_vacancy, n_candidate);
+                    responseCallback({message: 'Время для собеседования найдено. Кандидату отправлены все возможные варианты собеседования.'});
+                },
+                notResponding: () => {
+                    responseCallback(ErrorHandler.badRequest('Сервис бота не отвечает на запросы. Сообщите о проблеме администратору и повторите позднее.'));
+                }
+            }
+        );
         
-        this.setMeetingAvailability(n_user, n_vacancy, n_candidate);
-
-        BotCalendarTransmitterService.sendSuggestions(suggestionsData, n_vacancy, n_candidate);
-        
-        responseCallback({message: 'Время для собеседования найдено. Кандидату отправлены все возможные варианты собеседования.'});
         return;
     }
 
@@ -120,18 +130,43 @@ class CalendarService {
         CalendarRepository.patch(meeting);
     }
 
-    async rejectMeeting(data, callback){
-        if(!data.d_date){
-            var meeting = await CalendarRepository.get({
-                where: {
-                    n_user: data.n_user
-                }
-            });
+    async unwantedTimes(candidateId, vacancyId){
+        var meeting = await CalendarRepository.get({
+            n_candidate: candidateId,
+            n_vacancy: vacancyId
+        });
 
-            data.d_date = format(new Date(meeting.d_date), "yyyy-MM-dd'T'HH:mm:ss");
+        meeting.n_status = 3;
+
+        CalendarRepository.patch(meeting);
+    }
+
+    async rejectMeeting(data, meeting, callback){
+        if(meeting.length == 0){
+            meeting = await DBRepository.rawQuery(
+                'SELECT d_date at time zone \'Europe/Moscow\' AS d_date FROM t_meetings ' +
+                `WHERE n_candidate = ${data.n_candidate} AND n_vacancy = ${data.n_vacancy}`,
+                'SELECT'
+            );
         }
 
-        CalendarTransmitterService.rejectMeeting(data, callback);
+        if(meeting[0].d_date){
+            data.d_date = format(meeting[0].d_date, "yyyy-MM-dd'T'HH:mm:ss");
+        }
+
+        if(data.d_date){
+            CalendarTransmitterService.rejectMeeting(data, callback);
+        }
+
+        var meetingObj = await CalendarRepository.get({
+            where: {
+                n_vacancy: data.n_vacancy,
+                n_candidate: data.n_candidate,
+                n_user: data.n_user
+            }
+        });
+
+        CalendarRepository.delete(meetingObj);
     }
 }
 

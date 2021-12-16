@@ -47,7 +47,7 @@ class UserService {
 
         var meetings = await DBRepository.rawQuery(
             'SELECT t_candidates.s_name, t_meeting_statuses.s_name AS s_status_name, t_vacancies.s_name AS s_vacancy_name, ' + 
-            'to_char(t_meetings.d_date, \'dd.MM.yyyy HH24:MI МСК\') AS d_date, ' + 
+            'to_char(t_meetings.d_date at time zone \'Europe/Moscow\', \'dd.MM.yyyy HH24:MI МСК\') AS d_date, ' + 
             't_meetings.n_candidate, t_meetings.n_vacancy ' +
             'FROM t_meetings ' +
             'JOIN t_meeting_statuses ' +

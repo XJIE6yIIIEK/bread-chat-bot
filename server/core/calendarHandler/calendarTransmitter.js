@@ -48,6 +48,11 @@ class CalendarTransmitter {
                 if(response && response.err){
                     rpcCallback(response);
                     return;
+                } else if(error && error.code == 14){
+                    rpcCallback({
+                        err: 'notResponding'
+                    });
+                    return;
                 }
                 
                 rpcCallback();

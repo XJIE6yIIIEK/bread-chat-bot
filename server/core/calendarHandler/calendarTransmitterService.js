@@ -15,23 +15,14 @@ class CalendarTransmitterService {
     }
 
     async candidateChooseTime(data, rpcCallback, updateDelegate){
-        var candidate = await CandidateRepository.get({
-            where: {
-                s_tg_id: data.s_tg_id
-            }
-        });
-        
-        data.n_candidate = candidate.id;
-
         var meeting = await CalendarRepository.get({
             where: {
-                n_candidate: candidate.id,
+                n_candidate: data.n_candidate,
                 n_vacancy: data.n_vacancy
             }
         });
 
         data.n_user = meeting.n_user;
-        data.candidateName = candidate.s_name;
 
         CalendarTransmitter.trySetMeetingTime(
             data,
@@ -43,7 +34,12 @@ class CalendarTransmitterService {
     }
 
     async rejectMeeting(data, callback){
-        
+        CalendarTransmitter.rejectMeeting({
+                n_user: data.n_user,
+                d_date: data.d_date
+            },
+            callback
+        );
     }
 }
 

@@ -2,9 +2,27 @@ const CalendarTransmitterService = require('../../calendarHandler/calendarTransm
 const CandidatesRepository = require('../../objects/candidates/candidatesRepository');
 const CalendarRepository = require('../../objects/calendar/calendarRepository');
 const CalendarService = require('../../objects/calendar/calendarService');
+const DBRepository = require('../../db/dbRepository');
 
 class BotCalendarRecieverService {
     async candidateChooseTime(callData, rpcCallback){
+        var candidate = await CandidatesRepository.get({
+            where: {
+                s_tg_id: callData.s_tg_id
+            }
+        });
+        
+        callData.n_candidate = candidate.id;
+        callData.candidateName = candidate.s_name;
+
+        if(!callData.date){
+            CalendarService.unwantedTimes(callData.n_candidate, callData.n_vacancy);
+            rpcCallback({
+                err: 'unwanted'
+            });
+            return;
+        }
+
         CalendarTransmitterService.candidateChooseTime(
             callData,
             rpcCallback,
@@ -21,19 +39,19 @@ class BotCalendarRecieverService {
             }
         });
 
-        var meeting = await CalendarRepository.get({
-            where: {
-                n_candidate: candidate.id,
-                n_vacancy: data.n_vacancy
-            }
-        });
+        var meeting = await DBRepository.rawQuery(
+            'SELECT n_user, d_date at time zone \'Europe/Moscow\' AS d_date FROM t_meetings ' +
+            `WHERE n_candidate = ${candidate.id} AND n_vacancy = ${data.n_vacancy}`,
+            'SELECT'
+        );
 
         CalendarService.rejectMeeting({
                 n_vacancy: data.n_vacancy,
                 n_candidate: candidate.id,
-                n_user: meeting.n_user,
-                date: meeting.d_date
+                n_user: meeting[0].n_user,
+                d_date: meeting[0].d_date
             },
+            meeting,
             callback
         );
     }
