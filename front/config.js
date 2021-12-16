@@ -17,8 +17,10 @@ class endpoints
     static forms = "api/v1/forms";
     static formsToVacs = "api/v1/formToVacs";
     static candidates = "api/v1/candidates";
-    static user = "api/v1/users/user"; // GET
+    static user = "api/v1/users/user";
     static info = "api/v1/commands";
-    static general = "api/v1/forms/:id/general" // POST / DELETE
-    static favorite = "api/v1/users/favorites"; // POST / DELETE
+    static general = "api/v1/forms/:id/general";
+    static favorite = "api/v1/users/favorites";
+    static meeting = "api/v1/candidates/:candidate_id/setMeeting/:vacancy_id";
+    static changePassword = "api/v1/users/changePassword";
 }

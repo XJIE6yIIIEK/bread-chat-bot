@@ -1,7 +1,7 @@
 function NameHR(data)
 {
     let HR_name = document.querySelector(".HR_name");
-    //HR_name.innerHTML = data... ФИО HR-менеджера
+    HR_name.innerHTML = data.user.s_name;
 }
 
 function fillAllInterviews(data)
@@ -34,13 +34,12 @@ function fillAllFavorites(data)
 {
     for ( key in data )
     {
-        console.log(key);
         console.log(data[key]);
 
         let name_favorite = document.createElement("div");
         name_favorite.classList.add("name_favorite_candidate");
         let a = document.createElement("a");
-        //a = data... ФИО избранного кандидата
+        a.value = data[key].s_name;
         a.href = "candidate.html";
         a.classList.add("candidates");
         name_favorite.appendChild(a);
@@ -60,9 +59,10 @@ $.ajax({
     url: address()+endpoints.user,
     success: function (data, textStatus, request)
     {
+        //console.log(data);
         NameHR(data);
-        fillAllInterviews(data);
-        fillAllCandidates(data);
+        //fillAllInterviews(data.meetings);
+        //fillAllFavorites(data.favorites);
     },
     error: function(request, textStatus, errorThrown){
         authCheck(request);
@@ -80,8 +80,19 @@ $("body").on("click", ".favorite_candidate_delete_button", function() {
 });
 
 // изменение пароля
-$("body").on("click", ".button_new_password", function() {
-
+$("body").on("click", ".save_button", function() {
+    let password = document.getElementById("new_password").value;
+    let password_verification = document.getElementById("verification_new_password").value;
+    if (password != password_verification)
+    {
+        document.getElementById("error_label").value = "Пароли не совпадают.";
+        return;
+    }
+    $.ajax({
+        url: address()+endpoints.changePassword,
+        type: "PUT",
+        data: {s_password: password}
+    });
 });
 
 // запоминаем id кандидата
