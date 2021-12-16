@@ -23,4 +23,5 @@ class endpoints
     static favorite = "api/v1/users/favorites";
     static meeting = "api/v1/candidates/:candidate_id/setMeeting/:vacancy_id";
     static changePassword = "api/v1/users/changePassword";
+    static logout = "api/v1/auth/logout";
 }
