@@ -24,4 +24,5 @@ class endpoints
     static meeting = "api/v1/candidates/:candidate_id/setMeeting/:vacancy_id";
     static changePassword = "api/v1/users/changePassword";
     static logout = "api/v1/auth/logout";
+    static deleteMeeting = "api/v1/:n_candidate/deleteMeeting/:n_vacancy";
 }
