@@ -10,7 +10,8 @@ router.post('/', UserController.registration);
 
 router.get('/user', AuthMiddleware, UserController.get);
 
-router.put('/:id/changePassword', AuthMiddleware, UserController.changePassword);
+router.put('/changePassword', AuthMiddleware, UserController.changePassword);
+router.put('/changePassword/:n_user', UserController.changePassword);
 
 router.post('/favorites/:n_candidate', AuthMiddleware, FavoritesController.create);
 router.delete('/favorites/:n_candidate', AuthMiddleware, FavoritesController.delete);

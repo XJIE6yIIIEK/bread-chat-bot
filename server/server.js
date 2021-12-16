@@ -5,7 +5,6 @@ const fs = require('fs');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const HTTP_PORT = process.env.HTTP_PORT || 5000;
 const HTTPS_PORT = process.env.HTTPS_PORT || 5001;
 const {SwaggerUI, swaggerDocSpecs} = require('./api/v1/docs/swaggerOptions');
@@ -38,11 +37,6 @@ var credentials = {
 
 var app = express();
 
-app.use(cors());
-app.use(bodyParser.urlencoded());
-app.use(bodyParser.json());
-app.use(express.json());
-
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', req.headers.origin);
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
@@ -50,6 +44,9 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', true);
     next();
 });
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
+app.use(express.json());
 app.use(cookieParser());
 app.use('/api/v1', router);
 app.use('/api/v1/docs', SwaggerUI.serve, SwaggerUI.setup(swaggerDocSpecs));

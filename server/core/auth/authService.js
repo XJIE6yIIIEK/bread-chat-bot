@@ -13,14 +13,16 @@ class AuthService {
         }
 
         var user = await UserRepository.get({
-            s_login: credentials.s_login
+            where: {
+                s_login: credentials.s_login
+            }
         });
 
         if(!user){
             return ErrorHandler.badRequest('Неверный email');
         }
 
-        var passwordPassed = await AuthUtils.verifyPass(user.s_password, credentials.s_password);
+        var passwordPassed = await AuthUtils.verifyPass(credentials.s_password, user.s_password);
 
         if(!passwordPassed){
             return ErrorHandler.badRequest('Неверный пароль');
@@ -44,6 +46,18 @@ class AuthService {
             accessToken: accessToken,
             refreshToken: refreshToken
         };
+    }
+
+    async logout(userId){
+        var user = await UserRepository.get({
+            where: {
+                id: userId
+            }
+        });
+
+        user.s_access_token = null;
+        user.s_refresh_token = null;
+        UserRepository.patch(user);
     }
 }
 

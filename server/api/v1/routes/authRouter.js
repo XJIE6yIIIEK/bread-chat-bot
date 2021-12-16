@@ -7,5 +7,6 @@ var AuthMiddleware = require('../../../core/middlewares/authMiddleware');
 
 router.get('/', AuthController.authenticate);
 router.get('/check', AuthMiddleware, AuthController.check);
+router.get('/logout', AuthMiddleware, AuthController.logout);
 
 module.exports = router;

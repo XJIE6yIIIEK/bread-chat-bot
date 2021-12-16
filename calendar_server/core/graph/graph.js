@@ -137,7 +137,19 @@ class GraphService {
         return result;
     }
 
-    
+    async deleteMeeting(client, begin){
+        var event = await client
+                            .api(`/me/events?$filter=start/dateTime ge \'${begin}\'`)
+                            .get();
+        
+        if(!event){
+            return;
+        }
+
+        var result = await client
+                            .api(`https://graph.microsoft.com/v1.0/me/events/${event[0].id}`)
+                            .post();
+    }
 }
 
 module.exports = new GraphService();

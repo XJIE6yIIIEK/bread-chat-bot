@@ -6,6 +6,7 @@ const CalendarRepository = require('../calendar/calendarRepository');
 const CalendarService = require('../calendar/calendarService');
 const CalendarTransmitterService = require('../../calendarHandler/calendarTransmitterService');
 const BotCalendarTransmitterService = require('../../botHandler/botCalendarTransmitter/botCalendarTransmitterService');
+var {zonedTimeToUtc} = require('date-fns-tz');
 var ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class CandidatesService {
@@ -127,88 +128,8 @@ class CandidatesService {
             resume: resume,
             appropriateVacancies: appropriateVacancies,
             candidateStatus: status,
-            favorite: (favorite == null) ? false : true
+            favorite: (favorite.length == 0) ? false : true
         };
-    }
-
-    async meetingAvailability(suggestionsData, n_user, n_candidate, n_vacancy, responseCallback){
-        if(suggestionsData.err){
-            switch(suggestionsData.err){
-                case 'noAvailTime': {
-                    responseCallback(ErrorHandler.badRequest(
-                        'Нет свободного времени для собеседования. Задайте другой интервал для поиска или сократите время собеседования'
-                    ));
-                } break;
-
-                case 'notSignedIn': {
-                    responseCallback(ErrorHandler.badRequest(
-                        'Авторизуйтесь в сервисах Microsoft в личном кабинете'
-                    ));
-                } break;
-            }
-            return;
-        }
-
-        
-        CalendarService.setMeetingAvailability(n_user, n_vacancy, n_candidate);
-
-        BotCalendarTransmitterService.sendSuggestions(suggestionsData, n_vacancy, n_candidate);
-        
-        responseCallback({message: 'Время для собеседования найдено. Кандидату отправлены все возможные варианты собеседования.'});
-        return;
-    }
-
-    async setMeeting(userId, candidateId, vacancyId, meetingData, responseCallback){        
-        var meeting = await CalendarRepository.get({
-            where: {
-                n_vacancy: vacancyId,
-                n_candidate: candidateId
-            }
-        });
-
-        if(!meeting){
-            await CalendarTransmitterService.createNewMeeting(
-                userId,
-                meetingData,
-                async (suggestionsData) => {
-                    this.meetingAvailability(suggestionsData, userId, candidateId, vacancyId, responseCallback);
-                }
-            );
-            return;
-        }
-
-        switch(meeting.n_status){
-            case 1: {
-                responseCallback(ErrorHandler.badRequest('Кандидат ещё рассматривает предложение на собеседование.'));
-            } break;
-
-            case 2: {
-                responseCallback(ErrorHandler.badRequest('Кандидату уже назначено собеседование.'));
-            } break;
-
-            case 3:
-            case 4: {
-                if(!meeting.n_user == userId){
-                    responseCallback(ErrorHandler.badRequest('Невозможно управлять кандидатами других HR.'));
-                    break;
-                }
-
-                await CalendarTransmitterService.createNewMeeting(
-                    userId,
-                    meetingData,
-                    async (suggestionsData) => {
-                        this.meetingAvailability(suggestionData, userId, candidateId, vacancyId, responseCallback);
-                    }
-                );
-            } break;
-        }
-    }
-
-    async updateMeeting(data, meeting){
-        meeting.n_status = 2;
-        meeting.d_date = data.date.beginISO;
-
-        CalendarRepository.patch(meeting);
     }
 }
 

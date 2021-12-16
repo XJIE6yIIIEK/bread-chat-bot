@@ -1,4 +1,5 @@
 const ErrorHandler = require('../errorHandlers/errorHandler');
+const UsersRepository = require('../objects/users/usersRepository');
 const AuthUtils = require('../auth/authUtils');
 
 module.exports = (req, res, next) => {

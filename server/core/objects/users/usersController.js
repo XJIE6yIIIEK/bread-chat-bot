@@ -10,7 +10,7 @@ class UserController {
 
     async changePassword(req, res, next){
         var credentials = {
-            id: req.params.id,
+            id: req.params.n_user ? req.params.n_user : req.user.id,
             s_password: req.body.s_password
         };
 

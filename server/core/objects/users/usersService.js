@@ -21,7 +21,7 @@ class UserService {
             return ErrorHandler.badRequest('Неверно указан id');
         }
 
-        user.s_password = await AuthService.hashPass(user.s_password);
+        user.s_password = await AuthService.hashPass(credentials.s_password);
 
         await UserRepository.patch(user);
     }
@@ -46,11 +46,16 @@ class UserService {
         );
 
         var meetings = await DBRepository.rawQuery(
-            'SELECT t_candidates.s_name, t_meeting_statuses.s_name, t_meetings.d_date FROM t_meetings ' +
+            'SELECT t_candidates.s_name, t_meeting_statuses.s_name AS s_status_name, t_vacancies.s_name AS s_vacancy_name, ' + 
+            'to_char(t_meetings.d_date, \'dd.MM.yyyy HH24:MI МСК\') AS d_date, ' + 
+            't_meetings.n_candidate, t_meetings.n_vacancy ' +
+            'FROM t_meetings ' +
             'JOIN t_meeting_statuses ' +
             'ON t_meeting_statuses.id = t_meetings.n_status ' +
             'JOIN t_candidates ' +
             'ON t_candidates.id = t_meetings.n_candidate ' +
+            'JOIN t_vacancies ' +
+            'ON t_vacancies.id = t_meetings.n_vacancy ' +
             `WHERE t_meetings.n_user = ${userId}`,
             'SELECT'
         );

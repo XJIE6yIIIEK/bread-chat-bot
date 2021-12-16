@@ -4,7 +4,7 @@ const jwttoken = require('jsonwebtoken');
 const UserRepository = require('../objects/users/usersRepository');
 
 class AuthService {
-    async verifyPass(hashedPass, pass){
+    async verifyPass(pass, hashedPass){
         return bcrypt.compareSync(pass, hashedPass);
     }
 
@@ -17,7 +17,7 @@ class AuthService {
                 if(err && err.name != 'TokenExpiredError'){
                     return callbacks.tokenError();
                 }
-
+                
                 var userId = (tokenType == 's_access_token') ? data.id : id;
 
                 //Нет принадлежности токена к юзеру

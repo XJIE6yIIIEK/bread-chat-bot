@@ -1,4 +1,5 @@
 var CandidatesService = require('./candidatesService');
+var CalendarService = require('../calendar/calendarService');
 const ErrorHandler = require('../../errorHandlers/errorHandler');
 
 class CandidatesController {
@@ -28,7 +29,7 @@ class CandidatesController {
         var vacancyId = req.params.n_vacancy;
         var meetingData = req.body;
 
-        await CandidatesService.setMeeting(
+        await CalendarService.setMeeting(
             userId,
             candidateId,
             vacancyId,
@@ -39,6 +40,21 @@ class CandidatesController {
                 }
 
                 return res.status(200).json(result).end();
+            }
+        );
+    }
+
+    async deleteMeeting(req, res, next){
+        var data = {
+            n_user: req.user.id,
+            n_vacancy: req.params.n_vacancy,
+            n_candidate: req.params.n_candidate
+        }
+
+        CalendarService.rejectMeeting(
+            data,
+            () => {
+                return res.status(204).end();
             }
         );
     }

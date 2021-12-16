@@ -51,11 +51,24 @@ class BotCalendarReciever {
     }
 
     async rejectMeeting(call, callback){
-
+        BotCalendarRecieverService.rejectMeeting({
+                s_tg_id: call.request.s_tg_id,
+                n_vacancy: call.request.n_vacancy
+            },
+            async () => {
+                callback(null, {});
+            }
+        );
     }
 
     async rejectAll(call, callback){
-
+        BotCalendarRecieverService.rejectAll({
+                s_tg_id: call.request.s_tg_id
+            },
+            async () => {
+                callback(null, {});
+            }
+        );
     }
 }
 

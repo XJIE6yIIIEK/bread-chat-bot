@@ -30,7 +30,7 @@ class AuthController {
             'hr_id',
             payload.userId, {
                 httpOnly: true,
-                sameSite: 'Node',
+                sameSite: 'None',
                 secure: true
             }
         );
@@ -39,6 +39,39 @@ class AuthController {
     }
 
     async check(req, res, next){
+        return res.status(200).end();
+    }
+
+    async logout(req, res, next){
+        await AuthService.logout(req.user.id);
+
+        res.cookie(
+            'access_token',
+            '', {
+                httpOnly: true,
+                sameSite: 'None',
+                secure: true
+            }
+        );
+
+        res.cookie(
+            'refresh_token',
+            '', {
+                httpOnly: true,
+                sameSite: 'None',
+                secure: true
+            }
+        );
+
+        res.cookie(
+            'hr_id',
+            '', {
+                httpOnly: true,
+                sameSite: 'None',
+                secure: true
+            }
+        );
+
         return res.status(200).end();
     }
 }

@@ -1,7 +1,8 @@
 const UsersRepository = require('../../../objects/users/usersRepository');
-const {format} = require('date-fns');
 var MSAL = require('../../../auth/auth');
 var graph = require('../../../graph/graph');
+
+const {format} = require('date-fns');
 const {zonedTimeToUtc} = require('date-fns-tz');
 const addDays = require('date-fns/addDays');
 
@@ -27,10 +28,7 @@ class CalendarService {
 
         var credentials = await graph.getClientAndUser(msalDetails.msalClient, msalDetails.graphId);
 
-        var startTime = zonedTimeToUtc(new Date(meetingData.startDate), credentials.timeZoneId.valueOf());
-        var endTime = addDays(zonedTimeToUtc(new Date(meetingData.endDate), credentials.timeZoneId.valueOf()), 1);
-
-        var freeTimes = await graph.getFreeTime(credentials, startTime, endTime, meetingData.duration);
+        var freeTimes = await graph.getFreeTime(credentials, meetingData.startDate, meetingData.endDate, meetingData.duration);
         
         if(freeTimes.meetingTimeSuggestions.length == 0){
             return {
@@ -86,8 +84,13 @@ class CalendarService {
         }
     }
 
-    async deleteMeetingEvent(){
-        
+    async deleteMeetingEvent(data, callback){
+        var msalDetails = await this.getMSALAndId(data.n_user);
+
+        var credentials = await graph.getClientAndUser(msalDetails.msalClient, msalDetails.graphId);
+
+        graph.deleteMeeting(credentials.client, data.d_date);
+        callback();
     }
 }
 

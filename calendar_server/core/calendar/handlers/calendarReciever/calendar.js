@@ -25,7 +25,8 @@ class CalendarReciever {
 
         this.server.addService(calendar_reciever_proto.CalendarService.service, {
             findMeetingTime: this.findMeetingTime,
-            trySetMeetingTime: this.trySetMeetingTime
+            trySetMeetingTime: this.trySetMeetingTime,
+            deleteMeeting: this.deleteMeeting
         });
 
         this.server.bindAsync(process.env.CALENDAR_ADDRESS + ':' + process.env.CALENDAR_PORT, grpc.ServerCredentials.createInsecure(), () => {
@@ -60,6 +61,20 @@ class CalendarReciever {
         } else {
             callback(null, {});
         }
+    }
+
+    async deleteMeeting(call, callback){
+        var meetingData = {
+            n_user: call.request.n_user,
+            d_date: call.request.d_date
+        };
+
+        CalendarService.deleteMeetingEvent(
+            meetingData,
+            () => {
+                callback(null, {});
+            }
+        );
     }
 }
 

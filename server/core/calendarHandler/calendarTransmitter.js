@@ -55,6 +55,17 @@ class CalendarTransmitter {
             }
         );
     }
+
+    async rejectMeeting(data, callback){
+        this.client.deleteMeeting({
+                n_user: data.n_user,
+                d_date: data.d_date
+            },
+            (error, response) => {
+                callback();
+            }
+        );
+    }
 }
 
 module.exports = new CalendarTransmitter();

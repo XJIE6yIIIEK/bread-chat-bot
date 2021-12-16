@@ -41,6 +41,10 @@ class CalendarTransmitterService {
             rpcCallback
         );
     }
+
+    async rejectMeeting(data, callback){
+        
+    }
 }
 
 module.exports = new CalendarTransmitterService();
