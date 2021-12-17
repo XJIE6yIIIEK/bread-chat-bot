@@ -31,7 +31,7 @@ function sendMeeting()
         type: "POST",
         data: {
             startDate: date_start.value,
-            endDate: date_start.value,
+            endDate: date_end.value,
             duration: {hours: duration[0], minutes: duration[1]}
         },
         success: function (data) {
@@ -48,7 +48,7 @@ function sendMeeting()
 
 // назначить собеседование
 $("body").on("click", ".set_interview", function(){
-    if (!date_start.value || !date_end.value || !date_time.value)
+    if (!date_start.value || !date_end.value || !date_time.value || !select_vac.value)
         alert("Заполните все поля");
     else {
         let start = new Date(date_start.value);

@@ -20,54 +20,53 @@
                         <div class="dropbtn"></div>
                         <div class="dropdown-content">
                           <a href="HR-cabinet.html">Личный кабинет</a>
-                          <a href="auth-page.html" class="logout">Выход</a>
+                          <a href="#" class="logout">Выход</a>
                         </div>
-                      </div>
+                     </div>
                 </div>
-            </div>
         </div>
     </header>
 
     <div class="body_head">
-        <button  class="button_vac active" id="buttons_body_head"
+        <button class="buttons_body_head active" id="button_vac"
             onclick="
                 document.querySelector('.vac_and_common').classList.add('active'), 
                 document.querySelector('.vac').classList.add('active'), 
                 document.querySelector('.common').classList.remove('active'),
                 document.querySelector('.comp_info').classList.remove('active'),
 
-                document.querySelector('.button_vac').classList.add('active'), 
-                document.querySelector('.button_info').classList.remove('active'),
-                document.querySelector('.button_common').classList.remove('active')
+                document.getElementById('button_vac').classList.add('active'), 
+                document.getElementById('button_info').classList.remove('active'),
+                document.getElementById('button_common').classList.remove('active')
             ">
         Требования вакансий
         </button>  
 
-        <button class="button_common" id="buttons_body_head"
+        <button class="buttons_body_head" id="button_common"
             onclick="
                 document.querySelector('.vac_and_common').classList.add('active'),
                 document.querySelector('.common').classList.add('active'),
                 document.querySelector('.vac').classList.remove('active'),
                 document.querySelector('.comp_info').classList.remove('active'), 
 
-                document.querySelector('.button_common').classList.add('active')
-                document.querySelector('.button_info').classList.remove('active'), 
-                document.querySelector('.button_vac').classList.remove('active')
+                document.getElementById('button_common').classList.add('active')
+                document.getElementById('button_info').classList.remove('active'), 
+                document.getElementById('button_vac').classList.remove('active')
                  
             ">
         Общие требования
         </button>  
 
-        <button class="button_info" id="buttons_body_head"
+        <button class="buttons_body_head" id="button_info"
             onclick="
                 document.querySelector('.comp_info').classList.add('active'), 
                 document.querySelector('.vac_and_common').classList.remove('active'),
                 document.querySelector('.vac').classList.remove('active'),
                 document.querySelector('.common').classList.remove('active'), 
 
-                document.querySelector('.button_info').classList.add('active'), 
-                document.querySelector('.button_vac').classList.remove('active'),
-                document.querySelector('.button_common').classList.remove('active')
+                document.getElementById('button_info').classList.add('active'), 
+                document.getElementById('button_vac').classList.remove('active'),
+                document.getElementById('button_common').classList.remove('active')
             ">
         Информация о компании
         </button>

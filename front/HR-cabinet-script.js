@@ -37,6 +37,10 @@ function fillAllInterviews(data)
 
         let date_interview = document.createElement("div");
         date_interview.classList.add("date_interview_candidate");
+        //let date = new Date(data[key].d_date);
+        //console.log(data[key].d_date);
+        //date_interview.innerHTML = date.getDay()+"-"+date.getMonth()+"-"+date.getFullYear()+"\n"+date.getHours()+":"+date.getMinutes();
+        //if (data[key].d_date)
         date_interview.innerHTML = data[key].d_date;
         interview_candidate.appendChild(date_interview);
 
@@ -50,6 +54,8 @@ function fillAllFavorites(data)
 {
     for ( key in data )
     {
+        //console.log(data[key]);
+
         let name_favorite = document.createElement("div");
         name_favorite.classList.add("name_favorite_candidate");
         let a = document.createElement("a");
@@ -90,11 +96,12 @@ $.ajax({
 $("body").on("click", ".favorite_candidate_delete_button", function() {
     if (confirm("Удалить кандидата из избранных ?"))
     {
+        let candidate_item = this.parentNode;
         $.ajax({
-            url: address()+endpoints.favorite+"/"+this.parentNode.getAttribute("candidate_id"),
-            type:"POST",
+            url: address()+endpoints.favorite+"/"+candidate_item.getAttribute("candidate_id"),
+            type:"DELETE",
             success: function (){
-                this.parentNode.remove();
+                candidate_item.remove();
             },
             xhrFields:{
                 withCredentials: true
@@ -105,8 +112,7 @@ $("body").on("click", ".favorite_candidate_delete_button", function() {
 
 $("body").on("click", ".interview_candidate_delete_button", function (){
     if (confirm("Вы точно хотите отменить сосбеседование?"))
-    {
-        let candidate_item = this.parentNode;
+    {   let candidate_item = this.parentNode;
         let candidate_id = candidate_item.getAttribute("candidate_id");
         let vacancy_id = candidate_item.getAttribute("vacancy_id");
         $.ajax({
@@ -128,13 +134,16 @@ $("body").on("click", ".save_button", function() {
     let password_verification = document.getElementById("verification_new_password").value;
     if (password != password_verification)
     {
-        document.getElementById("error_label").innerHTML = "Пароли не совпадают.";
+        document.getElementById("error_label").innerHTML = "Пароли не совпадают";
         return;
     }
     $.ajax({
         url: address()+endpoints.changePassword,
         type: "PUT",
         data: {s_password: password},
+        success: function (){
+            alert("Пароль изменён");
+        },
         xhrFields: {
             withCredentials: true
         }

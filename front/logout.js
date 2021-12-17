@@ -4,6 +4,10 @@ $("body").on("click", ".logout", function() {
         type: "GET",
         xhrFields:{
             withCredentials: true
+        },
+        success: function ()
+        {
+            window.location = "auth-page.html";
         }
     });
 });
