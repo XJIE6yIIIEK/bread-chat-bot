@@ -49,6 +49,19 @@ class BotCalendarTransmitter {
             }
         );
     }
+
+    async connectionCheck(success, error){
+        this.client.connectionCheck(
+            {},
+            (error, response) => {
+                if(error && error.code == 14){
+                    return error();
+                }
+
+                return success();
+            }
+        );
+    }
 }
 
 module.exports = new BotCalendarTransmitter();
