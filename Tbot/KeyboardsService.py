@@ -60,6 +60,18 @@ def createDatesKb(vac_dates, vac: int, page_start: int) -> InlineKeyboardMarkup:
     elif not case_at_start and case_at_end:
         kb.row(buttons_prev)
 
+    kb.add(InlineKeyboardButton("Отказаться от собеседования", callback_data="meeting/reject/confirm/"+str(vac)))
+    kb.add(InlineKeyboardButton("Нет подходящего времени", callback_data="meeting/no_time/confirm/"+str(vac)))
+
+    return kb
+
+
+def createConfirmPreRejectKb(call_data: str, vac: int):
+    kb = InlineKeyboardMarkup()
+    kb.add(InlineKeyboardButton(GlobalStuff.Phrases.talk_commands["yes"],
+                                callback_data=call_data.replace("confirm", "set")))
+    kb.add(InlineKeyboardButton(GlobalStuff.Phrases.talk_commands["no"],
+                                callback_data="meeting/vac/" + str(vac)))
     return kb
 
 
@@ -67,27 +79,27 @@ def createTimesKb(date_times, vac: int, date: int) -> InlineKeyboardMarkup:
     kb = InlineKeyboardMarkup()
     for time_i in range(len(date_times)):
         kb.add(InlineKeyboardButton(date_times[time_i].beginEnd, callback_data="meeting/confirm/"+str(vac)+"/"+str(date)+"/"+str(time_i)))
-    kb.add(InlineKeyboardButton("Назад", callback_data="meeting/back"+"/"+str(vac)))
+    kb.add(InlineKeyboardButton(GlobalStuff.Phrases.talk_commands["back"], callback_data="meeting/back"+"/"+str(vac)))
     return kb
 
 
 def createTimeConfirmKb(call_data: str, vac: int, date: int):
     kb = InlineKeyboardMarkup()
-    kb.add(InlineKeyboardButton("Да", callback_data=call_data.replace("confirm", "set")))
-    kb.add(InlineKeyboardButton("Нет", callback_data="meeting/date/"+str(vac)+"/"+str(date)))
+    kb.add(InlineKeyboardButton(GlobalStuff.Phrases.talk_commands["yes"], callback_data=call_data.replace("confirm", "set")))
+    kb.add(InlineKeyboardButton(GlobalStuff.Phrases.talk_commands["no"], callback_data="meeting/date/"+str(vac)+"/"+str(date)))
     return kb
 
 
 def createRejectionKb(meetings: dict) -> InlineKeyboardMarkup:
     kb = InlineKeyboardMarkup()
     for vac in meetings:
-        kb.add(InlineKeyboardButton(GlobalStuff.CachedDB.all_vacs[vac]+" : "+meetings[vac], "reject/ask/"+str(vac)))
-    kb.add(InlineKeyboardButton("Отменить все собеседования", "reject/ask/"+"all"))
+        kb.add(InlineKeyboardButton(GlobalStuff.CachedDB.all_vacs[vac]+" : "+meetings[vac], callback_data="reject/ask/"+str(vac)))
+    #kb.add(InlineKeyboardButton("Отменить все собеседования", callback_data="reject/ask/"+"all"))
     return kb
 
 
 def createRejectConfirmKb(call_data: str):
     kb = InlineKeyboardMarkup()
-    kb.add(InlineKeyboardButton("Да", callback_data=call_data.replace("ask", "confirm")))
-    kb.add(InlineKeyboardButton("Нет", callback_data="reject/cancel"))
+    kb.add(InlineKeyboardButton(GlobalStuff.Phrases.talk_commands["yes"], callback_data=call_data.replace("ask", "confirm")))
+    kb.add(InlineKeyboardButton(GlobalStuff.Phrases.talk_commands["no"], callback_data="reject/cancel"))
     return kb

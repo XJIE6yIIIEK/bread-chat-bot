@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x11telegramBot.proto\x12\x0btelegramBot\"\x07\n\x05\x45mpty\"\x14\n\x05\x45rror\x12\x0b\n\x03\x65rr\x18\x01 \x01(\t\"\xb0\x01\n\x05\x43\x61\x63he\x12\'\n\tvacancies\x18\x01 \x03(\x0b\x32\x14.telegramBot.Vacancy\x12 \n\x05\x66orms\x18\x02 \x03(\x0b\x32\x11.telegramBot.Form\x12,\n\nformToVacs\x18\x03 \x03(\x0b\x32\x18.telegramBot.VacancyForm\x12.\n\x0c\x63ompanyInfos\x18\x04 \x03(\x0b\x32\x18.telegramBot.CompanyInfo\"5\n\x04\x46orm\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06s_name\x18\x02 \x01(\t\x12\x11\n\tb_general\x18\x03 \x01(\x08\"%\n\x07Vacancy\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06s_name\x18\x02 \x01(\t\"0\n\x0bVacancyForm\x12\x11\n\tn_vacancy\x18\x01 \x01(\x05\x12\x0e\n\x06n_form\x18\x02 \x01(\x05\"<\n\x0b\x43ompanyInfo\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06s_name\x18\x02 \x01(\t\x12\x11\n\ts_message\x18\x03 \x01(\t\"\xcf\x01\n\x10\x43\x61ndidateRequest\x12\x31\n\x11\x63\x61ndidateMainInfo\x18\x01 \x01(\x0b\x32\x16.telegramBot.Candidate\x12\x36\n\x10\x63\x61ndidateResumes\x18\x02 \x03(\x0b\x32\x1c.telegramBot.CandidateResume\x12\x39\n\x11\x63\x61ndidateMeetings\x18\x03 \x03(\x0b\x32\x1e.telegramBot.CandidateMeetings\x12\x15\n\rwantedVacancy\x18\x04 \x01(\x05\"Z\n\x11\x43\x61ndidateMeetings\x12\x11\n\tn_vacancy\x18\x01 \x01(\x05\x12\x10\n\x08n_status\x18\x02 \x01(\x05\x12\x10\n\x08s_status\x18\x03 \x01(\t\x12\x0e\n\x06\x64_date\x18\x04 \x01(\t\"2\n\x0f\x43\x61ndidateResume\x12\x0e\n\x06n_form\x18\x01 \x01(\x05\x12\x0f\n\x07s_value\x18\x02 \x01(\t\"\x99\x01\n\tCandidate\x12\x0e\n\x06s_name\x18\x01 \x01(\t\x12\x14\n\x0c\x64_birth_date\x18\x02 \x01(\t\x12\x16\n\x0es_phone_number\x18\x03 \x01(\t\x12\x11\n\ts_address\x18\x04 \x01(\t\x12\x0e\n\x06\x65_mail\x18\x05 \x01(\t\x12\x0f\n\x07s_tg_id\x18\x06 \x01(\t\x12\x1a\n\x12s_external_resumes\x18\x07 \x01(\t\"\x17\n\x04TgId\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\"7\n\x0eUpdatedVacancy\x12%\n\x07vacancy\x18\x01 \x01(\x0b\x32\x14.telegramBot.Vacancy\".\n\x0bUpdatedForm\x12\x1f\n\x04\x66orm\x18\x01 \x01(\x0b\x32\x11.telegramBot.Form\"Q\n\x10UpdatedFormToVac\x12-\n\x0bvacancyForm\x18\x01 \x01(\x0b\x32\x18.telegramBot.VacancyForm\x12\x0e\n\x06\x64\x65lete\x18\x02 \x01(\x08\"<\n\x12UpdatedCompanyInfo\x12&\n\x04info\x18\x01 \x01(\x0b\x32\x18.telegramBot.CompanyInfo\"~\n\x19InterviewScheduledRequest\x12\x11\n\ts_vacancy\x18\x01 \x01(\t\x12\x18\n\x10s_candidate_name\x18\x02 \x01(\t\x12\x13\n\x0bs_user_name\x18\x03 \x01(\t\x12\x0e\n\x06s_date\x18\x04 \x01(\t\x12\x0f\n\x07s_tg_id\x18\x05 \x01(\t\"S\n\x0bTimeRequest\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\x12\x11\n\tn_vacancy\x18\x02 \x01(\x05\x12 \n\x05\x64\x61tes\x18\x03 \x03(\x0b\x32\x11.telegramBot.Date\"S\n\x0cTimeResponse\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\x12\x11\n\tn_vacancy\x18\x02 \x01(\x05\x12\x1f\n\x04\x64\x61te\x18\x03 \x01(\x0b\x32\x11.telegramBot.Time\"6\n\x04\x44\x61te\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12 \n\x05times\x18\x02 \x03(\x0b\x32\x11.telegramBot.Time\":\n\x04Time\x12\x10\n\x08\x62\x65ginEnd\x18\x01 \x01(\t\x12\x10\n\x08\x62\x65ginISO\x18\x02 \x01(\t\x12\x0e\n\x06\x65ndISO\x18\x03 \x01(\t\"/\n\tRejection\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\x12\x11\n\tn_vacancy\x18\x02 \x01(\x05\"\x1d\n\nHardReject\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t2\x9f\x04\n\nBotService\x12\x32\n\x08getCache\x12\x12.telegramBot.Empty\x1a\x12.telegramBot.Cache\x12\x46\n\x11sendCandidateInfo\x12\x1d.telegramBot.CandidateRequest\x1a\x12.telegramBot.Empty\x12\x44\n\x10getCandidateInfo\x12\x11.telegramBot.TgId\x1a\x1d.telegramBot.CandidateRequest\x12\x44\n\x16\x63\x61ndidateRejectVacancy\x12\x16.telegramBot.Rejection\x1a\x12.telegramBot.Empty\x12\x42\n\x0binfoUpdated\x12\x1f.telegramBot.UpdatedCompanyInfo\x1a\x12.telegramBot.Empty\x12;\n\x0b\x66ormUpdated\x12\x18.telegramBot.UpdatedForm\x1a\x12.telegramBot.Empty\x12\x41\n\x0evacancyUpdated\x12\x1b.telegramBot.UpdatedVacancy\x1a\x12.telegramBot.Empty\x12\x45\n\x10\x66ormToVacUpdated\x12\x1d.telegramBot.UpdatedFormToVac\x1a\x12.telegramBot.Empty2\x90\x02\n\x12\x42otCalendarService\x12=\n\rsystemHasTime\x12\x18.telegramBot.TimeRequest\x1a\x12.telegramBot.Empty\x12\x44\n\x13\x63\x61ndidateChooseTime\x12\x19.telegramBot.TimeResponse\x1a\x12.telegramBot.Error\x12;\n\rrejectMeeting\x12\x16.telegramBot.Rejection\x1a\x12.telegramBot.Empty\x12\x38\n\trejectAll\x12\x17.telegramBot.HardReject\x1a\x12.telegramBot.Emptyb\x06proto3'
+  serialized_pb=b'\n\x11telegramBot.proto\x12\x0btelegramBot\"\x07\n\x05\x45mpty\"\x14\n\x05\x45rror\x12\x0b\n\x03\x65rr\x18\x01 \x01(\t\"\xb0\x01\n\x05\x43\x61\x63he\x12\'\n\tvacancies\x18\x01 \x03(\x0b\x32\x14.telegramBot.Vacancy\x12 \n\x05\x66orms\x18\x02 \x03(\x0b\x32\x11.telegramBot.Form\x12,\n\nformToVacs\x18\x03 \x03(\x0b\x32\x18.telegramBot.VacancyForm\x12.\n\x0c\x63ompanyInfos\x18\x04 \x03(\x0b\x32\x18.telegramBot.CompanyInfo\"5\n\x04\x46orm\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06s_name\x18\x02 \x01(\t\x12\x11\n\tb_general\x18\x03 \x01(\x08\"%\n\x07Vacancy\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06s_name\x18\x02 \x01(\t\"0\n\x0bVacancyForm\x12\x11\n\tn_vacancy\x18\x01 \x01(\x05\x12\x0e\n\x06n_form\x18\x02 \x01(\x05\"<\n\x0b\x43ompanyInfo\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06s_name\x18\x02 \x01(\t\x12\x11\n\ts_message\x18\x03 \x01(\t\"\xcf\x01\n\x10\x43\x61ndidateRequest\x12\x31\n\x11\x63\x61ndidateMainInfo\x18\x01 \x01(\x0b\x32\x16.telegramBot.Candidate\x12\x36\n\x10\x63\x61ndidateResumes\x18\x02 \x03(\x0b\x32\x1c.telegramBot.CandidateResume\x12\x39\n\x11\x63\x61ndidateMeetings\x18\x03 \x03(\x0b\x32\x1e.telegramBot.CandidateMeetings\x12\x15\n\rwantedVacancy\x18\x04 \x01(\x05\"Z\n\x11\x43\x61ndidateMeetings\x12\x11\n\tn_vacancy\x18\x01 \x01(\x05\x12\x10\n\x08n_status\x18\x02 \x01(\x05\x12\x10\n\x08s_status\x18\x03 \x01(\t\x12\x0e\n\x06\x64_date\x18\x04 \x01(\t\"2\n\x0f\x43\x61ndidateResume\x12\x0e\n\x06n_form\x18\x01 \x01(\x05\x12\x0f\n\x07s_value\x18\x02 \x01(\t\"\x99\x01\n\tCandidate\x12\x0e\n\x06s_name\x18\x01 \x01(\t\x12\x14\n\x0c\x64_birth_date\x18\x02 \x01(\t\x12\x16\n\x0es_phone_number\x18\x03 \x01(\t\x12\x11\n\ts_address\x18\x04 \x01(\t\x12\x0e\n\x06\x65_mail\x18\x05 \x01(\t\x12\x0f\n\x07s_tg_id\x18\x06 \x01(\t\x12\x1a\n\x12s_external_resumes\x18\x07 \x01(\t\"\x17\n\x04TgId\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\"7\n\x0eUpdatedVacancy\x12%\n\x07vacancy\x18\x01 \x01(\x0b\x32\x14.telegramBot.Vacancy\".\n\x0bUpdatedForm\x12\x1f\n\x04\x66orm\x18\x01 \x01(\x0b\x32\x11.telegramBot.Form\"Q\n\x10UpdatedFormToVac\x12-\n\x0bvacancyForm\x18\x01 \x01(\x0b\x32\x18.telegramBot.VacancyForm\x12\x0e\n\x06\x64\x65lete\x18\x02 \x01(\x08\"<\n\x12UpdatedCompanyInfo\x12&\n\x04info\x18\x01 \x01(\x0b\x32\x18.telegramBot.CompanyInfo\"~\n\x19InterviewScheduledRequest\x12\x11\n\ts_vacancy\x18\x01 \x01(\t\x12\x18\n\x10s_candidate_name\x18\x02 \x01(\t\x12\x13\n\x0bs_user_name\x18\x03 \x01(\t\x12\x0e\n\x06s_date\x18\x04 \x01(\t\x12\x0f\n\x07s_tg_id\x18\x05 \x01(\t\"S\n\x0bTimeRequest\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\x12\x11\n\tn_vacancy\x18\x02 \x01(\x05\x12 \n\x05\x64\x61tes\x18\x03 \x03(\x0b\x32\x11.telegramBot.Date\"S\n\x0cTimeResponse\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\x12\x11\n\tn_vacancy\x18\x02 \x01(\x05\x12\x1f\n\x04\x64\x61te\x18\x03 \x01(\x0b\x32\x11.telegramBot.Time\"6\n\x04\x44\x61te\x12\x0c\n\x04\x64\x61te\x18\x01 \x01(\t\x12 \n\x05times\x18\x02 \x03(\x0b\x32\x11.telegramBot.Time\":\n\x04Time\x12\x10\n\x08\x62\x65ginEnd\x18\x01 \x01(\t\x12\x10\n\x08\x62\x65ginISO\x18\x02 \x01(\t\x12\x0e\n\x06\x65ndISO\x18\x03 \x01(\t\"/\n\tRejection\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t\x12\x11\n\tn_vacancy\x18\x02 \x01(\x05\"\x1d\n\nHardReject\x12\x0f\n\x07s_tg_id\x18\x01 \x01(\t2\x9f\x04\n\nBotService\x12\x32\n\x08getCache\x12\x12.telegramBot.Empty\x1a\x12.telegramBot.Cache\x12\x46\n\x11sendCandidateInfo\x12\x1d.telegramBot.CandidateRequest\x1a\x12.telegramBot.Empty\x12\x44\n\x10getCandidateInfo\x12\x11.telegramBot.TgId\x1a\x1d.telegramBot.CandidateRequest\x12\x44\n\x16\x63\x61ndidateRejectVacancy\x12\x16.telegramBot.Rejection\x1a\x12.telegramBot.Empty\x12\x42\n\x0binfoUpdated\x12\x1f.telegramBot.UpdatedCompanyInfo\x1a\x12.telegramBot.Empty\x12;\n\x0b\x66ormUpdated\x12\x18.telegramBot.UpdatedForm\x1a\x12.telegramBot.Empty\x12\x41\n\x0evacancyUpdated\x12\x1b.telegramBot.UpdatedVacancy\x1a\x12.telegramBot.Empty\x12\x45\n\x10\x66ormToVacUpdated\x12\x1d.telegramBot.UpdatedFormToVac\x1a\x12.telegramBot.Empty2\x89\x03\n\x12\x42otCalendarService\x12=\n\rsystemHasTime\x12\x18.telegramBot.TimeRequest\x1a\x12.telegramBot.Empty\x12<\n\x0erejectedByUser\x12\x16.telegramBot.Rejection\x1a\x12.telegramBot.Empty\x12\x39\n\x0f\x63onnectionCheck\x12\x12.telegramBot.Empty\x1a\x12.telegramBot.Empty\x12\x44\n\x13\x63\x61ndidateChooseTime\x12\x19.telegramBot.TimeResponse\x1a\x12.telegramBot.Error\x12;\n\rrejectMeeting\x12\x16.telegramBot.Rejection\x1a\x12.telegramBot.Error\x12\x38\n\trejectAll\x12\x17.telegramBot.HardReject\x1a\x12.telegramBot.Emptyb\x06proto3'
 )
 
 
@@ -1304,7 +1304,7 @@ _BOTCALENDARSERVICE = _descriptor.ServiceDescriptor(
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
   serialized_start=2276,
-  serialized_end=2548,
+  serialized_end=2669,
   methods=[
   _descriptor.MethodDescriptor(
     name='systemHasTime',
@@ -1317,9 +1317,29 @@ _BOTCALENDARSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='rejectedByUser',
+    full_name='telegramBot.BotCalendarService.rejectedByUser',
+    index=1,
+    containing_service=None,
+    input_type=_REJECTION,
+    output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='connectionCheck',
+    full_name='telegramBot.BotCalendarService.connectionCheck',
+    index=2,
+    containing_service=None,
+    input_type=_EMPTY,
+    output_type=_EMPTY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='candidateChooseTime',
     full_name='telegramBot.BotCalendarService.candidateChooseTime',
-    index=1,
+    index=3,
     containing_service=None,
     input_type=_TIMERESPONSE,
     output_type=_ERROR,
@@ -1329,17 +1349,17 @@ _BOTCALENDARSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='rejectMeeting',
     full_name='telegramBot.BotCalendarService.rejectMeeting',
-    index=2,
+    index=4,
     containing_service=None,
     input_type=_REJECTION,
-    output_type=_EMPTY,
+    output_type=_ERROR,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
     name='rejectAll',
     full_name='telegramBot.BotCalendarService.rejectAll',
-    index=3,
+    index=5,
     containing_service=None,
     input_type=_HARDREJECT,
     output_type=_EMPTY,

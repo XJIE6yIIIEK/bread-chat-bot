@@ -158,7 +158,9 @@ class Phrases:
     talk_phrases = {"on_start": "", "help": "", "what_info": "", "what_vacancy": "", "the_end": "", "main_info_done": "",
                     "is_your_choice": "", "lets_talk": "", "main_info": "", "not_choice": "",
                     "vacancy_info": "", "is_actual": "", "make_actual": "", "want_form": "",
-                    "form_fill": "", "privacy_check": "", "privacy_cancel": "", "candidate_approved": ""}
+                    "form_fill": "", "privacy_check": "", "privacy_cancel": "", "candidate_approved": "",
+                    "bot_was_restarted": "", "r_u_sure": "", "scheduled_meetings": "", "how_to_reject": "", "service_is_down": "",
+                    "meeting_chosen": "", "take_vacancy_for_set": "", "there_is_no_vacs": "", "time_is_occupied": ""}
 
     talk_commands = {"tell_info": "", "want_work": "", "want_change": "", "yes": "", "no": "", "ok": "",
-                     "choose_date": ""}
+                     "choose_date": "", "back": ""}

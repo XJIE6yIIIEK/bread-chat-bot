@@ -1,4 +1,5 @@
 import GlobalStuff
+import Utils
 from GlobalStuff import CachedDB, Candidate
 import grpc
 import KeyboardsService
@@ -6,7 +7,6 @@ import telegramBot_pb2 as pb2
 import telegramBot_pb2_grpc as pb2_g
 from threading import Thread
 from concurrent import futures
-import asyncio
 
 
 def freeFormsZero() -> None:
@@ -48,8 +48,6 @@ class Clienting:
                     CachedDB.form_to_vac[ob.n_vacancy].append(ob.n_form)
             else:
                 CachedDB.form_to_vac[ob.n_vacancy] = [ob.n_form]
-
-        freeSomeForms()
 
         for ob in cache.companyInfos:
             CachedDB.info_ab_us[ob.id] = {"name": ob.s_name, "message": ob.s_message}
@@ -96,7 +94,7 @@ class Clienting:
         out.wantedVacancy = candidate.wantedVacancy
 
         for meeting in candidate.candidateMeetings:
-            out.meetings[meeting.n_vacancy] = meeting.d_date
+            GlobalStuff.CachedDB.dates_assigned[str(tg_id)][meeting.n_vacancy] = meeting.d_date
 
         if out.name != "":
             out.first_time = False
@@ -110,6 +108,7 @@ class Clienting:
 class Servering:
     class ServClass(pb2_g.BotServiceServicer):
         def infoUpdated(self, request: pb2.UpdatedCompanyInfo, context):
+            print("Info updated")
             if (request.info.id in CachedDB.info_ab_us) and \
                     (CachedDB.info_ab_us[request.info.id]["name"] == request.info.s_name) and \
                     (CachedDB.info_ab_us[request.info.id]["message"] == request.info.s_message):
@@ -120,6 +119,7 @@ class Servering:
             return pb2.Empty()
 
         def formUpdated(self, request: pb2.UpdatedForm, context):
+            print("Forms updated")
             if request.form.id in CachedDB.all_forms and \
                     CachedDB.all_forms[request.form.id] == request.form.s_name:
                 CachedDB.all_forms.pop(request.form.id)
@@ -136,6 +136,7 @@ class Servering:
             return pb2.Empty()
 
         def vacancyUpdated(self, request: pb2.UpdatedVacancy, context):
+            print("Vacancy updated")
             if request.vacancy.id in CachedDB.all_vacs and CachedDB.all_vacs[request.vacancy.id] == request.vacancy.s_name:
                 CachedDB.all_vacs.pop(request.vacancy.id)
             else:
@@ -144,7 +145,7 @@ class Servering:
             return pb2.Empty()
 
         def formToVacUpdated(self, request: pb2.UpdatedFormToVac, context):
-            freeFormsZero()
+            print("FTV updated")
             vac_id = request.vacancyForm.n_vacancy
             form_id = request.vacancyForm.n_form
             if request.delete:
@@ -185,13 +186,28 @@ class CalendarClienting:
     @staticmethod
     def candidateChooseTime(tg_id: str, vacancy: int, date: pb2.Time) -> int:
         data = pb2.TimeResponse(s_tg_id=tg_id, n_vacancy=vacancy, date=date)
-        err: pb2.Error = GlobalStuff.Conn.calendar_stub.candidateChooseTime(data)
-        return {"": 0, "unavailable": 1, "unathorized": 2}[err.err]
+        e: str
+        try:
+            err: pb2.Error = GlobalStuff.Conn.calendar_stub.candidateChooseTime(data)
+            e = err.err
+        except Exception:
+            e = "unauthorized"
+        return {"": 0, "unavailable": 1, "unauthorized": 2, 'unwanted': 0}[e]
 
     @staticmethod
-    def rejectMeeting(tg_id: str, vacancy: int):
-        GlobalStuff.Conn.calendar_stub.rejectMeeting(pb2.Rejection(s_tg_id=tg_id, n_vacancy=vacancy))
+    def rejectMeeting(tg_id: str, vacancy: int) -> bool:
+        try:
+            GlobalStuff.Conn.calendar_stub.rejectMeeting(pb2.Rejection(s_tg_id=tg_id, n_vacancy=vacancy))
+            return True
+        except Exception:
+            print("Not rejected")
+            return False
 
     @staticmethod
-    def rejectAll(tg_id: str):
-        GlobalStuff.Conn.calendar_stub.rejectAll(pb2.HardReject(s_tg_id=tg_id))
+    def rejectAll(tg_id: str) -> bool:
+        try:
+            err: pb2.Error = GlobalStuff.Conn.calendar_stub.rejectAll(pb2.HardReject(s_tg_id=tg_id))
+            return True
+        except Exception:
+            print("Not rejected")
+            return False

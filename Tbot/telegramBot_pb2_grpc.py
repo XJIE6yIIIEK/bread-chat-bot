@@ -311,6 +311,16 @@ class BotCalendarServiceStub(object):
                 request_serializer=telegramBot__pb2.TimeRequest.SerializeToString,
                 response_deserializer=telegramBot__pb2.Empty.FromString,
                 )
+        self.rejectedByUser = channel.unary_unary(
+                '/telegramBot.BotCalendarService/rejectedByUser',
+                request_serializer=telegramBot__pb2.Rejection.SerializeToString,
+                response_deserializer=telegramBot__pb2.Empty.FromString,
+                )
+        self.connectionCheck = channel.unary_unary(
+                '/telegramBot.BotCalendarService/connectionCheck',
+                request_serializer=telegramBot__pb2.Empty.SerializeToString,
+                response_deserializer=telegramBot__pb2.Empty.FromString,
+                )
         self.candidateChooseTime = channel.unary_unary(
                 '/telegramBot.BotCalendarService/candidateChooseTime',
                 request_serializer=telegramBot__pb2.TimeResponse.SerializeToString,
@@ -319,7 +329,7 @@ class BotCalendarServiceStub(object):
         self.rejectMeeting = channel.unary_unary(
                 '/telegramBot.BotCalendarService/rejectMeeting',
                 request_serializer=telegramBot__pb2.Rejection.SerializeToString,
-                response_deserializer=telegramBot__pb2.Empty.FromString,
+                response_deserializer=telegramBot__pb2.Error.FromString,
                 )
         self.rejectAll = channel.unary_unary(
                 '/telegramBot.BotCalendarService/rejectAll',
@@ -332,6 +342,18 @@ class BotCalendarServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def systemHasTime(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def rejectedByUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def connectionCheck(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -363,6 +385,16 @@ def add_BotCalendarServiceServicer_to_server(servicer, server):
                     request_deserializer=telegramBot__pb2.TimeRequest.FromString,
                     response_serializer=telegramBot__pb2.Empty.SerializeToString,
             ),
+            'rejectedByUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.rejectedByUser,
+                    request_deserializer=telegramBot__pb2.Rejection.FromString,
+                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
+            ),
+            'connectionCheck': grpc.unary_unary_rpc_method_handler(
+                    servicer.connectionCheck,
+                    request_deserializer=telegramBot__pb2.Empty.FromString,
+                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
+            ),
             'candidateChooseTime': grpc.unary_unary_rpc_method_handler(
                     servicer.candidateChooseTime,
                     request_deserializer=telegramBot__pb2.TimeResponse.FromString,
@@ -371,7 +403,7 @@ def add_BotCalendarServiceServicer_to_server(servicer, server):
             'rejectMeeting': grpc.unary_unary_rpc_method_handler(
                     servicer.rejectMeeting,
                     request_deserializer=telegramBot__pb2.Rejection.FromString,
-                    response_serializer=telegramBot__pb2.Empty.SerializeToString,
+                    response_serializer=telegramBot__pb2.Error.SerializeToString,
             ),
             'rejectAll': grpc.unary_unary_rpc_method_handler(
                     servicer.rejectAll,
@@ -406,6 +438,40 @@ class BotCalendarService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def rejectedByUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/rejectedByUser',
+            telegramBot__pb2.Rejection.SerializeToString,
+            telegramBot__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def connectionCheck(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/connectionCheck',
+            telegramBot__pb2.Empty.SerializeToString,
+            telegramBot__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def candidateChooseTime(request,
             target,
             options=(),
@@ -435,7 +501,7 @@ class BotCalendarService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/telegramBot.BotCalendarService/rejectMeeting',
             telegramBot__pb2.Rejection.SerializeToString,
-            telegramBot__pb2.Empty.FromString,
+            telegramBot__pb2.Error.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

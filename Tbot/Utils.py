@@ -17,20 +17,23 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
 def getPhrases() -> None:
+    def transform(text: str) -> str:
+        return text.replace("\_", "↓").replace("_", " ").replace("↓", "_").replace("\\n", "\n")
+
     config = configparser.ConfigParser()
     config.read("phrases.ini", encoding="utf-8")
     try:
         for step in range(len(GlobalStuff.Phrases.main_info_phrases)):
-            GlobalStuff.Phrases.main_info_phrases[step]["R"] = config["step"+str(step)]["R"].replace("_", " ").replace("\\n", "\n")
-            GlobalStuff.Phrases.main_info_phrases[step]["F"] = config["step"+str(step)]["F"].replace("_", " ").replace("\\n", "\n")
+            GlobalStuff.Phrases.main_info_phrases[step]["R"] = transform(config["step"+str(step)]["R"])
+            GlobalStuff.Phrases.main_info_phrases[step]["F"] = transform(config["step"+str(step)]["F"])
             if step == 5:
-                GlobalStuff.Phrases.main_info_phrases[step]["A"] = config["step"+str(step)]["A"].replace("_", " ").replace("\\n", "\n")
+                GlobalStuff.Phrases.main_info_phrases[step]["A"] = transform(config["step"+str(step)]["A"])
         for phrase in GlobalStuff.Phrases.mistake_phrases:
-            GlobalStuff.Phrases.mistake_phrases[phrase] = config["talk"][phrase].replace("_", " ").replace("\\n", "\n")
+            GlobalStuff.Phrases.mistake_phrases[phrase] = transform(config["talk"][phrase])
         for phrase in GlobalStuff.Phrases.talk_phrases:
-            GlobalStuff.Phrases.talk_phrases[phrase] = config["talk"][phrase].replace("_", " ").replace("\\n", "\n")
+            GlobalStuff.Phrases.talk_phrases[phrase] = transform(config["talk"][phrase])
         for phrase in GlobalStuff.Phrases.talk_commands:
-            GlobalStuff.Phrases.talk_commands[phrase] = config["talk_commands"][phrase].replace("_", " ").replace("\\n", "\n")
+            GlobalStuff.Phrases.talk_commands[phrase] = transform(config["talk_commands"][phrase])
         print("Phrases config is done.")
     except KeyError:
         print("Phrases config error: File structure is invalid.")
@@ -65,6 +68,7 @@ def getConfig() -> None:
 def setupBot() -> None:
     try:
         BotStuff.bot = Bot(token=GlobalStuff.Conn.token)
+        Bot.set_current(BotStuff.bot)
         BotStuff.dp = Dispatcher(BotStuff.bot, storage=MemoryStorage())
         BotStuff.dp.middleware.setup(LoggingMiddleware())
         print("Bot setup is done.")
@@ -92,7 +96,8 @@ async def SetBotCommands() -> None:
         types.BotCommand("help", "Помощь"),
         types.BotCommand("change", "Изменить основную информацию о себе"),
         types.BotCommand("set_meeting", "Выбрать дату интервью"),
-        types.BotCommand("get_meetings", "Назначенные интервью")
+        types.BotCommand("get_meetings", "Назначенные интервью"),
+        types.BotCommand("reject", "Отменить собеседования")
     ])
 
 
@@ -113,8 +118,8 @@ class Shortcuts:
         @staticmethod
         async def initUser(msg) -> None:
             state = Shortcuts.User.getState(msg)
+            GlobalStuff.CachedDB.dates_assigned[str(msg.from_user.id)] = {}
             candidate = Clienting.getCandidateInfo(msg.from_user.id)
-            candidate.tg_id = msg.from_user.id
             await state.update_data(candidate=candidate)
             await state.update_data(vac_to_int=-1)
             await state.update_data(step=0)
@@ -122,8 +127,17 @@ class Shortcuts:
             if key is not str:
                 key = str(key)
             dates = GlobalStuff.CachedDB.dates
-            if key not in dates or (key in dates and len(dates[key]) == 0):
+            if key not in dates:
                 GlobalStuff.CachedDB.dates[key] = {}
+
+        @staticmethod
+        async def isUserInitialized(msg) -> bool:
+            state = Shortcuts.User.getState(msg)
+            if "candidate" not in (await state.get_data()):
+                await Shortcuts.Messages.send_msg(msg, GlobalStuff.Phrases.talk_phrases["bot_was_restarted"])
+                return False
+            else:
+                return True
 
         @staticmethod
         async def setVTI(msg, num: int = -1) -> None:
@@ -161,31 +175,24 @@ class Shortcuts:
             Clienting.sendCandidateInfo(candidate)
 
         @staticmethod
-        async def setMeeting(msg, vac: int, date: str) -> None:
-            state = Shortcuts.User.getState(msg)
-            candidate = (await state.get_data())["candidate"]
-            candidate.meetings[vac] = date
-            await state.update_data(candidate=candidate)
+        def setMeeting(msg, vac: int, date: str) -> None:
+            tg_id = str(msg.from_user.id)
+            GlobalStuff.CachedDB.dates_assigned[tg_id][vac] = date
 
         @staticmethod
-        async def getMeetings(msg) -> dict:
-            state = Shortcuts.User.getState(msg)
-            candidate = (await state.get_data())["candidate"]
-            return candidate.meetings
+        def getMeetings(msg) -> dict:
+            tg_id = str(msg.from_user.id)
+            return GlobalStuff.CachedDB.dates_assigned[tg_id]
 
         @staticmethod
-        async def deleteMeeting(msg, vac: int) -> None:
-            state = Shortcuts.User.getState(msg)
-            candidate = (await state.get_data())["candidate"]
-            candidate.meetings.pop(vac)
-            await state.update_data(candidate=candidate)
+        def deleteMeeting(msg, vac: int) -> None:
+            tg_id = str(msg.from_user.id)
+            GlobalStuff.CachedDB.dates_assigned[tg_id].pop(vac)
 
         @staticmethod
-        async def deleteAllMeetings(msg) -> None:
-            state = Shortcuts.User.getState(msg)
-            candidate = (await state.get_data())["candidate"]
-            candidate.meetings = {}
-            await state.update_data(candidate=candidate)
+        def deleteAllMeetings(msg) -> None:
+            tg_id = str(msg.from_user.id)
+            GlobalStuff.CachedDB.dates_assigned[tg_id] = {}
 
     class Messages:
         @staticmethod
@@ -261,7 +268,11 @@ class Shortcuts:
                             await state.update_data(candidate=candidate)
                             return False
                     else:
-                        if step == 1 and not Validation.is_valid_date(msg.text):
+                        if (step == 0 and not Validation.is_valid_name(msg.text)) or\
+                                (step == 1 and not Validation.is_valid_date(msg.text)) or\
+                                (step == 2 and not Validation.is_valid_phone(msg.text)) or\
+                                (step == 3 and not Validation.is_valid_town(msg.text)) or\
+                                (step == 4 and not Validation.is_valid_email(msg.text)):
                             await Shortcuts.Messages.send_msg(msg, GlobalStuff.Phrases.mistake_phrases["mistake"])
                             return False
                         if step != 1 and not Validation.is_valid_str(msg.text):
@@ -299,7 +310,7 @@ class Shortcuts:
                 candidate = (await state.get_data())["candidate"]
                 form = CachedDB.general_forms[step]
                 c1: bool = form not in candidate.forms and Shortcuts.Messages.compare_message(call.text, GlobalStuff.Phrases.talk_commands["yes"])
-                c2: bool = form in candidate.forms and Shortcuts.Messages.compare_message(call.text, GlobalStuff.Phrases.talk_commands["no"])
+                c2: bool = form in candidate.forms and Shortcuts.Messages.compare_message(call.text, GlobalStuff.Phrases.talk_commands["yes"])
                 if c1 or c2:
                     if c2:
                         candidate.forms.pop(form)
@@ -349,7 +360,7 @@ class Shortcuts:
                 if len(CachedDB.form_to_vac[vti]) > step:
                     form = CachedDB.form_to_vac[vti][step]
                     if form in candidate.forms:
-                        if Shortcuts.Messages.compare_message(msg.text, GlobalStuff.Phrases.talk_commands["yes"]):
+                        if Shortcuts.Messages.compare_message(msg.text, GlobalStuff.Phrases.talk_commands["no"]):
                             step += 1
                         else:
                             candidate.forms.pop(form)
