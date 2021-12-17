@@ -52,7 +52,8 @@ class BotCalendarRecieverService {
                 d_date: meeting[0].d_date
             },
             meeting,
-            callback
+            callback,
+            true
         );
     }
 

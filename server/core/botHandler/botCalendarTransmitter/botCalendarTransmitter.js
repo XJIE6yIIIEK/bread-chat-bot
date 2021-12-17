@@ -38,6 +38,17 @@ class BotCalendarTransmitter {
             }
         );
     }
+
+    async rejectedByUser(data){
+        this.client.rejectedByUser({
+                s_tg_id: data.s_tg_id,
+                n_vacancy: data.n_vacancy
+            },
+            (error, response) => {
+
+            }
+        );
+    }
 }
 
 module.exports = new BotCalendarTransmitter();

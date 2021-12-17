@@ -141,7 +141,7 @@ class CalendarService {
         CalendarRepository.patch(meeting);
     }
 
-    async rejectMeeting(data, meeting, callback){
+    async rejectMeeting(data, meeting, callback, fromBot){
         if(meeting.length == 0){
             meeting = await DBRepository.rawQuery(
                 'SELECT d_date at time zone \'Europe/Moscow\' AS d_date FROM t_meetings ' +
@@ -158,6 +158,10 @@ class CalendarService {
             CalendarTransmitterService.rejectMeeting(data, callback);
         }
 
+        if(!fromBot){
+            BotCalendarTransmitterService.rejectedByUser(data);
+        }
+
         var meetingObj = await CalendarRepository.get({
             where: {
                 n_vacancy: data.n_vacancy,
@@ -167,6 +171,10 @@ class CalendarService {
         });
 
         CalendarRepository.delete(meetingObj);
+
+        if(!data.d_date){
+            callback();
+        }
     }
 }
 

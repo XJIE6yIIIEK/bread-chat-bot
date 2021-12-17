@@ -16,6 +16,7 @@ service BotService {
 service BotCalendarService {
     rpc systemHasTime (TimeRequest) returns (Empty);
     rpc rejectedByUser (Rejection) returns (Empty);
+    rpc connectionCheck (Empty) returns (Empty);
 
     rpc candidateChooseTime (TimeResponse) returns (Error);
     rpc rejectMeeting (Rejection) returns (Empty);
