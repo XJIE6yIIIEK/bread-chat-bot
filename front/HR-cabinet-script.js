@@ -40,6 +40,7 @@ function fillAllInterviews(data)
         //let date = new Date(data[key].d_date);
         //console.log(data[key].d_date);
         //date_interview.innerHTML = date.getDay()+"-"+date.getMonth()+"-"+date.getFullYear()+"\n"+date.getHours()+":"+date.getMinutes();
+        //if (data[key].d_date)
         date_interview.innerHTML = data[key].d_date;
         interview_candidate.appendChild(date_interview);
 
@@ -141,9 +142,7 @@ $("body").on("click", ".save_button", function() {
         type: "PUT",
         data: {s_password: password},
         success: function (){
-            if (alert("Пароль изменён"))
-            {
-            }
+            alert("Пароль изменён");
         },
         xhrFields: {
             withCredentials: true

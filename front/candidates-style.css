@@ -337,3 +337,12 @@ a{
     min-height: 50px;
     height: auto;
 }
+
+.wanted_table_body_style
+{
+    background: rgb(188, 197, 247);
+    border: 2px solid;
+    padding: 10px;
+    min-height: 50px;
+    height: auto;
+}

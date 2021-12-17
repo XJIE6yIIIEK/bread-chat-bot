@@ -62,12 +62,16 @@ function fillCandidate(data)
     {
         let option = document.createElement('option');
         let vac_name = data.appropriateVacancies[i].s_name;
+        let vac_wanted = data.appropriateVacancies[i].b_wanted;
         option.innerHTML = vac_name;
         option.value = data.appropriateVacancies[i].id;
         document.getElementById("select_vac").appendChild(option);
 
         approp_vacans_data += '<tr>';
-        approp_vacans_data += '<th class = "table_body_style">' + vac_name + '</th>';
+        if (vac_wanted)
+            approp_vacans_data += '<th class = "wanted_table_body_style">' + vac_name + '</th>';
+        else
+            approp_vacans_data += '<th class = "table_body_style">' + vac_name + '</th>';
         approp_vacans_data += '</tr>';
     }
     $("#table_approp_vacans").append(approp_vacans_data);

@@ -48,7 +48,7 @@ function sendMeeting()
 
 // назначить собеседование
 $("body").on("click", ".set_interview", function(){
-    if (!date_start.value || !date_end.value || !date_time.value)
+    if (!date_start.value || !date_end.value || !date_time.value || !select_vac.value)
         alert("Заполните все поля");
     else {
         let start = new Date(date_start.value);
