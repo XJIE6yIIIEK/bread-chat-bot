@@ -5,6 +5,7 @@ service CalendarService {
     rpc findMeetingTime (FindTimeRequest) returns (Suggestions);
     rpc trySetMeetingTime (SetMeetingRequest) returns (Error);
     rpc deleteMeeting (DeleteMeetingRequest) returns (Error);
+    rpc connectionCheck (Empty) returns (Empty);
 }
 
 message Empty {}

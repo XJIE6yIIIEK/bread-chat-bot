@@ -57,6 +57,9 @@ class BotCalendarReciever {
             },
             async () => {
                 callback(null, {});
+            },
+            async () => {
+                callback(null, {err: 'noavailable'});
             }
         );
     }

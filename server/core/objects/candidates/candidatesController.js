@@ -51,11 +51,15 @@ class CandidatesController {
             n_candidate: req.params.n_candidate
         }
 
-        CalendarService.rejectMeeting(
+        CalendarService.rejectMeetingPrechecks(
             data,
-            [],
-            () => {
-                return res.status(204).end();
+            [], {
+                success: () => {
+                    return res.status(204).end();
+                },
+                connectionTimeout : (err) => {
+                    return next(err);
+                }
             },
             false
         );

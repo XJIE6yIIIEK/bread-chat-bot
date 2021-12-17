@@ -24,10 +24,14 @@ class CalendarTransmitter {
         this.client = new calendar_proto.CalendarService(process.env.CALENDAR_ADDRESS + ':' + process.env.CALENDAR_PORT, grpc.credentials.createInsecure());
     }
 
-    async findMeetingTime(meetingPayload, callbackToService){
+    async findMeetingTime(meetingPayload, callbackToService, connectionTimeout){
         this.client.findMeetingTime(
             meetingPayload,
             (error, response) => {
+                if(error && error.code == 14){
+                    connectionTimeout();
+                }
+
                 if(!response){
                     return;
                 }
@@ -68,6 +72,19 @@ class CalendarTransmitter {
             },
             (error, response) => {
                 callback();
+            }
+        );
+    }
+
+    async connectionCheck(success, errorResponse){
+        this.client.connectionCheck(
+            {},
+            (error, response) => {
+                if(error && error.code == 14){
+                    return errorResponse();
+                }
+
+                return success();
             }
         );
     }

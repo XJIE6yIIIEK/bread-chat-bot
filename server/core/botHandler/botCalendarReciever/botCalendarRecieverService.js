@@ -32,7 +32,7 @@ class BotCalendarRecieverService {
         );
     }
 
-    async rejectMeeting(data, callback){
+    async rejectMeeting(data, callback, connectionTimeout){
         var candidate = await CandidatesRepository.get({
             where: {
                 s_tg_id: data.s_tg_id
@@ -45,14 +45,16 @@ class BotCalendarRecieverService {
             'SELECT'
         );
 
-        CalendarService.rejectMeeting({
+        CalendarService.rejectMeetingPrechecks({
                 n_vacancy: data.n_vacancy,
                 n_candidate: candidate.id,
                 n_user: meeting[0].n_user,
                 d_date: meeting[0].d_date
             },
-            meeting,
-            callback,
+            meeting, {
+                success: callback,
+                connectionTimeout: connectionTimeout
+            },
             true
         );
     }

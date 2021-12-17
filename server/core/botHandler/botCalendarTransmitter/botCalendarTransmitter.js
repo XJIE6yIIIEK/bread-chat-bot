@@ -50,12 +50,12 @@ class BotCalendarTransmitter {
         );
     }
 
-    async connectionCheck(success, error){
+    async connectionCheck(success, errorResponse){
         this.client.connectionCheck(
             {},
             (error, response) => {
                 if(error && error.code == 14){
-                    return error();
+                    return errorResponse();
                 }
 
                 return success();

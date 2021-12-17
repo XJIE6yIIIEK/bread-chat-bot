@@ -91,6 +91,9 @@ class CalendarService {
                 meetingData,
                 async (suggestionsData) => {
                     this.meetingAvailability(suggestionsData, userId, candidateId, vacancyId, responseCallback);
+                },
+                async () => {
+                    responseCallback(ErrorHandler.badRequest('Сервис календаря недоступен. Сообщите о проблеме администратору и повторите попытку позже.'));
                 }
             );
             return;
@@ -172,8 +175,35 @@ class CalendarService {
 
         CalendarRepository.delete(meetingObj);
 
-        if(!data.d_date){
-            callback();
+        callback();
+    }
+
+    async rejectMeetingPrechecks(data, meeting, callbacks, fromBot){
+        if(fromBot){
+            CalendarTransmitterService.connectionCheck(
+                () => {
+                    this.rejectMeeting(data, meeting, callbacks.success, fromBot);
+                },
+                () => {
+                    callbacks.connectionTimeout();
+                }
+            );
+        } else {
+            CalendarTransmitterService.connectionCheck(
+                () => {
+                    BotCalendarTransmitterService.connectionCheck(
+                        () => {
+                            this.rejectMeeting(data, meeting, callbacks.success, fromBot);
+                        },
+                        () => {
+                            callbacks.connectionTimeout(ErrorHandler.badRequest('Не удаётся подключиться к сервису календаря. Сообщите об этом администратору и повторите попытку позже'));
+                        }
+                    );
+                },
+                () => {
+                    callbacks.connectionTimeout(ErrorHandler.badRequest('Не удаётся подключиться к сервису бота. Сообщите об этом администратору и повторите попытку позже'));
+                }
+            );
         }
     }
 }

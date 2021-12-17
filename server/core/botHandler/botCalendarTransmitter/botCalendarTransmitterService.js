@@ -32,6 +32,10 @@ class BotCalendarTransmitterService {
             data
         );
     }
+
+    async connectionCheck(success, error){
+        BotCalendarTransmitter.connectionCheck(success, error);
+    }
 }
 
 module.exports = new BotCalendarTransmitterService();

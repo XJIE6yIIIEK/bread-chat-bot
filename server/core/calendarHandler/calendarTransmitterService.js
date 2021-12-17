@@ -3,7 +3,7 @@ const CalendarRepository = require('../objects/calendar/calendarRepository');
 const CandidateRepository = require('../objects/candidates/candidatesRepository');
 
 class CalendarTransmitterService {
-    async createNewMeeting(userId, meetingData, callback){
+    async createNewMeeting(userId, meetingData, callback, connectionTimeout){
         var meetingPayload = {
             startDate: meetingData.startDate,
             endDate: meetingData.endDate,
@@ -11,7 +11,7 @@ class CalendarTransmitterService {
             userId: userId
         }
 
-        await CalendarTransmitter.findMeetingTime(meetingPayload, callback);
+        await CalendarTransmitter.findMeetingTime(meetingPayload, callback, connectionTimeout);
     }
 
     async candidateChooseTime(data, rpcCallback, updateDelegate){
@@ -40,6 +40,10 @@ class CalendarTransmitterService {
             },
             callback
         );
+    }
+
+    async connectionCheck(success, error){
+        CalendarTransmitter.connectionCheck(success, error);
     }
 }
 
