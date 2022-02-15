@@ -12,6 +12,7 @@ def fillInfoKb():
 def fillVacsKb():
     GlobalStuff.Keyboards.vacs_kb = InlineKeyboardMarkup()
     for ob in GlobalStuff.CachedDB.all_vacs:
+        # if len(GlobalStuff.CachedDB.form_to_vac[ob]) != 0:
         GlobalStuff.Keyboards.vacs_kb.add(InlineKeyboardButton(GlobalStuff.CachedDB.all_vacs[ob], callback_data="vac:"+str(ob)))
 
 

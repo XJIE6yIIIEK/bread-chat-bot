@@ -9,6 +9,7 @@ from threading import Thread
 
 class ServClass(pb2_g.BotCalendarServiceServicer):
     def systemHasTime(self, request: pb2.TimeRequest, context):
+        print(request.s_tg_id)
         tg_id = request.s_tg_id
         if tg_id not in GlobalStuff.CachedDB.dates:
             GlobalStuff.CachedDB.dates[tg_id] = {}
