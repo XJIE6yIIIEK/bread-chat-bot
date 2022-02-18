@@ -207,10 +207,16 @@ async def hub_button(call: types.CallbackQuery):
         else:
             await Shortcuts.Messages.answer(call, Phrases.mistake_phrases["old_info"])
     elif case == "vac:":
-        await call.answer()
-        await Shortcuts.User.setVTI(call, int(key))
-        await Shortcuts.Messages.send_msg(call, CachedDB.all_vacs[int(key)] + Phrases.talk_phrases["is_your_choice"], Keyboards.yesno_kb)
-        await BotStates.VacancyChoice.set()
+        if int(key) in CachedDB.all_vacs:
+            # if len(CachedDB.form_to_vac[int(key)]) != 0:
+            await call.answer()
+            await Shortcuts.User.setVTI(call, int(key))
+            await Shortcuts.Messages.send_msg(call, CachedDB.all_vacs[int(key)] + Phrases.talk_phrases["is_your_choice"], Keyboards.yesno_kb)
+            await BotStates.VacancyChoice.set()
+            # else:
+            #    await Shortcuts.Messages.answer(call, Phrases.mistake_phrases["old_info"])
+        else:
+            await Shortcuts.Messages.answer(call, Phrases.mistake_phrases["old_info"])
 
 
 async def start_main_info_talk(msg):

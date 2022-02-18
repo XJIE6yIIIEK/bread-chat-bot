@@ -65,7 +65,7 @@ class Clienting:
                                   s_phone_number=candidate.phone,
                                   s_address=candidate.address,
                                   e_mail=candidate.mail,
-                                  s_tg_id=str(candidate.tg_id),
+                                  s_tg_id=candidate.tg_id,
                                   s_external_resumes=candidate.external_resumes)
         resumes = []
         for ob in candidate.forms:
@@ -107,47 +107,57 @@ class Clienting:
 
 class Servering:
     class ServClass(pb2_g.BotServiceServicer):
-        def infoUpdated(self, request: pb2.UpdatedCompanyInfo, context):
-            print("Info updated")
-            if (request.info.id in CachedDB.info_ab_us) and \
-                    (CachedDB.info_ab_us[request.info.id]["name"] == request.info.s_name) and \
-                    (CachedDB.info_ab_us[request.info.id]["message"] == request.info.s_message):
-                CachedDB.info_ab_us.pop(request.info.id)
+        def infoUpdated(self, request, context):
+            print(request)
+            r_id = request.info.id
+            r_name = request.info.s_name
+            r_msg = request.info.s_message
+            if r_name is None or r_name == "" or r_msg is None or r_msg == "":
+                if r_id in CachedDB.info_ab_us:
+                    CachedDB.info_ab_us.pop(r_id)
             else:
-                CachedDB.info_ab_us[request.info.id] = {"name": request.info.s_name, "message": request.info.s_message}
+                CachedDB.info_ab_us[r_id] = {"name": request.info.s_name, "message": request.info.s_message}
             KeyboardsService.fillInfoKb()
             return pb2.Empty()
 
-        def formUpdated(self, request: pb2.UpdatedForm, context):
+        def formUpdated(self, request, context):
             print("Forms updated")
-            if request.form.id in CachedDB.all_forms and \
-                    CachedDB.all_forms[request.form.id] == request.form.s_name:
-                CachedDB.all_forms.pop(request.form.id)
-                if request.form.id in CachedDB.general_forms:
-                    CachedDB.general_forms.pop(request.form.id)
+            print(request)
+            r_id = request.form.id
+            r_name = request.form.s_name
+            if r_name is None or r_name == "":
+                if r_id in CachedDB.all_forms:
+                    CachedDB.all_forms.pop(r_id)
+                if r_id in CachedDB.general_forms:
+                    CachedDB.general_forms.remove(r_id)
             else:
-                CachedDB.all_forms[request.form.id] = request.form.s_name
+                CachedDB.all_forms[r_id] = r_name
                 if request.form.b_general:
                     if request.form.id not in CachedDB.general_forms:
                         CachedDB.general_forms.append(request.form.id)
-                else:
-                    if request.form.id in CachedDB.general_forms:
-                        CachedDB.general_forms.pop(request.form.id)
+            print(CachedDB.all_forms)
             return pb2.Empty()
 
         def vacancyUpdated(self, request: pb2.UpdatedVacancy, context):
             print("Vacancy updated")
-            if request.vacancy.id in CachedDB.all_vacs and CachedDB.all_vacs[request.vacancy.id] == request.vacancy.s_name:
-                CachedDB.all_vacs.pop(request.vacancy.id)
+            print(request)
+            r_id = request.vacancy.id
+            r_name = request.vacancy.s_name
+            if r_name == "":
+                if r_id in CachedDB.all_vacs:
+                    CachedDB.all_vacs.pop(r_id)
             else:
-                CachedDB.all_vacs[request.vacancy.id] = request.vacancy.s_name
+                CachedDB.all_vacs[r_id] = r_name
             KeyboardsService.fillVacsKb()
+            print(CachedDB.all_vacs)
             return pb2.Empty()
 
-        def formToVacUpdated(self, request: pb2.UpdatedFormToVac, context):
+        def formToVacUpdated(self, request, context):
             print("FTV updated")
+            print(request)
             vac_id = request.vacancyForm.n_vacancy
             form_id = request.vacancyForm.n_form
+
             if request.delete:
                 if vac_id in CachedDB.form_to_vac and form_id in CachedDB.form_to_vac[vac_id]:
                     CachedDB.form_to_vac[vac_id].pop(CachedDB.form_to_vac[vac_id].index(form_id))
@@ -156,10 +166,10 @@ class Servering:
             else:
                 if vac_id in CachedDB.form_to_vac:
                     if form_id not in CachedDB.form_to_vac[vac_id]:
-                        CachedDB.form_to_vac[vac_id].append(vac_id)
+                        CachedDB.form_to_vac[vac_id].append(form_id)
                 else:
                     CachedDB.form_to_vac[vac_id] = [form_id]
-            freeSomeForms()
+            print(CachedDB.form_to_vac)
             return pb2.Empty()
 
     @staticmethod

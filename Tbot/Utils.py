@@ -172,6 +172,7 @@ class Shortcuts:
         async def send(msg) -> None:
             state = Shortcuts.User.getState(msg)
             candidate = (await state.get_data())["candidate"]
+            candidate.tg_id = str(msg.from_user.id)
             Clienting.sendCandidateInfo(candidate)
 
         @staticmethod
@@ -328,7 +329,7 @@ class Shortcuts:
                 state = Shortcuts.User.getState(call)
                 candidate = (await state.get_data())["candidate"]
                 step = int((await state.get_data())["step"])
-                if len(CachedDB.form_to_vac[0]) > step:
+                if len(CachedDB.general_forms) > step:
                     form = CachedDB.general_forms[step]
                     candidate.forms[form] = call.text
                     step += 1
@@ -357,6 +358,7 @@ class Shortcuts:
                 vti = int((await state.get_data())["vac_to_int"])
                 candidate = (await state.get_data())["candidate"]
                 step = int((await state.get_data())["step"])
+                print(CachedDB.form_to_vac)
                 if len(CachedDB.form_to_vac[vti]) > step:
                     form = CachedDB.form_to_vac[vti][step]
                     if form in candidate.forms:
